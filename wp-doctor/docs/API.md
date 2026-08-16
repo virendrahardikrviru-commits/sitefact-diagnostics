@@ -414,6 +414,18 @@ One read-only diagnostic (category `configuration`):
   unavailable/malformed → INFO. Expected `true`. It is a configuration fact, not
   an SEO diagnosis.
 
+### Phase 12 (Automatic Updates Disabled, Static)
+
+One read-only diagnostic (category `core`):
+
+`core.automatic_updates_disabled`.
+
+- `AutomaticUpdatesDisabledDiagnostic` — reads
+  `defined('AUTOMATIC_UPDATER_DISABLED')` / `constant('AUTOMATIC_UPDATER_DISABLED')`
+  only. Evidence: `automatic_updates_disabled` (bool|null). Severity: disabled →
+  WARNING; not disabled → SUCCESS; malformed → INFO. Expected `false`. Distinct
+  from `core.auto_update_core` (Phase 10).
+
 ### Example Diagnostic Implementation
 
 ```php

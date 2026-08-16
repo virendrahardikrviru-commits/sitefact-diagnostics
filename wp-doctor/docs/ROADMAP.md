@@ -403,23 +403,32 @@ reports, monitoring, and all other deferred items. See DECISIONS.md ADR-024.
 
 ---
 
-## Phase 12: Reporting System
+## Phase 12: Automatic Updates Disabled (Static)
 
-**Goal:** Implement diagnostic reports
+**Status:** Complete
+**Goal:** Implement deterministic, read-only auto-update configuration diagnostics
 
-### Tasks
+**Approved scope (supersedes the legacy "Reporting System" sketch below):** Phase 12
+adds exactly one read-only, FACT-based, `Category::CORE` diagnostic:
 
-- [ ] Report generation
-- [ ] Report export (PDF, JSON)
-- [ ] Report history
-- [ ] Report trending
-- [ ] Scheduled reporting
-- [ ] Write tests
+- `core.automatic_updates_disabled` — reports whether the
+  `AUTOMATIC_UPDATER_DISABLED` constant globally disables all automatic updates.
+  Distinct from `core.auto_update_core` (Phase 10).
+
+The following remain **deferred**: reporting, exports, history, monitoring, and
+all other deferred items. See DECISIONS.md ADR-025.
+
+### Tasks (historical sketch — superseded)
+
+- [ ] Report generation — DEFERRED
+- [ ] Report export (PDF, JSON) — DEFERRED
+- [ ] Report history — DEFERRED
+- [ ] Report trending — DEFERRED
+- [ ] Scheduled reporting — DEFERRED
 
 ### Deliverables
 
-- Reporting system
-- Export functionality
+- One read-only diagnostic: `core.automatic_updates_disabled`
 
 ---
 

@@ -1159,14 +1159,77 @@ remains **1**.
 
 ---
 
+## ADR-025: Phase 12 — Automatic Updates Disabled (Static)
+
+**Date:** 2026-08-16
+
+**Context:**
+The static, read-only, FACT-based diagnostic pool was largely exhausted by
+Phase 11. One remaining high-value, clean FACT is the global
+`AUTOMATIC_UPDATER_DISABLED` constant, which disables ALL WordPress automatic
+updates (core, plugins, and themes). This is distinct from the core-only
+`WP_AUTO_UPDATE_CORE` constant reported by `core.auto_update_core` (Phase 10).
+
+**Options Considered:**
+1. Expand into a full "auto-update status" (runtime filters, plugin/theme
+   auto-update detection) — inference-heavy and would reopen Phase 10's deferral.
+2. Implement only the literal `AUTOMATIC_UPDATER_DISABLED` constant fact (chosen).
+
+**Decision:**
+Phase 12 implements exactly one read-only, `Category::CORE` diagnostic:
+
+- `core.automatic_updates_disabled`
+  (`WPDoctor\Diagnostics\AutomaticUpdatesDisabledDiagnostic`), reading only
+  `defined('AUTOMATIC_UPDATER_DISABLED')` / `constant('AUTOMATIC_UPDATER_DISABLED')`.
+
+**Data Source:** the `AUTOMATIC_UPDATER_DISABLED` constant only.
+
+**FACT vs INFERENCE:** Reports the literal constant (globally disabled vs not),
+normalized to `true`/`false`/`null`. No claim of compromise, vulnerability, or
+intent. Undefined → not disabled (the default) → SUCCESS.
+
+**Severity Model:** disabled (`true`) → WARNING; not disabled (`false`) → SUCCESS;
+malformed → INFO. Never ERROR. Expected `false`.
+
+**Security Boundary:** single constant read; evidence is one boolean/null; no
+credentials, paths, URLs, SQL, or raw values. No HTTP, no mutation.
+
+**Performance Boundary:** O(1); one `defined()` + one `constant()`.
+
+**Multisite Boundary:** global constant; no `switch_to_blog()`,
+`is_super_admin()`, or network mutation.
+
+**Mutation Boundary:** exactly one fix (`fix.site_urls_align`) remains unchanged.
+
+**Deferred:** plugin/theme auto-update detection and runtime update inspection
+(Phase 10 deferral) remain deferred; this ADR does not reopen them. All other
+previously deferred items remain deferred.
+
+**Expected Count:** 27 → **28** diagnostics after implementation. Fix count **1**.
+
+**Status:** COMPLETE. Phase 12 implemented `core.automatic_updates_disabled`
+(28 diagnostics).
+
+**Consequences:**
+- Positive: a minimal, high-value, read-only configuration fact; complements
+  `core.auto_update_core` without reopening deferred scope.
+- Negative: the legacy "Reporting System" Phase 12 remains unimplemented.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-023 (Phase 10 Auto-Update Configuration)
+- ROADMAP.md (Phase 12)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 025):**
+**Decisions to be made in future phases (next ADR number: 026):**
 
-- ADR-025: AI Provider Interface Design (Phase 10+)
-- ADR-026: Custom Table Schema (if needed, Phase 8+)
-- ADR-027: License/Subscription Model (Phase 14)
-- ADR-028: WordPress.org Submission Strategy (Phase 15)
+- ADR-026: AI Provider Interface Design (Phase 10+)
+- ADR-027: Custom Table Schema (if needed, Phase 8+)
+- ADR-028: License/Subscription Model (Phase 14)
+- ADR-029: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

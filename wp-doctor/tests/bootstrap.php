@@ -485,6 +485,7 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/DefaultRoleDiagnostic.p
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/HttpsDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/FileEditDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AdministratorCountDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/MemoryLimitDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ObjectCacheDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoloadedOptionsDiagnostic.php';

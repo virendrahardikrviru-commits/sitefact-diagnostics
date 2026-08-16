@@ -249,6 +249,12 @@ discourages search-engine indexing. It is static detection of the search-engine
 visibility configuration only; it is not an SEO diagnosis and does not claim a
 compromise or ranking failure. This diagnostic remains Free.
 
+**Phase 12 status:** "Automatic Updates Disabled (Static)" adds one read-only,
+FACT-based diagnostic — `core.automatic_updates_disabled` — that reports whether
+the `AUTOMATIC_UPDATER_DISABLED` constant globally disables all automatic
+updates. It is distinct from the core auto-update configuration. This diagnostic
+remains Free.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

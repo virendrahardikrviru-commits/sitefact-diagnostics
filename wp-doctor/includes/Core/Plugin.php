@@ -15,6 +15,7 @@ use WPDoctor\Admin\Admin;
 use WPDoctor\Diagnostics\ActiveThemeDiagnostic;
 use WPDoctor\Diagnostics\AdministratorCountDiagnostic;
 use WPDoctor\Diagnostics\AutoloadedOptionsDiagnostic;
+use WPDoctor\Diagnostics\AutomaticUpdatesDisabledDiagnostic;
 use WPDoctor\Diagnostics\AutoUpdateCoreDiagnostic;
 use WPDoctor\Diagnostics\BlogPublicDiagnostic;
 use WPDoctor\Diagnostics\CoreUpdateAvailabilityDiagnostic;
@@ -135,6 +136,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/HttpsDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/FileEditDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AdministratorCountDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/MemoryLimitDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ObjectCacheDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
@@ -216,6 +218,7 @@ final class Plugin {
 		$registry->register( new HttpsDiagnostic() );
 		$registry->register( new FileEditDiagnostic() );
 		$registry->register( new AdministratorCountDiagnostic() );
+		$registry->register( new AutomaticUpdatesDisabledDiagnostic() );
 		$registry->register( new MemoryLimitDiagnostic() );
 		$registry->register( new ObjectCacheDiagnostic() );
 		$registry->register( new AutoloadedOptionsDiagnostic() );

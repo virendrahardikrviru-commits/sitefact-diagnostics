@@ -478,6 +478,17 @@ Phase 11 adds one read-only diagnostic under `Category::CONFIGURATION`:
 It reports the configuration fact only; it is not an SEO diagnosis and never
 performs HTTP or filesystem access.
 
+## Automatic Updates Disabled (Static) (Phase 12)
+
+Phase 12 adds one read-only diagnostic under `Category::CORE`:
+
+| ID | Detects |
+|---|---|
+| `core.automatic_updates_disabled` | Whether the `AUTOMATIC_UPDATER_DISABLED` constant globally disables all automatic updates |
+
+It reports a single literal constant fact; it is distinct from the core-only
+`core.auto_update_core` (Phase 10) and never inspects filters or performs HTTP.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

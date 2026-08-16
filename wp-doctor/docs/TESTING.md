@@ -203,6 +203,19 @@ sentinel-based constructor override.
   expected value.
 - `Phase3RegistryTest` — extended to 27 diagnostics.
 
+## Phase 12 Test Setup
+
+Phase 12 (Automatic Updates Disabled, Static) tests the single diagnostic via a
+sentinel-based constructor override.
+
+**Phase 12 unit tests cover:**
+
+- `AutomaticUpdatesDisabledDiagnosticTest` — disabled → WARNING, not-disabled →
+  SUCCESS, undefined → SUCCESS, unavailable/malformed → INFO, never-ERROR,
+  deterministic output, single-key boolean/null evidence, no leakage,
+  recommendation, and expected value.
+- `Phase3RegistryTest` — extended to 28 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

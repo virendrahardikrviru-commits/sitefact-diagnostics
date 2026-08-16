@@ -475,6 +475,10 @@ compromise.
 mutation, no HTTP, no raw option disclosure, and no credentials/PII/path/URL
 leakage.
 
+**Phase 12 addition:** `core.automatic_updates_disabled` reads only the
+`AUTOMATIC_UPDATER_DISABLED` constant and exposes a single boolean/null value.
+No mutation, no HTTP, no update checks, and no credentials/PII/path/URL leakage.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:
