@@ -1,0 +1,21 @@
+.opencode/
+.swarm/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+wp-doctor/vendor/
+node_modules/
+
+# Logs / temporary files
+*.log
+*.tmp
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

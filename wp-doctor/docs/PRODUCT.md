@@ -1,0 +1,238 @@
+# WP Doctor — Product Document
+
+## Overview
+
+WP Doctor is an affordable, diagnostic and safe-fix plugin for WordPress website owners. The core product philosophy is:
+
+> **Scan → Diagnose → Explain → Preview → Protect → Fix → Verify → Rollback**
+
+## Product Vision
+
+WP Doctor is intended to help ordinary website owners answer the fundamental questions about their WordPress installations:
+
+1. **What is wrong with my WordPress website?**
+2. **How serious is the problem?**
+3. **Why is it happening?**
+4. **What should I do about it?**
+5. **Can it be fixed safely?**
+
+The plugin provides structured diagnostic information, clear explanations, and safe repair options backed by recovery capability.
+
+## Core Problem
+
+WordPress website owners, particularly non-technical users, struggle to:
+
+- Identify what's wrong with their site
+- Understand the severity of issues
+- Know why problems occurred
+- Determine whether problems can be safely fixed
+- Recover from broken fixes
+
+Existing tools either provide raw technical data that non-technical users cannot interpret, or make changes without adequate explanation, preview, or rollback capability.
+
+## Target Users
+
+### Primary Users
+
+- Small business website owners
+- Bloggers
+- Local business owners
+- WooCommerce site owners
+- Freelancers
+- Non-technical WordPress users
+
+### Secondary Users
+
+- WordPress freelancers
+- Small agencies
+- Website maintenance providers
+
+The user interface must eventually be understandable by a non-technical person while providing sufficient technical depth for professionals.
+
+## Product Philosophy
+
+**WP Doctor is a diagnostic product, not merely a collection of optimization buttons.**
+
+The plugin strictly distinguishes between **FACT** and **INFERENCE**:
+
+### FACT
+
+Verifiable information from WordPress, the server, the filesystem, or active plugins.
+
+Example:
+> "Plugin X generated a PHP fatal error at 2024-08-16 14:30:00 in `/wp-content/plugins/plugin-x/main.php` line 42."
+
+### INFERENCE
+
+Conclusions drawn from facts, which may or may not be correct.
+
+Example:
+> "Plugin X may be incompatible with the current environment."
+
+**Rule**: Never present an inference as an absolute fact unless sufficient evidence supports that conclusion.
+
+## V1 Objective
+
+Version 1.0 is designed to establish a minimal viable diagnostic system:
+
+- Plugin loads without errors
+- Admin interface is accessible
+- Admin interface clearly communicates that this is Phase 0
+- Architecture supports future diagnostic features
+- Foundation for modular diagnostic framework exists
+- Security principles are established
+- Documentation is complete
+
+## Future Modules (Post-Phase 0)
+
+1. **Core**
+   - Plugin runtime
+   - Configuration
+   - Permissions
+   - Logging
+
+2. **WordPress Doctor**
+   - WordPress version diagnostics
+   - Database diagnostics
+   - File system diagnostics
+   - Server environment diagnostics
+   - PHP compatibility diagnostics
+
+3. **Plugin Doctor**
+   - Active plugin scan
+   - Plugin compatibility checks
+   - Plugin conflict detection
+   - Plugin performance analysis
+
+4. **Error Doctor**
+   - Log file analysis
+   - Fatal error detection
+   - Warning/notice collection
+   - Error pattern recognition
+
+5. **Performance Doctor**
+   - Database query analysis
+   - Memory usage monitoring
+   - Execution time analysis
+   - Caching diagnostics
+
+6. **Database Doctor**
+   - Table integrity checks
+   - Orphaned data detection
+   - Query optimization suggestions
+   - Database size analysis
+
+7. **Safe Fix Engine**
+   - Fix preview
+   - Recovery point creation
+   - Deterministic fix application
+   - Verification
+   - Rollback capability
+
+8. **Recovery**
+   - Recovery point management
+   - Rollback execution
+   - Restore verification
+
+9. **Reports**
+   - Diagnostic history
+   - Health score trends
+   - Export functionality
+   - Scheduled reporting
+
+10. **AI Doctor** (Optional, future)
+    - AI-powered explanations
+    - Fix recommendations
+    - Natural language output
+    - Multiple AI provider support
+
+11. **Monitoring**
+    - Scheduled diagnostics
+    - Change detection
+    - Alert system
+    - Dashboard
+
+12. **Free/Pro Layer**
+    - Free version features
+    - Pro version features
+    - Licensing
+    - Feature gating
+
+13. **Security Doctor** (Post-launch)
+    - Security configuration review
+    - Vulnerability scanning
+    - Best practice recommendations
+
+## Free/Pro Concept
+
+### Free Version
+
+- Basic diagnostics (WordPress, database, server environment)
+- Error detection and logging
+- Plugin compatibility warnings
+- Basic reports
+- Manual fixes with recovery
+
+### Pro Version
+
+- Advanced performance analysis
+- Scheduled monitoring
+- AI-powered explanations
+- Automated safe-fix recommendations
+- Priority support
+- Advanced reporting
+
+Licensing will be determined in later phases.
+
+## Non-Goals
+
+Phase 0 explicitly does NOT include:
+
+- AI functionality
+- Pro/payment systems
+- Payment processing
+- Licensing systems
+- SaaS/cloud backends
+- Database cleanup
+- Automatic fixes (without user confirmation and recovery)
+- Plugin conflict detection at plugin level
+- Performance optimization
+- Security scanning
+- User authentication (beyond WordPress)
+
+These features will be developed in designated phases.
+
+## User Experience Principles
+
+1. **Clarity Over Complexity**
+   - Every diagnostic result should be understandable by a non-technical user
+   - Technical details should not be hidden, but should be secondary
+
+2. **Safety First**
+   - Every potential fix must have a recovery point
+   - Users must be able to preview changes before applying them
+   - Rollback must always be possible
+
+3. **Trust Through Transparency**
+   - Explain why each diagnostic is important
+   - Show exactly what will change before it changes
+   - Document recovery procedures clearly
+
+4. **Progressive Disclosure**
+   - Simple information first
+   - Detailed technical information available on demand
+   - Experts can access raw data if needed
+
+5. **No Surprises**
+   - Changes only happen with explicit user confirmation
+   - Never make assumptions about user intent
+   - Always explain consequences
+
+## Architecture Alignment
+
+This product document should be read in conjunction with:
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) — Technical design
+- [SECURITY.md](SECURITY.md) — Security model
+- [ROADMAP.md](ROADMAP.md) — Development phases
+- [DECISIONS.md](DECISIONS.md) — Architectural decisions

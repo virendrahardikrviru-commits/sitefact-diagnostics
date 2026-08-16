@@ -1,0 +1,51 @@
+# WordPress
+wp-config.php
+wp-content/
+wp-includes/
+
+# Dependencies
+vendor/
+node_modules/
+composer.lock
+package-lock.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+dist/
+build/
+coverage/
+*.zip
+
+# Logs
+error_log
+*.log
+wp-doctor.log
+
+# Testing
+.phpunit.result.cache
+phpunit.xml
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Backups
+*.bak
+*.backup
