@@ -743,14 +743,76 @@ evidence. No redaction pipeline is needed because excerpts are out of scope.
 
 ---
 
+## ADR-019: Phase 6 — Static Performance Doctor Scope
+
+**Date:** 2026-08-16
+
+**Context:**
+The legacy roadmap's "Phase 6: Performance Doctor" listed database query
+analysis, memory usage profiling, execution time analysis, image optimization
+detection, and caching diagnostics. Runtime profiling is non-deterministic and
+environment-dependent; database/runtime measurements require a different
+architectural model; and image "optimization" is inference-prone without a
+defensible reference. The committed architecture is deterministic, read-only,
+and fact-first (ADR-015; PRODUCT.md FACT-vs-INFERENCE). Phase 6 must therefore
+be scoped to what the architecture can support safely and deterministically.
+
+**Options Considered:**
+1. Implement the full legacy "Performance Doctor" list including runtime
+   profiling and image analysis.
+2. Implement only the static, read-only performance/caching subset (chosen).
+
+**Decision:**
+Phase 6 implements exactly two read-only `Category::PERFORMANCE` diagnostics:
+
+- `performance.opcache` — reports PHP OPcache status via
+  `opcache_get_status(false)` (never requesting the scripts/path list), exposing
+  aggregate status only. Severity: unavailable → INFO; disabled → WARNING;
+  enabled and not full → SUCCESS; enabled and full → WARNING. Never ERROR merely
+  because OPcache is unavailable or unhealthy.
+- `performance.page_cache` — inspects only `WP_CONTENT_DIR/advanced-cache.php`
+  (a fixed filename, no user-supplied path). Severity: present → SUCCESS; absent
+  → INFO. Never infers that absence means there is no server/edge caching, and
+  never uses WARNING or ERROR merely because the drop-in is absent.
+
+Both diagnostics remain read-only, deterministic given the observed environment,
+fact-first, aggregate-only, failure-isolated, PHP 7.4 compatible, free of new
+dependencies, and free of mutation.
+
+**Deferred (require separate architectural decisions; must not be silently
+introduced into Phase 6):** database query analysis, memory usage profiling,
+execution-time analysis, and image optimization detection.
+
+**Preserved:** the 18 existing diagnostics (until Phase 6 implementation), the
+single existing fix (`fix.site_urls_align`), the Phase 4 mutation boundary, and
+the absence of: new fixes, runtime profiling, AI, scoring, reports, monitoring,
+cron, REST/AJAX, external HTTP, database mutation, and filesystem mutation.
+
+**Consequences:**
+- Positive: a minimal, coherent, read-only performance/caching diagnostic phase
+  that fits the committed architecture; no non-deterministic or inference-prone
+  features are introduced.
+- Negative: runtime profiling and image analysis are postponed, deferring some
+  product surface.
+- Future Impact: runtime/DB profiling and image analysis will require their own
+  ADRs before implementation.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-018 (Bounded Debug-Log Read Boundary)
+- ARCHITECTURE.md (Error Doctor)
+- ROADMAP.md (Phase 6)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 019):**
+**Decisions to be made in future phases (next ADR number: 020):**
 
-- ADR-019: AI Provider Interface Design (Phase 10+)
-- ADR-020: Custom Table Schema (if needed, Phase 8+)
-- ADR-021: License/Subscription Model (Phase 14)
-- ADR-022: WordPress.org Submission Strategy (Phase 15)
+- ADR-020: AI Provider Interface Design (Phase 10+)
+- ADR-021: Custom Table Schema (if needed, Phase 8+)
+- ADR-022: License/Subscription Model (Phase 14)
+- ADR-023: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

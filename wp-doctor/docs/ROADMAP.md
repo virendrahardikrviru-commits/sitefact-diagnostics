@@ -175,22 +175,41 @@ See DECISIONS.md ADR-018.
 
 ---
 
-## Phase 6: Performance Doctor
+## Phase 6: Performance Doctor (Static)
 
-**Goal:** Implement performance diagnostics
+**Status:** Planned
+**Goal:** Implement deterministic, read-only performance/caching diagnostics
 
-### Tasks
+**Approved scope (supersedes the task list below):** Phase 6 will add exactly two
+read-only `Category::PERFORMANCE` diagnostics — `performance.opcache` (PHP
+OPcache status) and `performance.page_cache` (full-page-cache drop-in presence).
 
-- [ ] Database query analysis
-- [ ] Memory usage profiling
-- [ ] Execution time analysis
-- [ ] Image optimization detection
-- [ ] Caching diagnostics
+The following original tasks are **deferred** and are NOT part of Phase 6:
+
+- Database query analysis
+- Memory usage profiling
+- Execution time analysis
+- Image optimization detection
+
+They are deferred because runtime profiling is non-deterministic and
+environment-dependent, database/runtime measurements require a different
+architectural model, and image "optimization" is inference-prone without a
+defensible reference. The committed architecture follows deterministic,
+read-only, fact-first diagnostics, and the FACT-vs-INFERENCE rule must be
+preserved. See DECISIONS.md ADR-019.
+
+### Tasks (historical sketch)
+
+- [ ] Database query analysis — DEFERRED
+- [ ] Memory usage profiling — DEFERRED
+- [ ] Execution time analysis — DEFERRED
+- [ ] Image optimization detection — DEFERRED
+- [ ] Caching diagnostics (partially covered by the approved scope)
 - [ ] Write tests
 
 ### Deliverables
 
-- Performance diagnostics module
+- Two read-only diagnostics: `performance.opcache`, `performance.page_cache`
 
 ---
 
