@@ -949,14 +949,92 @@ COMPLETE. Phase 8 implemented `security.user_registration` and
 
 ---
 
+## ADR-022: Phase 9 — Theme Doctor (Static)
+
+**Date:** 2026-08-16
+
+**Context:**
+The update-availability family already covers WordPress core
+(`core.update_availability`) and plugins (`plugins.update_available`), but theme
+update availability was deferred in the Phase 3 pack. The committed architecture
+is deterministic, read-only, FACT-first, failure-isolated, and no-surprises.
+Phase 9 completes the family with a single static, fact-only diagnostic.
+
+**Options Considered:**
+1. Implement a broad Theme Doctor including theme counts (filesystem scanning)
+   and compatibility/quality/abandonment analysis.
+2. Implement only the static, cached-transient theme-update fact (chosen).
+
+**Decision:**
+Phase 9 will implement exactly one read-only `Category::THEMES` diagnostic:
+
+- `themes.update_available` — counts pending theme updates from the cached
+  `get_site_transient('update_themes')` value (read-only, deterministic, no
+  forced HTTP/update check). Evidence: `updates_available` (int|null) and
+  `themes_with_updates` (theme slugs, capped at 20). Severity:
+  unavailable/malformed → INFO; 0 → SUCCESS; ≥1 → WARNING; never ERROR.
+
+**Architectural Boundary:**
+No new abstraction, interface, service, policy, or dependency. No filesystem
+scanning, no HTTP, no mutation, and no new fix. The existing fix count remains
+exactly 1 (`fix.site_urls_align`). PHP >= 7.4 remains mandatory.
+
+**FACT vs INFERENCE:**
+The diagnostic reports the observed fact that a theme update is pending. It does
+not infer theme quality, abandonment, compatibility, security compromise, or
+causation.
+
+**Security / Read-Only Boundary:**
+Cached site-transient read only; no user-controlled input; evidence contains only
+a count and capped theme slugs (no raw transient contents, paths, credentials,
+SQL, or secrets).
+
+**Performance / Resource Boundary:**
+One O(1) `get_site_transient` read; slug list capped at 20; no scans, recursion,
+persistence, profiling, or HTTP.
+
+**Multisite Behavior:**
+Preserves the existing network-wide site-transient behavior used by
+`plugins.update_available`.
+
+**Deferred (must not be silently introduced):** plugin/theme counts,
+filesystem-based scanning, upload-limit thresholds, max-execution-time policy,
+file-permission diagnostics, XML-RPC/Application-Password detection, plugin
+compatibility/conflict/abandonment, plugin blame, root-cause attribution,
+pattern recognition, runtime/execution-time/memory/DB-query profiling, EXPLAIN,
+orphan detection, CHECK/REPAIR TABLE, query optimization, index recommendations,
+image optimization, AI/ML, scoring, reports, exports, history, monitoring,
+cron/background jobs, REST/AJAX, external HTTP, telemetry, additional fixes,
+recovery system/UI, licensing, payments, UI redesign, and new framework
+abstractions.
+
+**Expected Diagnostic Count:** 24 → **25** after implementation (currently 24).
+**Fix Count:** remains exactly 1 (`fix.site_urls_align`).
+
+**Status:**
+NOT STARTED. This ADR records the approved scope only; no Phase 9 code exists.
+
+**Consequences:**
+- Positive: completes the update-availability family with minimal, reused
+  architecture; no inference or new boundary.
+- Negative: theme counts and broader theme analysis remain postponed.
+- Future Impact: any broader Theme Doctor will require its own ADR.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-016 (Phase 3 Diagnostic Pack Selection)
+- ROADMAP.md (Phase 9)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 022):**
+**Decisions to be made in future phases (next ADR number: 023):**
 
-- ADR-022: AI Provider Interface Design (Phase 10+)
-- ADR-023: Custom Table Schema (if needed, Phase 8+)
-- ADR-024: License/Subscription Model (Phase 14)
-- ADR-025: WordPress.org Submission Strategy (Phase 15)
+- ADR-023: AI Provider Interface Design (Phase 10+)
+- ADR-024: Custom Table Schema (if needed, Phase 8+)
+- ADR-025: License/Subscription Model (Phase 14)
+- ADR-026: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

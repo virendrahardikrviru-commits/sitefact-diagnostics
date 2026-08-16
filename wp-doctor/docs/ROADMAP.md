@@ -297,22 +297,46 @@ See DECISIONS.md ADR-021.
 
 ---
 
-## Phase 9: Recovery System
+## Phase 9: Theme Doctor (Static)
 
-**Goal:** Implement complete recovery/rollback
+**Status:** Planned (approved scope — not yet implemented)
+**Goal:** Implement deterministic, read-only theme-update diagnostics
 
-### Tasks
+**Approved scope (supersedes the legacy "Recovery System" sketch below):** Phase 9
+will add exactly one read-only, FACT-based, `Category::THEMES` diagnostic:
 
-- [ ] Recovery point persistence
-- [ ] Recovery point management UI
-- [ ] Rollback execution
-- [ ] Rollback verification
-- [ ] Auto-cleanup of old recovery points
-- [ ] Write tests
+- `themes.update_available` — counts pending theme updates from the cached
+  `get_site_transient('update_themes')` value (read-only, deterministic, no
+  forced HTTP/update check). Evidence: `updates_available` (int|null) and
+  `themes_with_updates` (theme slugs, capped at 20).
+
+This completes the update-availability family (core, plugins, themes) using the
+existing cached site-transient pattern. Planned diagnostic count: 24 → 25.
+
+The following remain **deferred** and are NOT part of Phase 9: plugin/theme
+counts, filesystem-based plugin/theme scanning, upload-limit thresholds,
+max-execution-time policy, file-permission diagnostics, XML-RPC detection,
+Application Password detection, plugin compatibility/conflict/abandonment
+detection, plugin blame, root-cause attribution, pattern recognition, runtime/
+execution-time/memory/DB-query profiling, EXPLAIN, orphan detection, CHECK/
+REPAIR TABLE, query optimization, index recommendations, image optimization,
+AI/ML, scoring, reports, exports, history, monitoring, cron/background jobs,
+REST/AJAX, external HTTP, telemetry, additional fixes, recovery system/UI,
+licensing, payments, UI redesign, and new framework abstractions.
+
+See DECISIONS.md ADR-022.
+
+### Tasks (historical sketch — superseded)
+
+- [ ] Recovery point persistence — DEFERRED
+- [ ] Recovery point management UI — DEFERRED
+- [ ] Rollback execution — DEFERRED
+- [ ] Rollback verification — DEFERRED
+- [ ] Auto-cleanup of old recovery points — DEFERRED
 
 ### Deliverables
 
-- Full recovery system
+- One read-only diagnostic: `themes.update_available`
 
 ---
 
