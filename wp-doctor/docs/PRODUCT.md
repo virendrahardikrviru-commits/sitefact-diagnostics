@@ -205,6 +205,12 @@ read-only diagnostic pack: `error.debug_log`, `error.fatal_count`, and
 no root-cause attribution, no raw-line exposure, and no error fixes). It remains
 Free.
 
+**Phase 6 status:** the "Performance Doctor" is delivered in its static,
+read-only form: `performance.opcache` (aggregate OPcache status) and
+`performance.page_cache` (full-page-cache drop-in presence). Runtime profiling,
+query analysis, execution-time analysis, and image-optimization detection remain
+deferred. These diagnostics remain Free.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

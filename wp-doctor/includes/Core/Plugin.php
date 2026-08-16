@@ -28,6 +28,8 @@ use WPDoctor\Diagnostics\FileEditDiagnostic;
 use WPDoctor\Diagnostics\HttpsDiagnostic;
 use WPDoctor\Diagnostics\MemoryLimitDiagnostic;
 use WPDoctor\Diagnostics\ObjectCacheDiagnostic;
+use WPDoctor\Diagnostics\OpCacheDiagnostic;
+use WPDoctor\Diagnostics\PageCacheDiagnostic;
 use WPDoctor\Diagnostics\PhpVersionDiagnostic;
 use WPDoctor\Diagnostics\PluginsUpdateAvailableDiagnostic;
 use WPDoctor\Diagnostics\SiteUrlsDiagnostic;
@@ -134,6 +136,8 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugLogDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorFatalCountDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorWarningCountDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/OpCacheDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PageCacheDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Recovery/RecoveryPoint.php';
 		require_once WP_DOCTOR_DIR . 'includes/Fixes/RiskLevel.php';
 		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixInterface.php';
@@ -206,6 +210,8 @@ final class Plugin {
 		$registry->register( new DebugLogDiagnostic() );
 		$registry->register( new ErrorFatalCountDiagnostic() );
 		$registry->register( new ErrorWarningCountDiagnostic() );
+		$registry->register( new OpCacheDiagnostic() );
+		$registry->register( new PageCacheDiagnostic() );
 	}
 
 	/**

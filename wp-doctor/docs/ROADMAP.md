@@ -177,7 +177,7 @@ See DECISIONS.md ADR-018.
 
 ## Phase 6: Performance Doctor (Static)
 
-**Status:** Planned
+**Status:** Complete
 **Goal:** Implement deterministic, read-only performance/caching diagnostics
 
 **Approved scope (supersedes the task list below):** Phase 6 will add exactly two

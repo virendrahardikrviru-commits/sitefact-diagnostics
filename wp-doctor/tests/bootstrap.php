@@ -493,6 +493,8 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/ActiveThemeDiagnostic.p
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugLogDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorFatalCountDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorWarningCountDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/OpCacheDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/PageCacheDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Recovery/RecoveryPoint.php';
 require_once dirname( __DIR__ ) . '/includes/Fixes/RiskLevel.php';
 require_once dirname( __DIR__ ) . '/includes/Fixes/FixInterface.php';

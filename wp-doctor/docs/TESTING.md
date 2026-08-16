@@ -113,6 +113,22 @@ for the diagnostics. No real WordPress installation is required.
 - `Phase3RegistryTest` — extended to 18 diagnostics (unique IDs, deterministic
   ordering, duplicate-ID rejection).
 
+## Phase 6 Test Setup
+
+Phase 6 (Performance Doctor, Static) adds two read-only diagnostics tested via
+constructor-injection overrides (consistent with the existing patterns).
+
+**Phase 6 unit tests cover:**
+
+- `OpCacheDiagnosticTest` — healthy (enabled/not-full → SUCCESS), disabled →
+  WARNING, cache-full → WARNING, unavailable/malformed/object status → INFO,
+  missing nested fields, deterministic result, aggregate-only evidence, and the
+  absence of the `scripts` key, filesystem paths, and secrets.
+- `PageCacheDiagnosticTest` — present → SUCCESS, absent → INFO, undefined
+  `WP_CONTENT_DIR` → INFO, deterministic result, single-key evidence, no path
+  exposure, and no "caching disabled" inference.
+- `Phase3RegistryTest` — extended to 20 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

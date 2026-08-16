@@ -396,6 +396,22 @@ performs a bounded read (at most 512 lines / 1 MB). The reader never exposes raw
 log lines, full paths, or excerpts; diagnostics report aggregate facts only.
 No error attribution, no error fixes, no log deletion/rotation are performed.
 
+## Performance Doctor (Static) (Phase 6)
+
+Phase 6 adds two read-only diagnostics under `Category::PERFORMANCE`:
+
+| ID | Detects |
+|---|---|
+| `performance.opcache` | PHP OPcache aggregate status (enabled/cache-full/memory usage) |
+| `performance.page_cache` | Presence of the `advanced-cache.php` full-page-cache drop-in |
+
+`performance.opcache` calls `opcache_get_status(false)` (never `true`, which
+would expose cached filesystem paths) and reports only aggregate scalars.
+`performance.page_cache` checks a single fixed filename within `WP_CONTENT_DIR`
+and never infers that caching is absent (server/edge caching is undetectable).
+Both remain read-only, deterministic, and fact-first; runtime profiling, query
+analysis, execution-time analysis, and image optimization remain deferred.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

@@ -336,6 +336,21 @@ or excerpts through its contract.
 ErrorPolicy::WARNING_COUNT_WARNING_THRESHOLD; // 100
 ```
 
+### Phase 6 (Performance Doctor, Static)
+
+Two read-only diagnostics (category `performance`):
+
+`performance.opcache`, `performance.page_cache`.
+
+- `OpCacheDiagnostic` — reports aggregate OPcache status via
+  `opcache_get_status(false)` (never `true`, which would expose cached file
+  paths). Evidence: `opcache_available`, `opcache_enabled`, `cache_full`,
+  `used_memory_bytes`, `free_memory_bytes`. Severity: unavailable → INFO;
+  disabled → WARNING; enabled + full → WARNING; enabled + not full → SUCCESS.
+- `PageCacheDiagnostic` — reports only whether the `advanced-cache.php` drop-in
+  exists. Evidence: `page_cache_dropin` (bool|null). Severity: present →
+  SUCCESS; absent/unknown → INFO. Never infers that caching is absent.
+
 ### Example Diagnostic Implementation
 
 ```php
