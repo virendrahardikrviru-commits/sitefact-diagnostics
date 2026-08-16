@@ -479,6 +479,12 @@ leakage.
 `AUTOMATIC_UPDATER_DISABLED` constant and exposes a single boolean/null value.
 No mutation, no HTTP, no update checks, and no credentials/PII/path/URL leakage.
 
+**Phase 13 addition:** `DiagnosticSummary` is a read-only, stateless consumer of
+existing `DiagnosticResult[]`. It exposes only aggregate counts and a bounded
+listing of `id`/`severity`/`summary`/`recommendation`; it never exposes raw
+evidence, paths, credentials, or PII, and renders via the existing
+`manage_options`-gated admin page with full output escaping.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

@@ -432,23 +432,35 @@ all other deferred items. See DECISIONS.md ADR-025.
 
 ---
 
-## Phase 13: Monitoring System
+## Phase 13: Read-Only Diagnostic Summary (Fact Aggregation)
 
-**Goal:** Implement scheduled monitoring
+**Status:** Complete
+**Goal:** Provide a deterministic, stateless, fact-only summary over existing diagnostic results
 
-### Tasks
+**Approved scope (supersedes the legacy "Monitoring System" sketch below):** Phase 13
+adds `WPDoctor\Core\DiagnosticSummary` — an immutable value object built via
+`DiagnosticSummary::from_results( DiagnosticResult[] )` — plus minimal factual
+admin summary rendering. It aggregates total count, severity counts, category
+counts, and a bounded listing of id/severity/summary/recommendation. It never
+scores, ranks, trends, persists, or interprets. Diagnostics remain **28**;
+fixes remain **1**.
 
-- [ ] Scheduled scan system
-- [ ] Change detection
-- [ ] Alert system
-- [ ] Dashboard notifications
-- [ ] Email notifications
-- [ ] Write tests
+The following remain **deferred**: persistence/history, monitoring, scheduled
+reporting, exports, REST/AJAX, CLI, AI/ML, additional fixes, recovery UI,
+runtime/DB profiling, filesystem scanning, telemetry, licensing, payments.
+A numerical health score is **rejected**. See DECISIONS.md ADR-026.
+
+### Tasks (historical sketch — superseded)
+
+- [ ] Scheduled scan system — DEFERRED
+- [ ] Change detection — DEFERRED
+- [ ] Alert system — DEFERRED
+- [ ] Dashboard notifications — DEFERRED
+- [ ] Email notifications — DEFERRED
 
 ### Deliverables
 
-- Monitoring system
-- Notification system
+- `DiagnosticSummary` value object and minimal factual admin summary
 
 ---
 

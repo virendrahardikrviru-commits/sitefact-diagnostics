@@ -9,6 +9,7 @@
 
 namespace WPDoctor\Admin;
 
+use WPDoctor\Core\DiagnosticSummary;
 use WPDoctor\Core\Environment;
 use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\DiagnosticRegistry;
@@ -199,6 +200,7 @@ class Admin {
 	 */
 	private function render_diagnostics() {
 		$results = $this->runner->run_many( $this->registry->get_all() );
+		$summary = DiagnosticSummary::from_results( $results );
 
 		$grouped = array();
 
@@ -213,6 +215,8 @@ class Admin {
 		}
 		?>
 		<h2><?php esc_html_e( 'Diagnostics', 'wp-doctor' ); ?></h2>
+
+		<?php $this->render_summary( $summary ); ?>
 
 		<div class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped">
 			<?php foreach ( Category::all() as $category ) : ?>
@@ -263,6 +267,51 @@ class Admin {
 					</div>
 				<?php endforeach; ?>
 			<?php endforeach; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render the factual diagnostic summary.
+	 *
+	 * Displays the aggregate counts (total, severity, category) without any
+	 * scoring, ranking, or interpretation. All output is escaped.
+	 *
+	 * @since 0.13.0
+	 *
+	 * @param DiagnosticSummary $summary The diagnostic summary.
+	 * @return void
+	 */
+	private function render_summary( DiagnosticSummary $summary ) {
+		$severity_parts = array();
+
+		foreach ( Severity::all() as $severity ) {
+			$severity_parts[] = sprintf(
+				/* translators: 1: severity label, 2: count. */
+				__( '%1$s: %2$d', 'wp-doctor' ),
+				Severity::label( $severity ),
+				$summary->get_severity_count( $severity )
+			);
+		}
+
+		$category_parts = array();
+
+		foreach ( Category::all() as $category ) {
+			$category_parts[] = sprintf(
+				/* translators: 1: category label, 2: count. */
+				__( '%1$s: %2$d', 'wp-doctor' ),
+				ucfirst( $category ),
+				$summary->get_category_count( $category )
+			);
+		}
+		?>
+		<div class="wp-doctor-summary">
+			<p>
+				<strong><?php esc_html_e( 'Diagnostics:', 'wp-doctor' ); ?></strong>
+				<?php echo esc_html( (string) $summary->get_total() ); ?>
+			</p>
+			<p><?php echo esc_html( implode( ' · ', $severity_parts ) ); ?></p>
+			<p><?php echo esc_html( implode( ', ', $category_parts ) ); ?></p>
 		</div>
 		<?php
 	}

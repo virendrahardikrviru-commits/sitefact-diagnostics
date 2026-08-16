@@ -255,6 +255,11 @@ the `AUTOMATIC_UPDATER_DISABLED` constant globally disables all automatic
 updates. It is distinct from the core auto-update configuration. This diagnostic
 remains Free.
 
+**Phase 13 status:** "Read-Only Diagnostic Summary (Fact Aggregation)" adds a
+deterministic, stateless summary over the 28 diagnostics: total count, severity
+counts, category counts, and a bounded listing. It is pure fact aggregation — no
+health score, no interpretation, no history. This capability remains Free.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

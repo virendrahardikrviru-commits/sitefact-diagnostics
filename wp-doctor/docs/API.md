@@ -426,6 +426,27 @@ One read-only diagnostic (category `core`):
   WARNING; not disabled → SUCCESS; malformed → INFO. Expected `false`. Distinct
   from `core.auto_update_core` (Phase 10).
 
+### Phase 13 (Read-Only Diagnostic Summary)
+
+A stateless, deterministic consumer layer (no new diagnostic):
+
+```php
+use WPDoctor\Core\DiagnosticSummary;
+
+$summary = DiagnosticSummary::from_results( $results ); // DiagnosticResult[]
+
+$summary->get_total();                 // int
+$summary->get_severity_counts();       // info/success/warning/error => int
+$summary->get_severity_count( $sev );  // int
+$summary->get_category_counts();       // all seven categories => int
+$summary->get_category_count( $cat );  // int
+$summary->get_diagnostics();           // bounded listing of id/severity/summary/recommendation
+$summary->to_array();                  // plain, serializable data
+```
+
+It is pure FACT aggregation — no score, no weighting, no ranking, no trend, no
+history, no persistence, and no raw evidence exposure.
+
 ### Example Diagnostic Implementation
 
 ```php

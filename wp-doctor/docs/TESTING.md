@@ -216,6 +216,20 @@ sentinel-based constructor override.
   recommendation, and expected value.
 - `Phase3RegistryTest` — extended to 28 diagnostics.
 
+## Phase 13 Test Setup
+
+Phase 13 (Read-Only Diagnostic Summary) adds a value-object test; no diagnostic
+or registry change.
+
+**Phase 13 unit tests cover:**
+
+- `DiagnosticSummaryTest` — empty/single/multiple results, exact total, mixed
+  severity counts, category counts, bounded listing (id/severity/summary/
+  recommendation preserved in order), no evidence leakage, non-result items
+  skipped, deterministic `to_array()`, complete closed-model count keys, and
+  unknown-count queries returning 0.
+- Registry remains at 28 diagnostics; fix count remains 1.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

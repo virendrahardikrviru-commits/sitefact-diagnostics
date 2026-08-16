@@ -489,6 +489,16 @@ Phase 12 adds one read-only diagnostic under `Category::CORE`:
 It reports a single literal constant fact; it is distinct from the core-only
 `core.auto_update_core` (Phase 10) and never inspects filters or performs HTTP.
 
+## Read-Only Diagnostic Summary (Phase 13)
+
+Phase 13 adds `WPDoctor\Core\DiagnosticSummary`, an immutable value object built
+via `DiagnosticSummary::from_results( DiagnosticResult[] )`. It is a stateless,
+deterministic, FACT-only consumer of the diagnostic engine: it reports the total
+count, severity counts, category counts, and a bounded listing of each
+diagnostic's `id`/`severity`/`summary`/`recommendation`. It never scores, ranks,
+trends, persists, or interprets. The diagnostic engine (28 diagnostics) and the
+single-fix boundary remain unchanged.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

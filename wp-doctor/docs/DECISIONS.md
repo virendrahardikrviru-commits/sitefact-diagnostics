@@ -1222,14 +1222,75 @@ previously deferred items remain deferred.
 
 ---
 
+## ADR-026: Read-Only Diagnostic Summary (Fact Aggregation) Layer
+
+**Date:** 2026-08-16
+
+**Context:**
+The static diagnostic line reached its deliberate boundary at 28 diagnostics:
+no additional static diagnostic earns its place without becoming low-value,
+preference-based, inferential, or violating an existing boundary. The next step
+is therefore a consumer layer over the existing `DiagnosticResult[]`, not a new
+diagnostic.
+
+**Options Considered:**
+1. Add another static diagnostic (rejected — no safe, high-value FACT remains).
+2. Add scoring/history/monitoring (rejected/deferred — inference, persistence,
+   cron, network).
+3. Add a read-only, stateless, deterministic FACT-aggregation summary layer
+   (chosen).
+
+**Decision:**
+Phase 13 implements `WPDoctor\Core\DiagnosticSummary` — an immutable, PHP 7.4
+value object built via `DiagnosticSummary::from_results( DiagnosticResult[] )`.
+It reports aggregate facts only: total count, severity counts (info/success/
+warning/error), category counts (all seven closed categories), and a bounded
+listing of each diagnostic's `id`/`severity`/`summary`/`recommendation`.
+
+**FACT-only:** counts and the listing are direct aggregation of existing
+results. No health score, weighting, ranking, trend, history, or interpretation.
+Severity is established by the individual diagnostic and is not reinterpreted.
+
+**Architectural Boundary:** the diagnostic engine (28 diagnostics) and the
+single-fix boundary (`fix.site_urls_align`) are unchanged. The summary is a
+consumer of `DiagnosticRunner::run_many()`; it executes the engine once and
+aggregates in memory (O(n), n = 28). No persistence, HTTP, cron, REST/AJAX,
+telemetry, AI/ML, or new production dependency.
+
+**Security:** read-only; renders via the existing `manage_options`-gated admin
+page with full output escaping; no raw evidence, paths, credentials, or PII.
+
+**Deferred:** persistence/history, monitoring, scheduled reporting, exports,
+REST/AJAX, CLI, AI/ML, additional fixes, recovery UI, runtime/DB profiling,
+filesystem scanning, plugin/theme enumeration, telemetry, licensing, payments.
+**Rejected:** a numerical health score under the FACT-first philosophy.
+
+**Expected Counts:** diagnostics 28 → **28**; fixes 1 → **1**.
+
+**Status:** COMPLETE. Phase 13 implemented `DiagnosticSummary` and minimal
+factual admin summary rendering.
+
+**Consequences:**
+- Positive: a deterministic, trustworthy aggregate view with no new boundary or
+  abstraction; unlocks future export/CLI consumers without implementing them.
+- Negative: no additional "feature" surface; scoring/history/monitoring remain
+  deferred.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-025 (Phase 12 Static Automatic Updates Disabled)
+- ARCHITECTURE.md, ROADMAP.md (Phase 13)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 026):**
+**Decisions to be made in future phases (next ADR number: 027):**
 
-- ADR-026: AI Provider Interface Design (Phase 10+)
-- ADR-027: Custom Table Schema (if needed, Phase 8+)
-- ADR-028: License/Subscription Model (Phase 14)
-- ADR-029: WordPress.org Submission Strategy (Phase 15)
+- ADR-027: AI Provider Interface Design (Phase 10+)
+- ADR-028: Custom Table Schema (if needed, Phase 8+)
+- ADR-029: License/Subscription Model (Phase 14)
+- ADR-030: WordPress.org Submission Strategy (Phase 15)
 
 ---
 
