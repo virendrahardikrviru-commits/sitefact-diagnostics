@@ -1027,14 +1027,82 @@ COMPLETE. Phase 9 implemented `themes.update_available` (25 diagnostics).
 
 ---
 
+## ADR-023: Phase 10 — Auto-Update Configuration (Static)
+
+**Date:** 2026-08-16
+
+**Context:**
+The legacy Phase 10 ("REST API") is out of scope for the committed read-only,
+deterministic architecture. The update-availability family (core/plugins/themes)
+is complete; the remaining safe, high-value, FACT-based gap is the configured
+core auto-update behavior, observable from the literal `WP_AUTO_UPDATE_CORE`
+constant.
+
+**Options Considered:**
+1. Implement a full "are auto-updates enabled?" status (requires runtime
+   filters and multiple sources, risking a misleading result).
+2. Implement only the literal `WP_AUTO_UPDATE_CORE` constant fact (chosen).
+
+**Decision:**
+Phase 10 implements exactly one read-only, `Category::CORE` diagnostic:
+
+- `core.auto_update_core` — reads `defined('WP_AUTO_UPDATE_CORE')` /
+  `constant('WP_AUTO_UPDATE_CORE')` only. Evidence: `auto_update_core`
+  normalized to `all` | `minor` | `disabled` | `default`. Severity:
+  `all`/`minor` → SUCCESS; `disabled` → WARNING; `default` → INFO. Never ERROR.
+
+**Architectural Boundary:**
+No new abstraction, interface, service, policy, or dependency. No filter
+inspection, no update checks, no HTTP, no mutation, and no new fix. The existing
+fix count remains exactly 1 (`fix.site_urls_align`). PHP >= 7.4 remains
+mandatory.
+
+**FACT vs INFERENCE:**
+Reports the configured constant value only. It does not claim the site is
+vulnerable, that updates will or will not occur, or that plugins/themes are
+protected.
+
+**Security / Read-Only Boundary:**
+`defined()` + `constant()` only; no user input, no secrets, no paths, no SQL, no
+HTTP. Evidence is a single sanitized enumerated string.
+
+**Performance / Resource Boundary:**
+O(1); no loops, scans, recursion, persistence, or profiling.
+
+**Multisite Behavior:**
+`WP_AUTO_UPDATE_CORE` is a global constant; no site switching, no
+`is_super_admin()`, no network mutation.
+
+**Deferred:** plugin/theme auto-update detection, runtime update inspection,
+REST/AJAX, external HTTP, and all previously deferred items.
+
+**Expected Diagnostic Count:** 25 → **26** after implementation.
+**Fix Count:** remains exactly 1 (`fix.site_urls_align`).
+
+**Status:**
+COMPLETE. Phase 10 implemented `core.auto_update_core` (26 diagnostics).
+
+**Consequences:**
+- Positive: completes the "update configuration" fact surface with minimal,
+  reused architecture.
+- Negative: the legacy REST API remains unimplemented and would require its own
+  ADR.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-016 (Phase 3 Diagnostic Pack Selection)
+- ROADMAP.md (Phase 10)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 023):**
+**Decisions to be made in future phases (next ADR number: 024):**
 
-- ADR-023: AI Provider Interface Design (Phase 10+)
-- ADR-024: Custom Table Schema (if needed, Phase 8+)
-- ADR-025: License/Subscription Model (Phase 14)
-- ADR-026: WordPress.org Submission Strategy (Phase 15)
+- ADR-024: AI Provider Interface Design (Phase 10+)
+- ADR-025: Custom Table Schema (if needed, Phase 8+)
+- ADR-026: License/Subscription Model (Phase 14)
+- ADR-027: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

@@ -340,23 +340,35 @@ See DECISIONS.md ADR-022.
 
 ---
 
-## Phase 10: REST API
+## Phase 10: Auto-Update Configuration (Static)
 
-**Goal:** Implement internal REST API
+**Status:** Complete
+**Goal:** Implement deterministic, read-only core auto-update configuration diagnostics
 
-### Tasks
+**Approved scope (supersedes the legacy "REST API" sketch below):** Phase 10 adds
+exactly one read-only, FACT-based, `Category::CORE` diagnostic:
 
-- [ ] Diagnostics endpoints
-- [ ] Scan execution endpoint
-- [ ] Fix execution endpoint
-- [ ] Recovery endpoints
-- [ ] Permission model
-- [ ] Write API tests
+- `core.auto_update_core` — reports the literal `WP_AUTO_UPDATE_CORE` constant
+  (normalized to `all`/`minor`/`disabled`/`default`). It reports the configured
+  constant only; it never inspects filters, runs update checks, performs HTTP
+  requests, or covers plugin/theme auto-updates.
+
+The following remain **deferred**: plugin/theme auto-update detection, runtime
+update inspection, REST/AJAX, external HTTP, and all other deferred items.
+
+See DECISIONS.md ADR-023.
+
+### Tasks (historical sketch — superseded)
+
+- [ ] Diagnostics endpoints — DEFERRED
+- [ ] Scan execution endpoint — DEFERRED
+- [ ] Fix execution endpoint — DEFERRED
+- [ ] Recovery endpoints — DEFERRED
+- [ ] Permission model — DEFERRED
 
 ### Deliverables
 
-- Complete REST API
-- API documentation
+- One read-only diagnostic: `core.auto_update_core`
 
 ---
 

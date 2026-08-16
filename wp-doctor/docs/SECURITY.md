@@ -464,6 +464,12 @@ plus a capped list of theme slugs. No raw transient contents, filesystem paths,
 URLs, credentials, or theme metadata appear in evidence, and the diagnostic
 never infers theme quality, abandonment, or compromise.
 
+**Phase 10 addition:** `core.auto_update_core` reads only the
+`WP_AUTO_UPDATE_CORE` constant via `defined()`/`constant()` and exposes a single
+sanitized enumerated string (`all`/`minor`/`disabled`/`default`). It performs no
+HTTP, no update checks, no filter inspection, and never claims vulnerability or
+compromise.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

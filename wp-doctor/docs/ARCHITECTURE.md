@@ -456,6 +456,17 @@ read (no forced HTTP check), evidence of `updates_available` (int|null) plus a
 slug list capped at 20, and severity INFO/SUCCESS/WARNING. It never infers theme
 quality, abandonment, compatibility, or compromise.
 
+## Auto-Update Configuration (Static) (Phase 10)
+
+Phase 10 adds one read-only diagnostic under `Category::CORE`:
+
+| ID | Detects |
+|---|---|
+| `core.auto_update_core` | The configured `WP_AUTO_UPDATE_CORE` constant (normalized to `all`/`minor`/`disabled`/`default`) |
+
+It reports the literal constant configuration only — never filters, update
+checks, HTTP, or plugin/theme auto-update state.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

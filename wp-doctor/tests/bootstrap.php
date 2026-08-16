@@ -488,6 +488,7 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/AdministratorCountDiagn
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/MemoryLimitDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ObjectCacheDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoUpdateCoreDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseVersionDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseSizeDiagnostic.php';

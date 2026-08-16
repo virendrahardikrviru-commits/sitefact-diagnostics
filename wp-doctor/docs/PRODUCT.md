@@ -237,6 +237,12 @@ does not imply theme quality, abandonment, compatibility, or security
 compromise. Plugin/theme counts, filesystem scanning, and
 compatibility/conflict analysis remain deferred. This diagnostic remains Free.
 
+**Phase 10 status:** "Auto-Update Configuration (Static)" adds one read-only,
+FACT-based diagnostic — `core.auto_update_core` — that reports the configured
+`WP_AUTO_UPDATE_CORE` constant. It reports the configuration fact only; it does
+not cover plugin/theme auto-updates and does not claim a vulnerability or
+compromise. This diagnostic remains Free.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

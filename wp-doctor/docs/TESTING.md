@@ -177,6 +177,19 @@ override, mirroring `PluginsUpdateAvailableDiagnosticTest`.
   leakage, expected value, and recommendation.
 - `Phase3RegistryTest` — extended to 25 diagnostics.
 
+## Phase 10 Test Setup
+
+Phase 10 (Auto-Update Configuration, Static) tests the single diagnostic via a
+sentinel-based constructor override (mirroring the Phase 8 diagnostics).
+
+**Phase 10 unit tests cover:**
+
+- `AutoUpdateCoreDiagnosticTest` — `true`/`"all"`/`"minor"` → SUCCESS, `false` →
+  WARNING, undefined → INFO, malformed value → safe normalization, deterministic
+  output, single-key evidence, allowed enumeration, expected value, and the
+  plugin/theme auto-update limitation in the recommendation.
+- `Phase3RegistryTest` — extended to 26 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

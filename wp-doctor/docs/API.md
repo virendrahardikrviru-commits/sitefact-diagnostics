@@ -391,6 +391,18 @@ One read-only diagnostic (category `themes`):
   20). Severity: unavailable/malformed → INFO; 0 → SUCCESS; ≥1 → WARNING.
   Never ERROR. No theme quality/abandonment inference.
 
+### Phase 10 (Auto-Update Configuration, Static)
+
+One read-only diagnostic (category `core`):
+
+`core.auto_update_core`.
+
+- `AutoUpdateCoreDiagnostic` — reads `defined('WP_AUTO_UPDATE_CORE')` /
+  `constant('WP_AUTO_UPDATE_CORE')` only. Evidence: `auto_update_core`
+  normalized to `all` | `minor` | `disabled` | `default`. Severity:
+  `all`/`minor` → SUCCESS; `disabled` → WARNING; `default` → INFO. Expected
+  `all or minor`. Does not cover plugin/theme auto-updates.
+
 ### Example Diagnostic Implementation
 
 ```php
