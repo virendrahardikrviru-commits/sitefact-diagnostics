@@ -165,10 +165,22 @@ Version 1.0 is designed to establish a minimal viable diagnostic system:
     - Licensing
     - Feature gating
 
-13. **Security Doctor** (Post-launch)
-    - Security configuration review
-    - Vulnerability scanning
-    - Best practice recommendations
+13. **Security Doctor**
+    - **Static Security Doctor (approved Phase 8 scope, not yet implemented):**
+      - `security.user_registration` — reports whether open self-registration is
+        enabled (a FACT: the `users_can_register` option).
+      - `security.default_role` — reports the role assigned to newly registered
+        users (a FACT: the `default_role` option).
+    - These diagnostics report observed configuration facts only. They do NOT
+      infer that registration is being abused, that the site is compromised,
+      that a plugin is responsible, or that a configuration has caused an
+      incident.
+    - **Deferred (not Phase 8):**
+      - File-permission diagnostics
+      - XML-RPC detection
+      - Application Passwords detection
+      - Upload-limit threshold analysis
+      - Plugin compatibility/conflict/abandonment detection
 
 ## Free/Pro Concept
 

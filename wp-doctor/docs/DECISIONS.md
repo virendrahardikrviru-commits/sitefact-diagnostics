@@ -877,14 +877,85 @@ ADR records the approved scope.
 
 ---
 
+## ADR-021: Phase 8 — Static Security Doctor Scope
+
+**Date:** 2026-08-16
+
+**Context:**
+The remaining "Security Doctor" concept contains both safely observable
+configuration facts and items requiring different architectural or security
+decisions. The committed architecture is deterministic, read-only, FACT-first,
+failure-isolated, and no-surprises, so Phase 8 is intentionally limited to two
+static option facts.
+
+**Options Considered:**
+1. Implement a broad Security Doctor including filesystem permissions,
+   XML-RPC/Application Passwords detection, upload-limit thresholds, and other
+   security heuristics.
+2. Implement only the static, read-only, option-based security subset (chosen).
+
+**Decision:**
+Phase 8 will implement exactly two read-only `Category::SECURITY` diagnostics:
+
+- `security.user_registration` — reads `users_can_register`; reports bool|null.
+  Severity: disabled → SUCCESS; enabled → WARNING; unavailable → INFO. Never
+  ERROR.
+- `security.default_role` — reads `default_role`; reports the role slug.
+  Severity: `administrator` → WARNING; non-administrator → SUCCESS;
+  unavailable/malformed → INFO. Never ERROR.
+
+Both report observed configuration facts only; neither infers abuse,
+compromise, or causation.
+
+**Architectural Boundary:**
+No new abstraction, interface, service, policy, or dependency. No database
+writes, no filesystem writes, no HTTP, no REST/AJAX, no cron, no mutation, and
+no new fixes. The existing fix count remains exactly 1 (`fix.site_urls_align`).
+PHP >= 7.4 remains mandatory.
+
+**Deferred (require separate architectural/security decisions; must not be
+silently introduced into Phase 8):**
+
+- File-permission diagnostics — require a separate filesystem/security-boundary
+  decision.
+- XML-RPC detection — requires a separate security-model decision.
+- Application Passwords detection — requires a separate security-model decision.
+- Upload-limit threshold analysis — requires a defensible expected-value/policy
+  decision.
+- Plugin compatibility/conflict/abandonment detection — inference-heavy.
+- Additional fixes — outside the current single-fix boundary.
+
+**Expected Diagnostic Count:**
+20 before Phase 6 → 22 after Phase 7 → **24** after Phase 8 implementation.
+This is an expected future count, not the current count (currently 22
+diagnostics; 1 fix).
+
+**Status:**
+NOT STARTED. This ADR records the approved scope only; no Phase 8 code exists.
+
+**Consequences:**
+- Positive: a minimal, coherent, read-only security-configuration phase
+  consistent with the committed architecture.
+- Negative: filesystem-permission and XML-RPC/App-Passwords analysis are
+  postponed.
+- Future Impact: deferred items require their own ADRs before implementation.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-019 (Phase 6 Static Performance Doctor Scope)
+- ADR-020 (Phase 7 Static Database Doctor Scope)
+- ROADMAP.md (Phase 8)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 021):**
+**Decisions to be made in future phases (next ADR number: 022):**
 
-- ADR-021: AI Provider Interface Design (Phase 10+)
-- ADR-022: Custom Table Schema (if needed, Phase 8+)
-- ADR-023: License/Subscription Model (Phase 14)
-- ADR-024: WordPress.org Submission Strategy (Phase 15)
+- ADR-022: AI Provider Interface Design (Phase 10+)
+- ADR-023: Custom Table Schema (if needed, Phase 8+)
+- ADR-024: License/Subscription Model (Phase 14)
+- ADR-025: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

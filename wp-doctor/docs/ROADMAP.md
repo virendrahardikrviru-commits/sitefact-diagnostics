@@ -254,34 +254,46 @@ See DECISIONS.md ADR-020.
 
 ---
 
-## Phase 8: Safe Fix Engine
+## Phase 8: Security Doctor (Static)
 
-**Goal:** Implement safe fix application with recovery
+**Status:** Planned (approved scope — not yet implemented)
+**Goal:** Implement deterministic, read-only security-configuration diagnostics
 
-### Tasks
+**Approved scope (supersedes the legacy "Safe Fix Engine" sketch below, which was
+already delivered by Phase 4's Safe Fix Foundation):** Phase 8 will add exactly two
+read-only, FACT-based, `Category::SECURITY` diagnostics:
 
-- [ ] Implement FixDefinition class
-- [ ] Implement FixPreview generation
-- [ ] Implement recovery point creation
-- [ ] Implement fix execution framework
-- [ ] Implement verification system
-- [ ] Implement rollback system
-- [ ] Write comprehensive tests
-- [ ] Write fix verification tests
-- [ ] Write rollback tests
+- `security.user_registration` — whether open self-registration is enabled.
+- `security.default_role` — the role assigned to newly registered users.
+
+Both read only WordPress options (`users_can_register`, `default_role`); they are
+read-only, deterministic, and fact-first.
+
+The following are **deferred** and are NOT part of Phase 8:
+
+- File-permission diagnostics — require a separate filesystem/security-boundary
+  decision.
+- XML-RPC detection — requires a separate security-model decision.
+- Application Passwords detection — requires a separate security-model decision.
+- Upload-limit threshold analysis — requires a defensible expected-value/policy
+  decision rather than a raw fact.
+- Plugin compatibility/conflict/abandonment detection — inference-heavy.
+- Additional fixes — outside the current single-fix boundary.
+
+See DECISIONS.md ADR-021.
+
+### Tasks (historical sketch — superseded by Phase 4)
+
+- [ ] Implement FixDefinition class (delivered in Phase 4)
+- [ ] Implement FixPreview generation (delivered in Phase 4)
+- [ ] Implement recovery point creation (delivered in Phase 4)
+- [ ] Implement fix execution framework (delivered in Phase 4)
+- [ ] Implement verification system (delivered in Phase 4)
+- [ ] Implement rollback system (delivered in Phase 4)
 
 ### Deliverables
 
-- Fix framework
-- Recovery point system
-- Fix verification
-
-### Important Notes
-
-- NO fixes should actually modify WordPress until Phase 8
-- All fixes require user confirmation
-- All fixes require recovery capability
-- All fixes must be reversible
+- Two read-only diagnostics: `security.user_registration`, `security.default_role`
 
 ---
 
