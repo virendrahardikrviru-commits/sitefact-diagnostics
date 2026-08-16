@@ -931,7 +931,8 @@ This is an expected future count, not the current count (currently 22
 diagnostics; 1 fix).
 
 **Status:**
-NOT STARTED. This ADR records the approved scope only; no Phase 8 code exists.
+COMPLETE. Phase 8 implemented `security.user_registration` and
+`security.default_role` (24 diagnostics).
 
 **Consequences:**
 - Positive: a minimal, coherent, read-only security-configuration phase

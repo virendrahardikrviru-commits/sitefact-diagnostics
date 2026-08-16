@@ -256,7 +256,7 @@ See DECISIONS.md ADR-020.
 
 ## Phase 8: Security Doctor (Static)
 
-**Status:** Planned (approved scope — not yet implemented)
+**Status:** Complete
 **Goal:** Implement deterministic, read-only security-configuration diagnostics
 
 **Approved scope (supersedes the legacy "Safe Fix Engine" sketch below, which was

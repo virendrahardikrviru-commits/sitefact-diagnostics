@@ -166,7 +166,7 @@ Version 1.0 is designed to establish a minimal viable diagnostic system:
     - Feature gating
 
 13. **Security Doctor**
-    - **Static Security Doctor (approved Phase 8 scope, not yet implemented):**
+    - **Static Security Doctor (implemented in Phase 8):**
       - `security.user_registration` — reports whether open self-registration is
         enabled (a FACT: the `users_can_register` option).
       - `security.default_role` — reports the role assigned to newly registered

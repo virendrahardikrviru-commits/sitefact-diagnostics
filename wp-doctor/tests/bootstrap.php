@@ -480,6 +480,8 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/PhpVersionDiagnostic.ph
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugConfigurationDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/SiteUrlsDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/UserRegistrationDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DefaultRoleDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/HttpsDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/FileEditDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AdministratorCountDiagnostic.php';

@@ -147,6 +147,23 @@ Phase 7 (Database Doctor, Static) tests both diagnostics against a fake `$wpdb`
   evidence, no engine-name/table-name/SQL leakage, and a single GROUP BY SELECT.
 - `Phase3RegistryTest` — extended to 22 diagnostics.
 
+## Phase 8 Test Setup
+
+Phase 8 (Security Doctor, Static) tests both diagnostics via constructor-injection
+overrides (a sentinel distinguishes "not injected" from an injected `null`).
+
+**Phase 8 unit tests cover:**
+
+- `UserRegistrationDiagnosticTest` — disabled → SUCCESS, enabled → WARNING,
+  unavailable/malformed → INFO, deterministic output, single-key evidence,
+  boolean/null evidence type, no secret/path leakage, recommendation, and
+  expected value.
+- `DefaultRoleDiagnosticTest` — subscriber/non-admin → SUCCESS, administrator →
+  WARNING, unavailable/malformed → INFO, lowercase normalization, deterministic
+  output, single-key evidence, no secret/path leakage, recommendation, and
+  expected value.
+- `Phase3RegistryTest` — extended to 24 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

@@ -429,6 +429,20 @@ informational (a large database is a fact, not a defect); `database.storage_engi
 warns only on a non-zero MyISAM count. Orphaned-data detection, `CHECK TABLE`
 integrity, query optimization, and index analysis remain deferred.
 
+## Security Doctor (Static) (Phase 8)
+
+Phase 8 adds two read-only diagnostics under `Category::SECURITY`:
+
+| ID | Detects |
+|---|---|
+| `security.user_registration` | Whether open self-registration is enabled (`users_can_register`) |
+| `security.default_role` | The default role assigned to newly registered users (`default_role`) |
+
+Both read a single WordPress option and report the observed configuration fact
+(a boolean and a lowercased role slug, respectively). They never infer abuse,
+compromise, or causation. File-permission, XML-RPC, Application Passwords,
+upload-limit threshold, and plugin-compatibility analysis remain deferred.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

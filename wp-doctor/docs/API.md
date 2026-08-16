@@ -366,6 +366,19 @@ Two read-only diagnostics (category `database`):
   `myisam_count`, `other_count`. Severity: unavailable → INFO; `myisam_count`
   0 → SUCCESS; >0 → WARNING. No conversion is performed.
 
+### Phase 8 (Security Doctor, Static)
+
+Two read-only diagnostics (category `security`):
+
+`security.user_registration`, `security.default_role`.
+
+- `UserRegistrationDiagnostic` — reads `users_can_register`. Evidence:
+  `users_can_register` (bool|null). Severity: unavailable → INFO; disabled →
+  SUCCESS; enabled → WARNING. Never ERROR.
+- `DefaultRoleDiagnostic` — reads `default_role` (lowercased slug). Evidence:
+  `default_role` (string|null). Severity: unavailable/malformed → INFO;
+  `administrator` → WARNING; otherwise → SUCCESS. Never ERROR.
+
 ### Example Diagnostic Implementation
 
 ```php

@@ -448,6 +448,16 @@ Phase 7 adds two read-only database-metadata diagnostics (`database.size`,
   unhealthy; `database.storage_engine` warns only on a non-zero MyISAM count and
   never infers corruption, performance, or failure.
 
+## Security Configuration Read Boundary (Phase 8)
+
+Phase 8 adds two read-only, option-based security-configuration diagnostics
+(`security.user_registration`, `security.default_role`). They read only
+`users_can_register` (a boolean) and `default_role` (a role slug) via
+`get_option` and expose only those aggregate scalar facts. No credentials,
+tokens, usernames, user records, IDs, emails, PII, paths, or arbitrary option
+values appear in evidence. The diagnostics never infer abuse, compromise, or
+causation, and never write.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:
