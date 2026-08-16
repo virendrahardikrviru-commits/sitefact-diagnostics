@@ -859,8 +859,9 @@ expected future count, not the current count). Current count remains 20
 diagnostics; current fix count remains 1 fix.
 
 **Status:**
-Phase 7 implementation NOT STARTED. This ADR records scope only; no PHP files
-are changed by this task.
+Phase 7 implementation complete — `database.size` and
+`database.storage_engine` are implemented and registered (22 diagnostics). This
+ADR records the approved scope.
 
 **Consequences:**
 - Positive: a minimal, coherent, read-only database-metadata phase consistent

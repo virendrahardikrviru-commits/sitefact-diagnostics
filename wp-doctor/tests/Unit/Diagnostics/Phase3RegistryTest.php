@@ -41,9 +41,9 @@ class Phase3RegistryTest extends TestCase {
 	}
 
 	/**
-	 * Exactly 20 diagnostics are registered.
+	 * Exactly 22 diagnostics are registered.
 	 */
-	public function test_all_twenty_registered() {
+	public function test_all_twenty_two_registered() {
 		$registry = $this->build_registry();
 
 		$expected = array(
@@ -67,6 +67,8 @@ class Phase3RegistryTest extends TestCase {
 			'error.warning_count',
 			'performance.opcache',
 			'performance.page_cache',
+			'database.size',
+			'database.storage_engine',
 		);
 
 		sort( $expected, SORT_STRING );
@@ -78,7 +80,7 @@ class Phase3RegistryTest extends TestCase {
 			$registry->get_all()
 		);
 
-		$this->assertSame( 20, $registry->count() );
+		$this->assertSame( 22, $registry->count() );
 		$this->assertSame( $expected, $ids );
 	}
 

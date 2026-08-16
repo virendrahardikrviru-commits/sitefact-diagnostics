@@ -215,7 +215,7 @@ preserved. See DECISIONS.md ADR-019.
 
 ## Phase 7: Database Doctor (Static)
 
-**Status:** Planned (approved scope — not yet implemented)
+**Status:** Complete
 **Goal:** Implement deterministic, read-only database-metadata diagnostics
 
 **Approved scope (supersedes the task list below):** Phase 7 will add exactly two

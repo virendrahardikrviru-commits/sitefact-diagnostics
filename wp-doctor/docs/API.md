@@ -351,6 +351,21 @@ Two read-only diagnostics (category `performance`):
   exists. Evidence: `page_cache_dropin` (bool|null). Severity: present →
   SUCCESS; absent/unknown → INFO. Never infers that caching is absent.
 
+### Phase 7 (Database Doctor, Static)
+
+Two read-only diagnostics (category `database`):
+
+`database.size`, `database.storage_engine`.
+
+- `DatabaseSizeDiagnostic` — one aggregate `SELECT` against
+  `information_schema.TABLES` (filtered by validated `DB_NAME`). Evidence:
+  `size_bytes`, `size_human` (via `ByteSize`), `table_count`. Severity: always
+  INFO (size is a fact, not a defect). No table names/rows.
+- `DatabaseStorageEngineDiagnostic` — one aggregate `GROUP BY engine` `SELECT`
+  against `information_schema.TABLES`. Evidence: `innodb_count`,
+  `myisam_count`, `other_count`. Severity: unavailable → INFO; `myisam_count`
+  0 → SUCCESS; >0 → WARNING. No conversion is performed.
+
 ### Example Diagnostic Implementation
 
 ```php

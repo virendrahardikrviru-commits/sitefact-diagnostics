@@ -17,6 +17,8 @@ use WPDoctor\Diagnostics\AdministratorCountDiagnostic;
 use WPDoctor\Diagnostics\AutoloadedOptionsDiagnostic;
 use WPDoctor\Diagnostics\CoreUpdateAvailabilityDiagnostic;
 use WPDoctor\Diagnostics\DatabaseCharsetCollationDiagnostic;
+use WPDoctor\Diagnostics\DatabaseSizeDiagnostic;
+use WPDoctor\Diagnostics\DatabaseStorageEngineDiagnostic;
 use WPDoctor\Diagnostics\DatabaseVersionDiagnostic;
 use WPDoctor\Diagnostics\DebugConfigurationDiagnostic;
 use WPDoctor\Diagnostics\DebugLogDiagnostic;
@@ -131,6 +133,8 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseVersionDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseSizeDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseStorageEngineDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ActiveThemeDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugLogDiagnostic.php';
@@ -205,6 +209,8 @@ final class Plugin {
 		$registry->register( new AutoloadedOptionsDiagnostic() );
 		$registry->register( new DatabaseVersionDiagnostic() );
 		$registry->register( new DatabaseCharsetCollationDiagnostic() );
+		$registry->register( new DatabaseSizeDiagnostic() );
+		$registry->register( new DatabaseStorageEngineDiagnostic() );
 		$registry->register( new PluginsUpdateAvailableDiagnostic() );
 		$registry->register( new ActiveThemeDiagnostic() );
 		$registry->register( new DebugLogDiagnostic() );

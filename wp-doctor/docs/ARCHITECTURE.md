@@ -412,6 +412,23 @@ and never infers that caching is absent (server/edge caching is undetectable).
 Both remain read-only, deterministic, and fact-first; runtime profiling, query
 analysis, execution-time analysis, and image optimization remain deferred.
 
+## Database Doctor (Static) (Phase 7)
+
+Phase 7 adds two read-only diagnostics under `Category::DATABASE`:
+
+| ID | Detects |
+|---|---|
+| `database.size` | Aggregate database size (bytes) and table count |
+| `database.storage_engine` | Aggregate InnoDB/MyISAM/other table counts |
+
+Both run exactly one read-only aggregate `SELECT` against
+`information_schema.TABLES` (filtered by the validated `DB_NAME`), mirroring the
+`AutoloadedOptionsDiagnostic` `$wpdb` read pattern. They never retrieve table
+names, row counts, or row data, and never write. `database.size` is
+informational (a large database is a fact, not a defect); `database.storage_engine`
+warns only on a non-zero MyISAM count. Orphaned-data detection, `CHECK TABLE`
+integrity, query optimization, and index analysis remain deferred.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

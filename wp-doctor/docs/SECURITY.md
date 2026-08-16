@@ -432,6 +432,22 @@ strictly read-only and bounded:
 - **No attribution:** diagnostics count error patterns only; they never identify
   a plugin/theme as responsible and never infer causation.
 
+## Database Metadata Read Boundary (Phase 7)
+
+Phase 7 adds two read-only database-metadata diagnostics (`database.size`,
+`database.storage_engine`) that read only the MySQL/MariaDB
+`information_schema.TABLES` metadata table:
+
+- **Read-only, aggregate-only:** one aggregate `SELECT` each (SUM/COUNT, and
+  `GROUP BY engine`). No `$wpdb` writes, no table names, no row data, no schema
+  name, and no SQL appear in evidence.
+- **Schema-name safety:** the current database name is sourced from the `DB_NAME`
+  constant, validated against `^[A-Za-z0-9_]+$`, and inlined (no user input) —
+  mirroring the `AutoloadedOptionsDiagnostic` precedent.
+- **No inference:** `database.size` never classifies a large database as
+  unhealthy; `database.storage_engine` warns only on a non-zero MyISAM count and
+  never infers corruption, performance, or failure.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

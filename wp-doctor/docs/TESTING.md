@@ -129,6 +129,24 @@ constructor-injection overrides (consistent with the existing patterns).
   exposure, and no "caching disabled" inference.
 - `Phase3RegistryTest` — extended to 20 diagnostics.
 
+## Phase 7 Test Setup
+
+Phase 7 (Database Doctor, Static) tests both diagnostics against a fake `$wpdb`
+(with `get_row`/`get_results` recording the query), consistent with the
+`AutoloadedOptionsDiagnosticTest` pattern.
+
+**Phase 7 unit tests cover:**
+
+- `DatabaseSizeDiagnosticTest` — populated/zero database, unavailable/invalid
+  `DB_NAME`, null query result, malformed size/count, deterministic result,
+  INFO severity in all cases, aggregate-only evidence, no table-name/SQL/schema
+  leakage, and a single read-only aggregate SELECT.
+- `DatabaseStorageEngineDiagnosticTest` — InnoDB-only, MyISAM-present, mixed
+  engines, zero-MyISAM, unavailable/invalid `DB_NAME`, null/malformed results,
+  deterministic result, SUCCESS/WARNING/INFO severities, aggregate-only
+  evidence, no engine-name/table-name/SQL leakage, and a single GROUP BY SELECT.
+- `Phase3RegistryTest` — extended to 22 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

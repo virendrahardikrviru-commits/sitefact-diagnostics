@@ -488,6 +488,8 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/ObjectCacheDiagnostic.p
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseVersionDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseSizeDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ActiveThemeDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugLogDiagnostic.php';
