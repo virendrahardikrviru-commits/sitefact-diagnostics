@@ -403,6 +403,17 @@ One read-only diagnostic (category `core`):
   `all`/`minor` → SUCCESS; `disabled` → WARNING; `default` → INFO. Expected
   `all or minor`. Does not cover plugin/theme auto-updates.
 
+### Phase 11 (Search Visibility, Static)
+
+One read-only diagnostic (category `configuration`):
+
+`configuration.blog_public`.
+
+- `BlogPublicDiagnostic` — reads `get_option('blog_public')` only. Evidence:
+  `blog_public` (bool|null). Severity: public → SUCCESS; discouraged → WARNING;
+  unavailable/malformed → INFO. Expected `true`. It is a configuration fact, not
+  an SEO diagnosis.
+
 ### Example Diagnostic Implementation
 
 ```php

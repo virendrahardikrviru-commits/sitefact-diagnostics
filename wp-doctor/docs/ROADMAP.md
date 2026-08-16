@@ -372,25 +372,34 @@ See DECISIONS.md ADR-023.
 
 ---
 
-## Phase 11: Admin Dashboard
+## Phase 11: Search Visibility (Static)
 
-**Goal:** Implement user-facing admin interface
+**Status:** Complete
+**Goal:** Implement deterministic, read-only search-visibility diagnostics
 
-### Tasks
+**Approved scope (supersedes the legacy "Admin Dashboard" sketch below):** Phase 11
+adds exactly one read-only, FACT-based, `Category::CONFIGURATION` diagnostic:
 
-- [ ] Main dashboard layout
-- [ ] Diagnostic results display
-- [ ] Health score display
-- [ ] Fix recommendation UI
-- [ ] Fix preview UI
-- [ ] Recovery point UI
-- [ ] Settings page
-- [ ] Write UI tests
+- `configuration.blog_public` — reports whether WordPress discourages
+  search-engine indexing (`get_option('blog_public')`). It reports the
+  configuration fact only; it is not an SEO diagnosis.
+
+The following remain **deferred**: admin dashboard redesign, health scoring,
+reports, monitoring, and all other deferred items. See DECISIONS.md ADR-024.
+
+### Tasks (historical sketch — superseded)
+
+- [ ] Main dashboard layout — DEFERRED
+- [ ] Diagnostic results display — DEFERRED
+- [ ] Health score display — DEFERRED
+- [ ] Fix recommendation UI — DEFERRED
+- [ ] Fix preview UI — DEFERRED
+- [ ] Recovery point UI — DEFERRED
+- [ ] Settings page — DEFERRED
 
 ### Deliverables
 
-- Complete admin interface
-- Settings management
+- One read-only diagnostic: `configuration.blog_public`
 
 ---
 

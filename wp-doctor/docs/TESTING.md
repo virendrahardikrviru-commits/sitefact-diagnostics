@@ -190,6 +190,19 @@ sentinel-based constructor override (mirroring the Phase 8 diagnostics).
   plugin/theme auto-update limitation in the recommendation.
 - `Phase3RegistryTest` — extended to 26 diagnostics.
 
+## Phase 11 Test Setup
+
+Phase 11 (Search Visibility, Static) tests the single diagnostic via a
+sentinel-based constructor override.
+
+**Phase 11 unit tests cover:**
+
+- `BlogPublicDiagnosticTest` — public → SUCCESS, discouraged → WARNING,
+  unavailable/malformed → INFO, never-ERROR, deterministic output, single-key
+  boolean/null evidence, no leakage, recommendation (acknowledging intent), and
+  expected value.
+- `Phase3RegistryTest` — extended to 27 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

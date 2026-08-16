@@ -467,6 +467,17 @@ Phase 10 adds one read-only diagnostic under `Category::CORE`:
 It reports the literal constant configuration only — never filters, update
 checks, HTTP, or plugin/theme auto-update state.
 
+## Search Visibility (Static) (Phase 11)
+
+Phase 11 adds one read-only diagnostic under `Category::CONFIGURATION`:
+
+| ID | Detects |
+|---|---|
+| `configuration.blog_public` | Whether WordPress discourages search-engine indexing (`get_option('blog_public')`) |
+
+It reports the configuration fact only; it is not an SEO diagnosis and never
+performs HTTP or filesystem access.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

@@ -243,6 +243,12 @@ FACT-based diagnostic — `core.auto_update_core` — that reports the configure
 not cover plugin/theme auto-updates and does not claim a vulnerability or
 compromise. This diagnostic remains Free.
 
+**Phase 11 status:** "Search Visibility (Static)" adds one read-only, FACT-based
+diagnostic — `configuration.blog_public` — that reports whether WordPress
+discourages search-engine indexing. It is static detection of the search-engine
+visibility configuration only; it is not an SEO diagnosis and does not claim a
+compromise or ranking failure. This diagnostic remains Free.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

@@ -16,6 +16,7 @@ use WPDoctor\Diagnostics\ActiveThemeDiagnostic;
 use WPDoctor\Diagnostics\AdministratorCountDiagnostic;
 use WPDoctor\Diagnostics\AutoloadedOptionsDiagnostic;
 use WPDoctor\Diagnostics\AutoUpdateCoreDiagnostic;
+use WPDoctor\Diagnostics\BlogPublicDiagnostic;
 use WPDoctor\Diagnostics\CoreUpdateAvailabilityDiagnostic;
 use WPDoctor\Diagnostics\DatabaseCharsetCollationDiagnostic;
 use WPDoctor\Diagnostics\DatabaseSizeDiagnostic;
@@ -138,6 +139,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ObjectCacheDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutoUpdateCoreDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/BlogPublicDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseVersionDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseSizeDiagnostic.php';
@@ -218,6 +220,7 @@ final class Plugin {
 		$registry->register( new ObjectCacheDiagnostic() );
 		$registry->register( new AutoloadedOptionsDiagnostic() );
 		$registry->register( new AutoUpdateCoreDiagnostic() );
+		$registry->register( new BlogPublicDiagnostic() );
 		$registry->register( new DatabaseVersionDiagnostic() );
 		$registry->register( new DatabaseCharsetCollationDiagnostic() );
 		$registry->register( new DatabaseSizeDiagnostic() );

@@ -1095,14 +1095,78 @@ COMPLETE. Phase 10 implemented `core.auto_update_core` (26 diagnostics).
 
 ---
 
+## ADR-024: Phase 11 — Search Visibility (Static)
+
+**Date:** 2026-08-16
+
+**Context:**
+WP-Doctor currently has 26 diagnostics. The remaining safe, high-value,
+FACT-based configuration candidates were evaluated, and `configuration.blog_public`
+was selected because it provides a direct, deterministic fact about whether
+WordPress discourages search-engine indexing — a common, well-understood site
+configuration.
+
+**Options Considered:**
+1. Implement a broad "SEO Doctor" (indexing checks, robots.txt, sitemaps,
+   rankings) — inference-heavy and requires HTTP.
+2. Implement only the static `blog_public` configuration fact (chosen).
+
+**Decision:**
+Phase 11 implements exactly one read-only, `Category::CONFIGURATION` diagnostic:
+
+- `configuration.blog_public` (`WPDoctor\Diagnostics\BlogPublicDiagnostic`),
+  reading only `get_option('blog_public')`.
+
+**Data Source:** `get_option('blog_public')` only.
+
+**FACT vs INFERENCE:** The diagnostic observes the configured `blog_public` value
+and normalizes it to `true`/`false`/`null`. The normalized value is factual. The
+WARNING concerns the configured search-visibility state, not malicious intent,
+compromise, SEO quality, or causation. The recommendation explicitly
+acknowledges that some sites intentionally discourage search engines.
+
+**Security Boundary:** Evidence is a single `blog_public` boolean (or null); no
+credentials, usernames, emails, user IDs, paths, SQL, URLs, secrets, or arbitrary
+raw option contents.
+
+**Performance Boundary:** Exactly one `get_option()` read; no loops, filesystem
+scans, SQL, HTTP, recursion, persistence, caching, or profiling.
+
+**Multisite Boundary:** `blog_public` is site-scoped; uses the current site's
+`get_option()`. No `switch_to_blog()`, `is_super_admin()`, network writes, or
+elevated privileges.
+
+**Mutation Boundary:** The project has exactly one fix (`fix.site_urls_align`);
+that boundary remains unchanged.
+
+**Deferred Work:** All previously deferred items remain deferred.
+
+**Expected Count:** 26 → **27** diagnostics after implementation. Fix count
+remains **1**.
+
+**Status:** COMPLETE. Phase 11 implemented `configuration.blog_public`
+(27 diagnostics).
+
+**Consequences:**
+- Positive: a minimal, coherent, read-only configuration fact; no inference, no
+  new boundary.
+- Negative: the legacy "Admin Dashboard" Phase 11 remains unimplemented.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-016 (Phase 3 Diagnostic Pack Selection)
+- ROADMAP.md (Phase 11)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 024):**
+**Decisions to be made in future phases (next ADR number: 025):**
 
-- ADR-024: AI Provider Interface Design (Phase 10+)
-- ADR-025: Custom Table Schema (if needed, Phase 8+)
-- ADR-026: License/Subscription Model (Phase 14)
-- ADR-027: WordPress.org Submission Strategy (Phase 15)
+- ADR-025: AI Provider Interface Design (Phase 10+)
+- ADR-026: Custom Table Schema (if needed, Phase 8+)
+- ADR-027: License/Subscription Model (Phase 14)
+- ADR-028: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

@@ -470,6 +470,11 @@ sanitized enumerated string (`all`/`minor`/`disabled`/`default`). It performs no
 HTTP, no update checks, no filter inspection, and never claims vulnerability or
 compromise.
 
+**Phase 11 addition:** `configuration.blog_public` reads only
+`get_option('blog_public')` and exposes a single boolean/null value. No
+mutation, no HTTP, no raw option disclosure, and no credentials/PII/path/URL
+leakage.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:
