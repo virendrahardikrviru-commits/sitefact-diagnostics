@@ -805,14 +805,85 @@ cron, REST/AJAX, external HTTP, database mutation, and filesystem mutation.
 
 ---
 
+## ADR-020: Phase 7 — Static Database Doctor Scope
+
+**Date:** 2026-08-16
+
+**Context:**
+The legacy "Database Doctor" roadmap lists table integrity checks, orphaned-data
+detection, query optimization suggestions, database size analysis, and index
+analysis. These do not all belong to the same architectural model: orphan
+detection can require expensive/unbounded schema-specific scans, `CHECK TABLE`
+and integrity operations can be blocking or operationally risky, and query
+optimization/index recommendations are inference-heavy. The committed
+architecture is deterministic, read-only for diagnostics, fact-first,
+failure-isolated, PHP 7.4 compatible, and conservative about inference.
+
+**Options Considered:**
+1. Implement the complete legacy "Database Doctor" list.
+2. Implement only the static, read-only, FACT-based database-metadata subset
+   (chosen).
+
+**Decision:**
+Phase 7 will implement exactly two read-only, `Category::DATABASE` diagnostics:
+
+- `database.size` — aggregate database size (`size_bytes`, `size_human`) and
+  table count (`table_count`), from `information_schema.TABLES`. Severity:
+  unavailable → INFO; available → INFO. Never WARNING or ERROR based on size
+  alone.
+- `database.storage_engine` — aggregate table-engine counts (`innodb_count`,
+  `myisam_count`, `other_count`). Severity: unavailable → INFO;
+  `myisam_count === 0` → SUCCESS; `myisam_count > 0` → WARNING. Never ERROR.
+
+Both are read-only, deterministic, aggregate-only, based on
+`information_schema.TABLES`, expose no row-level data and no table names in
+evidence, perform no database writes, require no new abstraction, no new
+dependency, and no new fix. They reuse the existing read-only `$wpdb` pattern.
+
+**Deferred (require separate architectural decisions):**
+
+- Orphaned-data detection — potentially expensive/unbounded schema-specific
+  scanning.
+- `CHECK TABLE` / table integrity — potentially blocking or operationally risky.
+- Query optimization suggestions — inference-heavy, not fact-only.
+- Index analysis — inference-heavy, not fact-only.
+
+**Architectural Boundary:**
+The existing mutation boundary remains exactly one fix (`fix.site_urls_align`).
+Phase 7 adds no fixes. Runtime profiling, AI, scoring, reports, monitoring,
+cron, REST, AJAX, and external HTTP remain outside Phase 7.
+
+**Expected Future Diagnostic Count:**
+20 diagnostics → **22** after eventual Phase 7 implementation (this is the
+expected future count, not the current count). Current count remains 20
+diagnostics; current fix count remains 1 fix.
+
+**Status:**
+Phase 7 implementation NOT STARTED. This ADR records scope only; no PHP files
+are changed by this task.
+
+**Consequences:**
+- Positive: a minimal, coherent, read-only database-metadata phase consistent
+  with the committed architecture; no inference or blocking operations.
+- Negative: integrity, orphan, and index analysis are postponed.
+- Future Impact: deferred items will require their own ADRs before
+  implementation.
+
+**Related:**
+- ADR-015 (Diagnostic Framework Design)
+- ADR-019 (Phase 6 Static Performance Doctor Scope)
+- ARCHITECTURE.md, ROADMAP.md (Phase 7)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 020):**
+**Decisions to be made in future phases (next ADR number: 021):**
 
-- ADR-020: AI Provider Interface Design (Phase 10+)
-- ADR-021: Custom Table Schema (if needed, Phase 8+)
-- ADR-022: License/Subscription Model (Phase 14)
-- ADR-023: WordPress.org Submission Strategy (Phase 15)
+- ADR-021: AI Provider Interface Design (Phase 10+)
+- ADR-022: Custom Table Schema (if needed, Phase 8+)
+- ADR-023: License/Subscription Model (Phase 14)
+- ADR-024: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

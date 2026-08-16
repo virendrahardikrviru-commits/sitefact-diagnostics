@@ -117,10 +117,17 @@ Version 1.0 is designed to establish a minimal viable diagnostic system:
    - Caching diagnostics
 
 6. **Database Doctor**
-   - Table integrity checks
-   - Orphaned data detection
-   - Query optimization suggestions
-   - Database size analysis
+   - **Static Database Doctor (approved Phase 7 scope, not yet implemented):**
+     - `database.size` — aggregate database size and table count (does not claim
+       a database is "bad" merely because it is large).
+     - `database.storage_engine` — aggregate InnoDB/MyISAM/other table counts
+       (MyISAM presence may receive a warning; it does not claim every MyISAM
+       table is necessarily broken).
+   - **Deferred (not Phase 7):**
+     - Orphaned-data detection
+     - `CHECK TABLE` / table-integrity analysis
+     - Query optimization suggestions
+     - Index recommendations
 
 7. **Safe Fix Engine**
    - Fix preview

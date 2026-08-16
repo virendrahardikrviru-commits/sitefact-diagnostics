@@ -213,22 +213,44 @@ preserved. See DECISIONS.md ADR-019.
 
 ---
 
-## Phase 7: Database Doctor
+## Phase 7: Database Doctor (Static)
 
-**Goal:** Implement database-level diagnostics
+**Status:** Planned (approved scope — not yet implemented)
+**Goal:** Implement deterministic, read-only database-metadata diagnostics
 
-### Tasks
+**Approved scope (supersedes the task list below):** Phase 7 will add exactly two
+read-only, fact-based, aggregate database-metadata diagnostics:
 
-- [ ] Table integrity checks
-- [ ] Orphaned data detection
-- [ ] Query optimization suggestions
-- [ ] Database size analysis
-- [ ] Index analysis
+- `database.size` — aggregate database size and table count.
+- `database.storage_engine` — aggregate InnoDB/MyISAM/other table counts.
+
+Both are read-only, deterministic, and based on `information_schema.TABLES`.
+They report aggregate metadata only — no row-level data, no table names in
+evidence, and no database writes.
+
+The following legacy Database Doctor tasks are **deferred** and are NOT part of
+Phase 7:
+
+- Orphaned-data detection — potentially expensive/unbounded schema-specific
+  scanning.
+- Table integrity / `CHECK TABLE` — potentially blocking or operationally risky.
+- Query optimization suggestions — inference-heavy, not fact-only.
+- Index analysis — inference-heavy, not fact-only.
+
+See DECISIONS.md ADR-020.
+
+### Tasks (historical sketch)
+
+- [ ] Table integrity checks — DEFERRED
+- [ ] Orphaned data detection — DEFERRED
+- [ ] Query optimization suggestions — DEFERRED
+- [ ] Database size analysis (covered by approved scope)
+- [ ] Index analysis — DEFERRED
 - [ ] Write tests
 
 ### Deliverables
 
-- Database diagnostics module
+- Two read-only diagnostics: `database.size`, `database.storage_engine`
 
 ---
 
