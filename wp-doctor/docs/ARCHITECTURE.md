@@ -443,6 +443,19 @@ Both read a single WordPress option and report the observed configuration fact
 compromise, or causation. File-permission, XML-RPC, Application Passwords,
 upload-limit threshold, and plugin-compatibility analysis remain deferred.
 
+## Theme Doctor (Static) (Phase 9)
+
+Phase 9 adds one read-only diagnostic under `Category::THEMES`:
+
+| ID | Detects |
+|---|---|
+| `themes.update_available` | Pending theme updates from the cached `update_themes` transient |
+
+It mirrors `plugins.update_available` exactly: one cached `get_site_transient`
+read (no forced HTTP check), evidence of `updates_available` (int|null) plus a
+slug list capped at 20, and severity INFO/SUCCESS/WARNING. It never infers theme
+quality, abandonment, compatibility, or compromise.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

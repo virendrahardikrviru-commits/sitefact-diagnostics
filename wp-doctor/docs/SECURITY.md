@@ -458,6 +458,12 @@ tokens, usernames, user records, IDs, emails, PII, paths, or arbitrary option
 values appear in evidence. The diagnostics never infer abuse, compromise, or
 causation, and never write.
 
+**Phase 9 addition:** `themes.update_available` reads only the cached
+`update_themes` site transient (no forced HTTP check) and exposes only a count
+plus a capped list of theme slugs. No raw transient contents, filesystem paths,
+URLs, credentials, or theme metadata appear in evidence, and the diagnostic
+never infers theme quality, abandonment, or compromise.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

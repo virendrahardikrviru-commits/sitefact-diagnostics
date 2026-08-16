@@ -1012,7 +1012,7 @@ abstractions.
 **Fix Count:** remains exactly 1 (`fix.site_urls_align`).
 
 **Status:**
-NOT STARTED. This ADR records the approved scope only; no Phase 9 code exists.
+COMPLETE. Phase 9 implemented `themes.update_available` (25 diagnostics).
 
 **Consequences:**
 - Positive: completes the update-availability family with minimal, reused

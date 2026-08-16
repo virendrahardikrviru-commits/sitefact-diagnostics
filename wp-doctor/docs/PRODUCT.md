@@ -230,12 +230,12 @@ read-only form: `performance.opcache` (aggregate OPcache status) and
 query analysis, execution-time analysis, and image-optimization detection remain
 deferred. These diagnostics remain Free.
 
-**Phase 9 status (planned, not yet implemented):** "Theme Doctor (Static)" will
-add one read-only, FACT-based diagnostic — `themes.update_available` — that
-counts pending theme updates from the cached update transient. It reports only
-that a theme update is pending; it does not imply theme quality, abandonment,
-compatibility, or security compromise. Plugin/theme counts, filesystem scanning,
-and compatibility/conflict analysis remain deferred.
+**Phase 9 status:** "Theme Doctor (Static)" adds one read-only, FACT-based
+diagnostic — `themes.update_available` — that counts pending theme updates from
+the cached update transient. It reports only that a theme update is pending; it
+does not imply theme quality, abandonment, compatibility, or security
+compromise. Plugin/theme counts, filesystem scanning, and
+compatibility/conflict analysis remain deferred. This diagnostic remains Free.
 
 ## Non-Goals
 

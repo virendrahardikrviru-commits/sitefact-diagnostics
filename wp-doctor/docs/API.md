@@ -379,6 +379,18 @@ Two read-only diagnostics (category `security`):
   `default_role` (string|null). Severity: unavailable/malformed → INFO;
   `administrator` → WARNING; otherwise → SUCCESS. Never ERROR.
 
+### Phase 9 (Theme Doctor, Static)
+
+One read-only diagnostic (category `themes`):
+
+`themes.update_available`.
+
+- `ThemesUpdateAvailableDiagnostic` — reads the cached
+  `get_site_transient('update_themes')` value (no forced HTTP check). Evidence:
+  `updates_available` (int|null), `themes_with_updates` (theme slugs, capped at
+  20). Severity: unavailable/malformed → INFO; 0 → SUCCESS; ≥1 → WARNING.
+  Never ERROR. No theme quality/abandonment inference.
+
 ### Example Diagnostic Implementation
 
 ```php

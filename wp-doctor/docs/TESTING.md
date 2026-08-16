@@ -164,6 +164,19 @@ overrides (a sentinel distinguishes "not injected" from an injected `null`).
   expected value.
 - `Phase3RegistryTest` — extended to 24 diagnostics.
 
+## Phase 9 Test Setup
+
+Phase 9 (Theme Doctor, Static) tests the single diagnostic via a transient
+override, mirroring `PluginsUpdateAvailableDiagnosticTest`.
+
+**Phase 9 unit tests cover:**
+
+- `ThemesUpdateAvailableDiagnosticTest` — zero → SUCCESS, one/multiple → WARNING,
+  20+ capped slug list, missing/null and malformed transients → INFO, object
+  transient, deterministic output, exact evidence keys, no path/credential/raw
+  leakage, expected value, and recommendation.
+- `Phase3RegistryTest` — extended to 25 diagnostics.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

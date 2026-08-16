@@ -36,6 +36,7 @@ use WPDoctor\Diagnostics\PageCacheDiagnostic;
 use WPDoctor\Diagnostics\PhpVersionDiagnostic;
 use WPDoctor\Diagnostics\PluginsUpdateAvailableDiagnostic;
 use WPDoctor\Diagnostics\SiteUrlsDiagnostic;
+use WPDoctor\Diagnostics\ThemesUpdateAvailableDiagnostic;
 use WPDoctor\Diagnostics\UserRegistrationDiagnostic;
 use WPDoctor\Diagnostics\WordPressVersionDiagnostic;
 use WPDoctor\Fixes\FixRegistry;
@@ -141,6 +142,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseStorageEngineDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ActiveThemeDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugLogDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorFatalCountDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorWarningCountDiagnostic.php';
@@ -219,6 +221,7 @@ final class Plugin {
 		$registry->register( new DatabaseStorageEngineDiagnostic() );
 		$registry->register( new PluginsUpdateAvailableDiagnostic() );
 		$registry->register( new ActiveThemeDiagnostic() );
+		$registry->register( new ThemesUpdateAvailableDiagnostic() );
 		$registry->register( new DebugLogDiagnostic() );
 		$registry->register( new ErrorFatalCountDiagnostic() );
 		$registry->register( new ErrorWarningCountDiagnostic() );

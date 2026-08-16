@@ -299,7 +299,7 @@ See DECISIONS.md ADR-021.
 
 ## Phase 9: Theme Doctor (Static)
 
-**Status:** Planned (approved scope — not yet implemented)
+**Status:** Complete
 **Goal:** Implement deterministic, read-only theme-update diagnostics
 
 **Approved scope (supersedes the legacy "Recovery System" sketch below):** Phase 9

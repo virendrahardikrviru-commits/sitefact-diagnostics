@@ -494,6 +494,7 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseSizeDiagnostic.
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ActiveThemeDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugLogDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorFatalCountDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorWarningCountDiagnostic.php';
