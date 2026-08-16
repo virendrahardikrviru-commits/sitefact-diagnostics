@@ -12,6 +12,11 @@
 namespace WPDoctor\Core;
 
 use WPDoctor\Admin\Admin;
+use WPDoctor\Diagnostics\DebugConfigurationDiagnostic;
+use WPDoctor\Diagnostics\DiagnosticRegistry;
+use WPDoctor\Diagnostics\DiagnosticRunner;
+use WPDoctor\Diagnostics\PhpVersionDiagnostic;
+use WPDoctor\Diagnostics\WordPressVersionDiagnostic;
 
 /**
  * Class Plugin
@@ -80,6 +85,18 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Core/Logger.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Environment.php';
 		require_once WP_DOCTOR_DIR . 'includes/Admin/Admin.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Category.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Severity.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Evidence.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticInterface.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticResult.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DuplicateDiagnosticException.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticRegistry.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticRunner.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/VersionPolicy.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/WordPressVersionDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PhpVersionDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugConfigurationDiagnostic.php';
 	}
 
 	/**
@@ -92,7 +109,14 @@ final class Plugin {
 		$logger      = new Logger( $config->get( 'log_level' ) );
 		$environment = new Environment();
 
-		$admin = new Admin( $environment );
+		$registry = new DiagnosticRegistry();
+		$registry->register( new WordPressVersionDiagnostic( $environment ) );
+		$registry->register( new PhpVersionDiagnostic() );
+		$registry->register( new DebugConfigurationDiagnostic() );
+
+		$runner = new DiagnosticRunner( $logger );
+
+		$admin = new Admin( $environment, $runner, $registry );
 
 		$this->loader->add_action( 'admin_menu', $admin, 'register_menu' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_assets' );

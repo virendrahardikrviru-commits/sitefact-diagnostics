@@ -367,6 +367,16 @@ The Phase 1 `WPDoctor\Core\Logger` enforces the following rules:
 
 Developers must still never pass secrets as log messages; context redaction is a safety net, not an invitation to log credentials.
 
+## Diagnostic Evidence Security (Phase 2)
+
+The Phase 2 diagnostic framework treats all diagnostic output as untrusted data:
+
+- **Structured evidence** is restricted to plain data only — scalars, null, and arrays of scalars. Objects, resources, and closures are rejected (`Evidence` throws `InvalidArgumentException`), so evidence can never carry executable content.
+- **Evidence is never sent externally** and is never persisted to the database. Diagnostics are read-only and ephemeral.
+- **Secrets must never be placed into evidence.** Diagnostics report environment facts (versions, debug flags); they never collect passwords, keys, salts, tokens, or credentials.
+- **Failed diagnostics are sanitized.** When a diagnostic throws, the runner logs technical detail to the `Logger` (which redacts sensitive keys) and returns a generic `ERROR` result with the message "Diagnostic could not be completed." Raw exception messages, stack traces, and server paths are never shown to admin users.
+- **Admin rendering escapes everything.** Every dynamic value (title, category, severity, summary, observed, expected, evidence, recommendation) is escaped with `esc_html()`/`esc_attr()` at the point of output. Evidence is treated as untrusted data even though it was produced by the plugin.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

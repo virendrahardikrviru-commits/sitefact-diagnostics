@@ -529,14 +529,75 @@ No dedicated Constants class. Plugin constants remain in `wp-doctor.php` and are
 
 ---
 
+## ADR-015: Diagnostic Framework Design (Phase 2)
+
+**Date:** 2026-08-16
+
+**Context:**
+Phase 2 requires a reusable diagnostic framework that can later support Core,
+Security, Performance, Database, Plugin, Theme, and Configuration diagnostics
+without rewriting the engine. It must be safe, read-only, deterministic,
+testable, extensible, isolated, and failure-tolerant. An earlier "future" sketch
+in ARCHITECTURE.md/API.md proposed a mutable `DiagnosticResult` with severities
+`CRITICAL/HIGH/WARNING/INFO/GOOD`; Phase 2 requirements supersede that sketch.
+
+**Options Considered:**
+
+1. Immutable value objects + a runner that isolates failures (chosen)
+   - `DiagnosticInterface`, `Category`, `Severity`, `Evidence`, `DiagnosticResult`,
+     `DiagnosticRegistry`, `DiagnosticRunner`.
+2. Mutable result objects with fluent setters (the earlier sketch)
+   - More ergonomic but weaker immutability guarantees and an ad-hoc severity set.
+3. Abstract base class hierarchy
+   - Too heavy; the contract should stay small.
+
+**Decision:**
+Implement a small contract (`DiagnosticInterface`), closed `Category` (core,
+security, performance, database, plugins, themes, configuration) and `Severity`
+(info, success, warning, error — no "critical") models, immutable structured
+`Evidence` (scalars/arrays only, no executable content), an immutable
+`DiagnosticResult` (constructed from an array, `with_execution_time()` returns a
+copy, `to_array()` for serialization), a `DiagnosticRegistry` (duplicate IDs
+throw `DuplicateDiagnosticException`, retrieval is ID-sorted), and a
+`DiagnosticRunner` (executes in ID order, measures time with `hrtime()`, catches
+any `Throwable`, logs technical detail, and returns a generic ERROR result).
+
+**Reasoning:**
+- Immutability makes results safe to pass to future UI/API/AI layers without
+  accidental mutation.
+- Closed models prevent magic strings and guarantee consistent severity across
+  the plugin. `CRITICAL` was dropped because a diagnostic cannot safely claim a
+  "critical" fact; severity must be evidence-backed, not alarming.
+- Array-constructed results keep the contract small (no huge base class, no
+  builder boilerplate) while remaining testable.
+- Deterministic ID-sorted ordering removes reliance on registration order,
+  filesystem order, or hash-map accidents.
+- Failure isolation is the core safety guarantee: one broken diagnostic can never
+  break the whole scan.
+
+**Consequences:**
+- Positive: evidence-first diagnostics; deterministic, testable, isolated runs;
+  safe serialization for future layers.
+- Negative: immutability requires copying for execution-time attachment (cheap).
+- Future Impact: Phase 3+ diagnostics implement `DiagnosticInterface` and are
+  registered in `Plugin::register_hooks()`; new categories/severities must go
+  through the closed models and this ADR.
+
+**Related:**
+- ARCHITECTURE.md (Diagnostic Framework)
+- API.md (Diagnostic Framework)
+- SECURITY.md (Diagnostic Evidence Security)
+
+---
+
 ## Future Decisions
 
 **Decisions to be made in future phases:**
 
-- ADR-015: AI Provider Interface Design (Phase 10)
-- ADR-016: Custom Table Schema (if needed, Phase 8+)
-- ADR-017: License/Subscription Model (Phase 14)
-- ADR-018: WordPress.org Submission Strategy (Phase 15)
+- ADR-016: AI Provider Interface Design (Phase 10)
+- ADR-017: Custom Table Schema (if needed, Phase 8+)
+- ADR-018: License/Subscription Model (Phase 14)
+- ADR-019: WordPress.org Submission Strategy (Phase 15)
 
 ---
 

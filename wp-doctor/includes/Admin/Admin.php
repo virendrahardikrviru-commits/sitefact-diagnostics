@@ -10,6 +10,9 @@
 namespace WPDoctor\Admin;
 
 use WPDoctor\Core\Environment;
+use WPDoctor\Diagnostics\DiagnosticRegistry;
+use WPDoctor\Diagnostics\DiagnosticRunner;
+use WPDoctor\Diagnostics\Severity;
 
 /**
  * Class Admin
@@ -26,14 +29,32 @@ class Admin {
 	private $environment;
 
 	/**
+	 * The diagnostic runner, when diagnostics are available.
+	 *
+	 * @var DiagnosticRunner|null
+	 */
+	private $runner;
+
+	/**
+	 * The diagnostic registry, when diagnostics are available.
+	 *
+	 * @var DiagnosticRegistry|null
+	 */
+	private $registry;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param Environment $environment The environment information service.
+	 * @param Environment          $environment The environment information service.
+	 * @param DiagnosticRunner|null $runner      Optional. The diagnostic runner.
+	 * @param DiagnosticRegistry|null $registry  Optional. The diagnostic registry.
 	 */
-	public function __construct( Environment $environment ) {
+	public function __construct( Environment $environment, DiagnosticRunner $runner = null, DiagnosticRegistry $registry = null ) {
 		$this->environment = $environment;
+		$this->runner      = $runner;
+		$this->registry    = $registry;
 	}
 
 	/**
@@ -133,7 +154,108 @@ class Admin {
 					</tr>
 				</tbody>
 			</table>
+
+			<?php
+			if ( null !== $this->runner && null !== $this->registry ) {
+				$this->render_diagnostics();
+			}
+			?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Render the diagnostics section.
+	 *
+	 * Runs the registered diagnostics and displays their structured results.
+	 * All diagnostic output is treated as untrusted data and escaped.
+	 *
+	 * @since 0.2.0
+	 */
+	private function render_diagnostics() {
+		$results = $this->runner->run_many( $this->registry->get_all() );
+		?>
+		<h2><?php esc_html_e( 'Diagnostics', 'wp-doctor' ); ?></h2>
+
+		<div class="wp-doctor-diagnostics">
+			<?php foreach ( $results as $result ) : ?>
+				<div class="wp-doctor-diagnostic wp-doctor-diagnostic--<?php echo esc_attr( $result->get_severity() ); ?>">
+					<h3><?php echo esc_html( $result->get_title() ); ?></h3>
+
+					<p>
+						<strong><?php esc_html_e( 'Category:', 'wp-doctor' ); ?></strong>
+						<?php echo esc_html( $result->get_category() ); ?>
+					</p>
+
+					<p>
+						<strong><?php esc_html_e( 'Severity:', 'wp-doctor' ); ?></strong>
+						<?php echo esc_html( Severity::label( $result->get_severity() ) ); ?>
+					</p>
+
+					<?php if ( null !== $result->get_summary() ) : ?>
+						<p><?php echo esc_html( $result->get_summary() ); ?></p>
+					<?php endif; ?>
+
+					<?php if ( null !== $result->get_observed() ) : ?>
+						<p>
+							<strong><?php esc_html_e( 'Observed:', 'wp-doctor' ); ?></strong>
+							<?php echo esc_html( $result->get_observed() ); ?>
+						</p>
+					<?php endif; ?>
+
+					<?php if ( null !== $result->get_expected() ) : ?>
+						<p>
+							<strong><?php esc_html_e( 'Expected:', 'wp-doctor' ); ?></strong>
+							<?php echo esc_html( $result->get_expected() ); ?>
+						</p>
+					<?php endif; ?>
+
+					<?php $this->render_evidence( $result ); ?>
+
+					<?php if ( null !== $result->get_recommendation() ) : ?>
+						<p>
+							<strong><?php esc_html_e( 'Recommendation:', 'wp-doctor' ); ?></strong>
+							<?php echo esc_html( $result->get_recommendation() ); ?>
+						</p>
+					<?php endif; ?>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render the structured evidence for a result.
+	 *
+	 * Every evidence key and value is escaped at the point of output.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param \WPDoctor\Diagnostics\DiagnosticResult $result The diagnostic result.
+	 */
+	private function render_evidence( $result ) {
+		$evidence = $result->get_evidence()->to_array();
+
+		if ( empty( $evidence ) ) {
+			return;
+		}
+		?>
+		<table class="widefat striped wp-doctor-evidence">
+			<tbody>
+				<?php foreach ( $evidence as $key => $value ) : ?>
+					<tr>
+						<th scope="row"><?php echo esc_html( $key ); ?></th>
+						<td>
+							<?php if ( is_array( $value ) ) : ?>
+								<?php echo esc_html( (string) wp_json_encode( $value ) ); ?>
+							<?php else : ?>
+								<?php echo esc_html( (string) $value ); ?>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
 		<?php
 	}
 

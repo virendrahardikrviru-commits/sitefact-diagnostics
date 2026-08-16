@@ -60,7 +60,7 @@ Unavailable values degrade to the string `unknown` rather than causing errors.
 1. **Interface-Based** — Core APIs are defined as interfaces to allow multiple implementations
 2. **Data Transfer Objects** — APIs pass structured data through immutable or semi-mutable objects
 3. **Result-Oriented** — APIs return structured result objects, not raw data
-4. **Error Handling** — APIs use WP_Error for failures, never throw exceptions
+4. **Error Handling** — REST/transport APIs use WP_Error for failures. Internal domain logic (the diagnostic registry and result model) raises controlled exceptions (`DuplicateDiagnosticException`, `InvalidArgumentException`) for programmer errors that must never be silently swallowed.
 5. **Extensible** — APIs use hooks for customization without forcing inheritance
 6. **Testable** — All APIs can be unit tested without WordPress running
 
@@ -71,28 +71,37 @@ Unavailable values degrade to the string `unknown` rather than causing errors.
 ```php
 namespace WPDoctor\Diagnostics;
 
-class DiagnosticResult {
-    public string $id;                    // Unique identifier
-    public string $category;              // Category of diagnostic
-    public string $severity;              // CRITICAL, HIGH, WARNING, INFO, GOOD
-    public string $certainty;             // CERTAIN, LIKELY, POSSIBLE, SPECULATIVE
-    public string $title;                 // Human-readable title
-    public string $summary;               // Human-readable summary
-    public array $technical_details;      // Array of technical data
-    public string $impact;                // What this means for the user
-    public array $affected_items;         // Items affected by this issue
-    public array $recommendations;        // Recommended actions
-    public bool $can_fix;                 // Whether WP Doctor can fix this
-    public ?string $fix_id;               // ID of applicable fix (if can_fix)
-    public ?string $risk_level;           // Risk of fix: LOW, MEDIUM, HIGH, CRITICAL
-    public array $metadata;               // Additional metadata
-    public int $created_at;               // Unix timestamp
-    
-    // Methods for data consistency
-    public static function make(): self;
-    public function is_fixable(): bool;
-}
+// Immutable result value object (Phase 2).
+$result = new DiagnosticResult( array(
+    'id'             => 'core.php_version',
+    'title'          => 'PHP Version',
+    'category'       => Category::CORE,   // or Category::SECURITY, etc.
+    'severity'       => Severity::SUCCESS,// info | success | warning | error
+    'summary'        => 'PHP 8.2 meets the recommended version.',
+    'observed'       => '8.2.12',
+    'expected'       => '>= 8.0.0',
+    'evidence'       => array( 'php_version' => '8.2.12' ),
+    'recommendation' => 'Keep PHP up to date.',
+    'execution_time_ms' => 0.012,         // optional; attached by the runner
+) );
+
+$result->get_id();           // string
+$result->get_title();        // string
+$result->get_category();     // string (Category constant)
+$result->get_severity();     // string (Severity constant)
+$result->get_summary();      // ?string
+$result->get_observed();     // ?string
+$result->get_expected();     // ?string
+$result->get_evidence();     // Evidence (structured, scalars/arrays only)
+$result->get_recommendation(); // ?string
+$result->get_execution_time_ms(); // ?float
+$result->to_array();         // predictable, serializable plain array
+$result->with_execution_time( $ms ); // returns a NEW instance (immutable)
 ```
+
+Results are immutable after construction. `with_execution_time()` returns a copy
+rather than mutating the original. Required fields are `id`, `title`, `category`,
+and `severity`; invalid categories or severities throw `InvalidArgumentException`.
 
 ### Fix Definition
 
@@ -175,75 +184,130 @@ class RecoveryResult {
 }
 ```
 
-## Diagnostic Framework (Future)
+## Diagnostic Framework (Phase 2)
 
-When implemented, diagnostics will follow this interface:
+### Diagnostic Interface
 
 ```php
 namespace WPDoctor\Diagnostics;
 
 interface DiagnosticInterface {
     /**
-     * Execute the diagnostic check.
-     *
-     * @return DiagnosticResult
+     * @return string Unique, stable identifier.
      */
-    public function execute(): DiagnosticResult;
-    
+    public function get_id();
+
     /**
-     * Get the diagnostic ID.
-     *
-     * @return string
+     * @return string Human-readable title.
      */
-    public function get_id(): string;
-    
+    public function get_title();
+
     /**
-     * Get the diagnostic category.
-     *
-     * @return string
+     * @return string A WPDoctor\Diagnostics\Category constant.
      */
-    public function get_category(): string;
+    public function get_category();
+
+    /**
+     * @return string Short description of what the diagnostic checks.
+     */
+    public function get_description();
+
+    /**
+     * @return DiagnosticResult Read-only execution result.
+     */
+    public function execute();
 }
+```
+
+### Category & Severity
+
+```php
+Category::CORE; Category::SECURITY; Category::PERFORMANCE;
+Category::DATABASE; Category::PLUGINS; Category::THEMES; Category::CONFIGURATION;
+
+Severity::INFO; Severity::SUCCESS; Severity::WARNING; Severity::ERROR;
+
+Category::is_valid( $value );   // bool
+Severity::is_valid( $value );   // bool
+Severity::label( $value );      // 'INFO', 'WARNING', ... ('' when invalid)
+```
+
+Both are closed models. Arbitrary strings are rejected; there is no `CRITICAL`
+severity.
+
+### Registry
+
+```php
+$registry = new DiagnosticRegistry();
+$registry->register( $diagnostic );       // throws DuplicateDiagnosticException on duplicate ID
+$registry->has( $id );                    // bool
+$registry->get( $id );                    // DiagnosticInterface|null
+$registry->get_all();                     // ID-sorted (deterministic)
+$registry->get_by_category( Category::CORE ); // ID-sorted, filtered
+$registry->count();                       // int
+```
+
+### Runner
+
+```php
+$runner = new DiagnosticRunner( $logger ); // Logger|null
+
+$result  = $runner->run_one( $diagnostic );   // DiagnosticResult
+$results = $runner->run_many( $diagnostics ); // DiagnosticResult[] (ID-sorted)
+
+// Failure isolation: a throwing diagnostic becomes a safe ERROR result with
+// the generic summary "Diagnostic could not be completed."; technical detail
+// goes to the Logger. Execution time is measured with hrtime() and attached
+// to each result.
 ```
 
 ### Example Diagnostic Implementation
 
 ```php
-namespace WPDoctor\Diagnostics\WordPress;
+namespace WPDoctor\Diagnostics;
 
 class WordPressVersionDiagnostic implements DiagnosticInterface {
-    
-    public function execute(): DiagnosticResult {
-        $current_version = get_bloginfo( 'version' );
-        $latest_version = $this->get_latest_wordpress_version();
-        
-        $result = DiagnosticResult::make()
-            ->setId( 'wordpress.version' )
-            ->setCategory( 'wordpress' )
-            ->setTitle( 'WordPress Version' )
-            ->setSummary( "Current version: $current_version" );
-        
-        if ( version_compare( $current_version, $latest_version, '<' ) ) {
-            $result->setSeverity( 'HIGH' )
-                   ->setImpact( 'Your WordPress version is out of date.' )
-                   ->addRecommendation( 'Update WordPress to the latest version.' );
-        } else {
-            $result->setSeverity( 'GOOD' );
+
+    public function get_id() {
+        return 'core.wordpress_version';
+    }
+
+    public function get_title() {
+        return __( 'WordPress Version', 'wp-doctor' );
+    }
+
+    public function get_category() {
+        return Category::CORE;
+    }
+
+    public function get_description() {
+        return __( 'Reports the installed WordPress version.', 'wp-doctor' );
+    }
+
+    public function execute() {
+        $version = $this->environment->get_wordpress_version();
+
+        if ( version_compare( $version, VersionPolicy::MIN_WORDPRESS_VERSION, '<' ) ) {
+            return new DiagnosticResult( array(
+                'id'       => $this->get_id(),
+                'title'    => $this->get_title(),
+                'category' => $this->get_category(),
+                'severity' => Severity::ERROR,
+                'observed' => $version,
+                'expected' => '>= ' . VersionPolicy::MIN_WORDPRESS_VERSION,
+                'evidence' => array( 'wordpress_version' => $version ),
+                'recommendation' => __( 'Update WordPress to a supported version.', 'wp-doctor' ),
+            ) );
         }
-        
-        return $result;
-    }
-    
-    public function get_id(): string {
-        return 'wordpress.version';
-    }
-    
-    public function get_category(): string {
-        return 'wordpress';
-    }
-    
-    private function get_latest_wordpress_version(): string {
-        // Check WordPress.org or cached value
+
+        return new DiagnosticResult( array(
+            'id'       => $this->get_id(),
+            'title'    => $this->get_title(),
+            'category' => $this->get_category(),
+            'severity' => Severity::SUCCESS,
+            'observed' => $version,
+            'evidence' => array( 'wordpress_version' => $version ),
+        ) );
     }
 }
 ```

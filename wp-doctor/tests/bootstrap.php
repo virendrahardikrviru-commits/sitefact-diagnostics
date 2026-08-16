@@ -81,6 +81,99 @@ if ( ! function_exists( 'get_option' ) ) {
 	}
 }
 
+// Translation and escaping stand-ins so diagnostic classes and admin rendering
+// can run without WordPress. esc_html()/esc_attr() mirror WordPress behavior
+// (HTML special characters escaped) so security tests can verify escaping.
+if ( ! function_exists( '__' ) ) {
+	/**
+	 * Stand-in for __() returning the source text unchanged.
+	 *
+	 * @param string $text   Text to translate.
+	 * @param string $domain Text domain.
+	 * @return string
+	 */
+	function __( $text, $domain = 'default' ) {
+		return $text;
+	}
+}
+
+if ( ! function_exists( '_e' ) ) {
+	/**
+	 * Stand-in for _e() echoing the source text unchanged.
+	 *
+	 * @param string $text   Text to translate.
+	 * @param string $domain Text domain.
+	 * @return void
+	 */
+	function _e( $text, $domain = 'default' ) {
+		echo $text;
+	}
+}
+
+if ( ! function_exists( 'esc_html' ) ) {
+	/**
+	 * Stand-in for esc_html() that escapes HTML special characters.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_html( $text ) {
+		return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_attr' ) ) {
+	/**
+	 * Stand-in for esc_attr() that escapes HTML special characters.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_attr( $text ) {
+		return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_html__' ) ) {
+	/**
+	 * Stand-in for esc_html__() that translates then escapes.
+	 *
+	 * @param string $text   Text to translate and escape.
+	 * @param string $domain Text domain.
+	 * @return string
+	 */
+	function esc_html__( $text, $domain = 'default' ) {
+		return esc_html( __( $text, $domain ) );
+	}
+}
+
+if ( ! function_exists( 'esc_html_e' ) ) {
+	/**
+	 * Stand-in for esc_html_e() that translates, escapes, and echoes.
+	 *
+	 * @param string $text   Text to translate and escape.
+	 * @param string $domain Text domain.
+	 * @return void
+	 */
+	function esc_html_e( $text, $domain = 'default' ) {
+		echo esc_html__( $text, $domain );
+	}
+}
+
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	/**
+	 * Stand-in for wp_json_encode().
+	 *
+	 * @param mixed $data    Data to encode.
+	 * @param int   $options Encoding options.
+	 * @param int   $depth   Encoding depth.
+	 * @return string|false
+	 */
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		return json_encode( $data, $options, $depth );
+	}
+}
+
 // Load the classes under test.
 require_once dirname( __DIR__ ) . '/includes/Core/Config.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Logger.php';
@@ -89,3 +182,15 @@ require_once dirname( __DIR__ ) . '/includes/Core/Activator.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Deactivator.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Uninstaller.php';
 require_once dirname( __DIR__ ) . '/includes/Admin/Admin.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/Category.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/Severity.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/Evidence.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticInterface.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticResult.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DuplicateDiagnosticException.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticRegistry.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticRunner.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/VersionPolicy.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/WordPressVersionDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/PhpVersionDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugConfigurationDiagnostic.php';

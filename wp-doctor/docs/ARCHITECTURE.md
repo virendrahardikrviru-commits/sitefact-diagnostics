@@ -23,7 +23,7 @@ The plugin uses the namespace `\WPDoctor\` as its root to avoid conflicts:
 \WPDoctor\
 ├── Core\          – Plugin runtime, bootstrap, common utilities
 ├── Admin\         – WordPress admin interface
-├── Diagnostics\   – Diagnostic modules (future)
+├── Diagnostics\   – Diagnostic framework and checks
 ├── Fixes\         – Fix implementations (future)
 ├── Recovery\      – Recovery point and rollback (future)
 ├── Database\      – Database operations and schema (future)
@@ -136,12 +136,17 @@ Responsibility: WordPress admin interface
 
 ### Diagnostics Module
 
-Responsibility: Diagnostic checks and results (future)
+Responsibility: Diagnostic checks and results
 
-- Diagnostic definitions
-- Check execution
-- Result collection
-- Result formatting
+- Diagnostic contract (`DiagnosticInterface`)
+- Category and severity models
+- Structured evidence and result value objects
+- Diagnostic registry (duplicate-ID rejection, deterministic ordering)
+- Diagnostic runner (failure isolation, execution timing)
+- Proof-of-concept diagnostics (WordPress version, PHP version, debug configuration)
+
+The framework is read-only: diagnostics observe the environment and never modify
+options, posts, users, plugins, themes, files, or database records.
 
 ### Fixes Module
 
@@ -301,37 +306,46 @@ When implemented, the REST API should:
 
 **Note:** No public REST API in Phase 0.
 
-## Future: Diagnostic Framework Architecture
+## Diagnostic Framework (Phase 2)
 
-When implemented, diagnostics should follow a standardized pattern:
+Diagnostics follow an evidence-first contract. A diagnostic observes facts,
+evaluates them against a centralized rule, and returns an immutable result that
+keeps the observed fact separate from the evaluation.
 
 ```php
 interface DiagnosticInterface {
-    public function execute(): DiagnosticResult;
-}
-
-class DiagnosticResult {
-    public string $id;
-    public string $category;
-    public string $severity;      // CRITICAL, HIGH, WARNING, INFO, GOOD
-    public string $title;
-    public string $summary;
-    public array $technical_details;
-    public string $impact;
-    public string $recommendation;
-    public bool $can_fix;
-    public ?string $fix_id;
-    public ?string $risk_level;
-    public array $metadata;
+    public function get_id();           // unique, stable ID
+    public function get_title();        // human-readable title
+    public function get_category();     // Category::CORE, etc.
+    public function get_description();  // what this checks
+    public function execute();          // returns DiagnosticResult (read-only)
 }
 ```
 
-Each diagnostic will:
-1. Execute the check
-2. Collect results
-3. Determine severity
-4. Generate human-readable output
-5. Suggest fixes (if applicable)
+**Result flow:**
+
+```
+Diagnostic (observe) → Evidence (facts) → Evaluation (rule) → Result (severity + recommendation)
+```
+
+**Key classes (all in `WPDoctor\Diagnostics`):**
+
+- `Category` — closed set: core, security, performance, database, plugins, themes, configuration
+- `Severity` — closed set: info, success, warning, error (no "critical")
+- `Evidence` — immutable structured facts; scalars/arrays only, no executable content
+- `DiagnosticResult` — immutable result; observed/expected/evidence/recommendation/execution time; `to_array()` for serialization
+- `DiagnosticRegistry` — registration, duplicate-ID rejection (throws), retrieval by ID/category, deterministic ID-sorted ordering
+- `DiagnosticRunner` — executes one or many diagnostics, sorts by ID, measures time with `hrtime()`, isolates failures into a safe generic ERROR result while logging technical detail
+- `VersionPolicy` — centralized version thresholds (single point of change)
+
+Each diagnostic must:
+1. Observe the environment (read-only)
+2. Collect structured evidence
+3. Evaluate against a documented rule
+4. Return a `DiagnosticResult` with severity and recommendation
+
+A broken diagnostic must never crash the scan; the runner catches any `Throwable`,
+logs it, and continues with the remaining diagnostics.
 
 ## Future: Fix Architecture
 
@@ -407,7 +421,7 @@ wp-doctor/
 │   ├── Admin/
 │   │   ├── Admin.php                ← Admin menu and pages
 │   │   └── views/                   ← Admin page templates (future)
-│   ├── Diagnostics/                 ← Diagnostic checks (future)
+│   ├── Diagnostics/                 ← Diagnostic framework and checks
 │   ├── Fixes/                       ← Fix implementations (future)
 │   ├── Recovery/                    ← Recovery functionality (future)
 │   ├── Database/                    ← Database operations (future)

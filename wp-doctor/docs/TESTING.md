@@ -38,6 +38,25 @@ vendor/bin/phpunit          # or: php vendor/bin/phpunit --testdox
 
 Full WordPress integration tests (via `WP_UnitTestCase`) require a WordPress test installation and are not part of the Phase 1 suite. The `AdminTest` capability tests use controlled function stand-ins rather than a real WordPress user/role model.
 
+## Phase 2 Test Setup
+
+Phase 2 extends the same unit-test harness with the diagnostic framework. The
+bootstrap adds translation/escaping stand-ins (`__`, `esc_html`, `esc_attr`,
+`esc_html__`, `esc_html_e`, `wp_json_encode`) so admin rendering and the
+diagnostic runner can run without WordPress. `esc_html()`/`esc_attr()` mirror
+WordPress escaping behavior (HTML special characters), which lets security tests
+assert that malicious evidence is actually neutralized.
+
+**Phase 2 unit tests cover:**
+
+- `CategoryTest` / `SeverityTest` — closed models, valid/invalid values, labels.
+- `EvidenceTest` — scalar/nested round-trips; rejection of objects, closures, and nested non-scalar values.
+- `DiagnosticResultTest` — required vs optional fields, invalid severity/category, evidence normalization, `to_array()`, immutability via `with_execution_time()`.
+- `DiagnosticRegistryTest` — registration, retrieval, duplicate-ID rejection (no silent overwrite), deterministic ID-sorted ordering, category filtering.
+- `DiagnosticRunnerTest` — success with timing, deterministic ordering, exception isolation, safe generic ERROR result, logger interaction, throwing metadata does not crash the scan.
+- `WordPressVersionDiagnosticTest` / `PhpVersionDiagnosticTest` / `DebugConfigurationDiagnosticTest` — metadata, real environment values, severity branches, structured evidence, contextual (non-simplistic) debug reporting.
+- `AdminDiagnosticsTest` — diagnostics rendering, escaping of malicious evidence (`<script>` payloads), unexpected evidence types, and continued `manage_options` capability protection.
+
 ## Testing Philosophy
 
 1. **Test-Driven Development** — Write tests before or alongside implementation
