@@ -12,10 +12,22 @@
 namespace WPDoctor\Core;
 
 use WPDoctor\Admin\Admin;
+use WPDoctor\Diagnostics\ActiveThemeDiagnostic;
+use WPDoctor\Diagnostics\AdministratorCountDiagnostic;
+use WPDoctor\Diagnostics\AutoloadedOptionsDiagnostic;
+use WPDoctor\Diagnostics\CoreUpdateAvailabilityDiagnostic;
+use WPDoctor\Diagnostics\DatabaseCharsetCollationDiagnostic;
+use WPDoctor\Diagnostics\DatabaseVersionDiagnostic;
 use WPDoctor\Diagnostics\DebugConfigurationDiagnostic;
 use WPDoctor\Diagnostics\DiagnosticRegistry;
 use WPDoctor\Diagnostics\DiagnosticRunner;
+use WPDoctor\Diagnostics\FileEditDiagnostic;
+use WPDoctor\Diagnostics\HttpsDiagnostic;
+use WPDoctor\Diagnostics\MemoryLimitDiagnostic;
+use WPDoctor\Diagnostics\ObjectCacheDiagnostic;
 use WPDoctor\Diagnostics\PhpVersionDiagnostic;
+use WPDoctor\Diagnostics\PluginsUpdateAvailableDiagnostic;
+use WPDoctor\Diagnostics\SiteUrlsDiagnostic;
 use WPDoctor\Diagnostics\WordPressVersionDiagnostic;
 
 /**
@@ -94,9 +106,23 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticRegistry.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticRunner.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/VersionPolicy.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PerformancePolicy.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ByteSize.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/WordPressVersionDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PhpVersionDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugConfigurationDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/SiteUrlsDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/HttpsDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/FileEditDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AdministratorCountDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/MemoryLimitDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ObjectCacheDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseVersionDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ActiveThemeDiagnostic.php';
 	}
 
 	/**
@@ -110,9 +136,7 @@ final class Plugin {
 		$environment = new Environment();
 
 		$registry = new DiagnosticRegistry();
-		$registry->register( new WordPressVersionDiagnostic( $environment ) );
-		$registry->register( new PhpVersionDiagnostic() );
-		$registry->register( new DebugConfigurationDiagnostic() );
+		$this->register_diagnostics( $registry, $environment );
 
 		$runner = new DiagnosticRunner( $logger );
 
@@ -122,5 +146,36 @@ final class Plugin {
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_assets' );
 
 		$logger->debug( 'WP Doctor core initialized.' );
+	}
+
+	/**
+	 * Register every diagnostic explicitly.
+	 *
+	 * Registration order does not affect execution order: the registry and the
+	 * runner both sort by diagnostic ID. Explicit registration (rather than
+	 * reflection or auto-discovery) keeps the diagnostic set auditable.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param DiagnosticRegistry $registry    The registry to populate.
+	 * @param Environment        $environment The environment service.
+	 * @return void
+	 */
+	private function register_diagnostics( DiagnosticRegistry $registry, Environment $environment ) {
+		$registry->register( new WordPressVersionDiagnostic( $environment ) );
+		$registry->register( new PhpVersionDiagnostic() );
+		$registry->register( new DebugConfigurationDiagnostic() );
+		$registry->register( new CoreUpdateAvailabilityDiagnostic( $environment ) );
+		$registry->register( new SiteUrlsDiagnostic() );
+		$registry->register( new HttpsDiagnostic() );
+		$registry->register( new FileEditDiagnostic() );
+		$registry->register( new AdministratorCountDiagnostic() );
+		$registry->register( new MemoryLimitDiagnostic() );
+		$registry->register( new ObjectCacheDiagnostic() );
+		$registry->register( new AutoloadedOptionsDiagnostic() );
+		$registry->register( new DatabaseVersionDiagnostic() );
+		$registry->register( new DatabaseCharsetCollationDiagnostic() );
+		$registry->register( new PluginsUpdateAvailableDiagnostic() );
+		$registry->register( new ActiveThemeDiagnostic() );
 	}
 }

@@ -144,6 +144,7 @@ Responsibility: Diagnostic checks and results
 - Diagnostic registry (duplicate-ID rejection, deterministic ordering)
 - Diagnostic runner (failure isolation, execution timing)
 - Proof-of-concept diagnostics (WordPress version, PHP version, debug configuration)
+- Phase 3 diagnostic pack (15 diagnostics across all seven categories, see below)
 
 The framework is read-only: diagnostics observe the environment and never modify
 options, posts, users, plugins, themes, files, or database records.
@@ -337,6 +338,8 @@ Diagnostic (observe) → Evidence (facts) → Evaluation (rule) → Result (seve
 - `DiagnosticRegistry` — registration, duplicate-ID rejection (throws), retrieval by ID/category, deterministic ID-sorted ordering
 - `DiagnosticRunner` — executes one or many diagnostics, sorts by ID, measures time with `hrtime()`, isolates failures into a safe generic ERROR result while logging technical detail
 - `VersionPolicy` — centralized version thresholds (single point of change)
+- `PerformancePolicy` — centralized performance thresholds (memory, autoloaded-options, admin count; single point of change)
+- `ByteSize` — pure helper that parses and formats byte sizes ("128M", "-1", etc.)
 
 Each diagnostic must:
 1. Observe the environment (read-only)
@@ -346,6 +349,34 @@ Each diagnostic must:
 
 A broken diagnostic must never crash the scan; the runner catches any `Throwable`,
 logs it, and continues with the remaining diagnostics.
+
+## Phase 3 Diagnostics
+
+Phase 3 expands the framework into a real diagnostic library. All 15 diagnostics
+remain read-only, evidence-first, deterministic, and independently executable.
+
+| ID | Category | Detects |
+|---|---|---|
+| `core.wordpress_version` | core | Installed WordPress version vs minimum |
+| `core.php_version` | core | PHP version vs minimum/recommended |
+| `core.update_availability` | core | Pending WordPress core update (cached) |
+| `configuration.debug` | configuration | WordPress debugging flags |
+| `configuration.site_urls` | configuration | `siteurl` vs `home` consistency |
+| `security.https` | security | HTTPS vs HTTP (URL scheme) |
+| `security.file_edit` | security | `DISALLOW_FILE_EDIT`/`DISALLOW_FILE_MODS` |
+| `security.administrator_count` | security | Count of administrator accounts |
+| `performance.memory_limit` | performance | WP and PHP memory limits |
+| `performance.object_cache` | performance | Persistent object cache presence |
+| `performance.autoloaded_options` | performance | Aggregate autoloaded options size |
+| `database.version` | database | MySQL/MariaDB engine and version |
+| `database.charset_collation` | database | Charset/collation (utf8mb4 vs utf8) |
+| `plugins.update_available` | plugins | Pending plugin updates (cached) |
+| `themes.active_theme` | themes | Active theme and child-theme status |
+
+The Admin interface groups diagnostics by category using `Category::all()` and
+`DiagnosticRegistry::get_by_category()`, rendering a category heading before
+each group. The wrapper element carries the `wp-doctor-diagnostics--grouped`
+class. All output remains fully escaped.
 
 ## Future: Fix Architecture
 

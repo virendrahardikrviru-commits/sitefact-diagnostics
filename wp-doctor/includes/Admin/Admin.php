@@ -10,6 +10,7 @@
 namespace WPDoctor\Admin;
 
 use WPDoctor\Core\Environment;
+use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\DiagnosticRegistry;
 use WPDoctor\Diagnostics\DiagnosticRunner;
 use WPDoctor\Diagnostics\Severity;
@@ -174,51 +175,67 @@ class Admin {
 	 */
 	private function render_diagnostics() {
 		$results = $this->runner->run_many( $this->registry->get_all() );
+
+		$grouped = array();
+
+		foreach ( $results as $result ) {
+			$category = $result->get_category();
+
+			if ( ! isset( $grouped[ $category ] ) ) {
+				$grouped[ $category ] = array();
+			}
+
+			$grouped[ $category ][] = $result;
+		}
 		?>
 		<h2><?php esc_html_e( 'Diagnostics', 'wp-doctor' ); ?></h2>
 
-		<div class="wp-doctor-diagnostics">
-			<?php foreach ( $results as $result ) : ?>
-				<div class="wp-doctor-diagnostic wp-doctor-diagnostic--<?php echo esc_attr( $result->get_severity() ); ?>">
-					<h3><?php echo esc_html( $result->get_title() ); ?></h3>
+		<div class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped">
+			<?php foreach ( Category::all() as $category ) : ?>
+				<?php if ( empty( $grouped[ $category ] ) ) { continue; } ?>
+				<h3 class="wp-doctor-category"><?php echo esc_html( ucfirst( $category ) ); ?></h3>
+				<?php foreach ( $grouped[ $category ] as $result ) : ?>
+					<div class="wp-doctor-diagnostic wp-doctor-diagnostic--<?php echo esc_attr( $result->get_severity() ); ?>">
+						<h4><?php echo esc_html( $result->get_title() ); ?></h4>
 
-					<p>
-						<strong><?php esc_html_e( 'Category:', 'wp-doctor' ); ?></strong>
-						<?php echo esc_html( $result->get_category() ); ?>
-					</p>
-
-					<p>
-						<strong><?php esc_html_e( 'Severity:', 'wp-doctor' ); ?></strong>
-						<?php echo esc_html( Severity::label( $result->get_severity() ) ); ?>
-					</p>
-
-					<?php if ( null !== $result->get_summary() ) : ?>
-						<p><?php echo esc_html( $result->get_summary() ); ?></p>
-					<?php endif; ?>
-
-					<?php if ( null !== $result->get_observed() ) : ?>
 						<p>
-							<strong><?php esc_html_e( 'Observed:', 'wp-doctor' ); ?></strong>
-							<?php echo esc_html( $result->get_observed() ); ?>
+							<strong><?php esc_html_e( 'Category:', 'wp-doctor' ); ?></strong>
+							<?php echo esc_html( $result->get_category() ); ?>
 						</p>
-					<?php endif; ?>
 
-					<?php if ( null !== $result->get_expected() ) : ?>
 						<p>
-							<strong><?php esc_html_e( 'Expected:', 'wp-doctor' ); ?></strong>
-							<?php echo esc_html( $result->get_expected() ); ?>
+							<strong><?php esc_html_e( 'Severity:', 'wp-doctor' ); ?></strong>
+							<?php echo esc_html( Severity::label( $result->get_severity() ) ); ?>
 						</p>
-					<?php endif; ?>
 
-					<?php $this->render_evidence( $result ); ?>
+						<?php if ( null !== $result->get_summary() ) : ?>
+							<p><?php echo esc_html( $result->get_summary() ); ?></p>
+						<?php endif; ?>
 
-					<?php if ( null !== $result->get_recommendation() ) : ?>
-						<p>
-							<strong><?php esc_html_e( 'Recommendation:', 'wp-doctor' ); ?></strong>
-							<?php echo esc_html( $result->get_recommendation() ); ?>
-						</p>
-					<?php endif; ?>
-				</div>
+						<?php if ( null !== $result->get_observed() ) : ?>
+							<p>
+								<strong><?php esc_html_e( 'Observed:', 'wp-doctor' ); ?></strong>
+								<?php echo esc_html( $result->get_observed() ); ?>
+							</p>
+						<?php endif; ?>
+
+						<?php if ( null !== $result->get_expected() ) : ?>
+							<p>
+								<strong><?php esc_html_e( 'Expected:', 'wp-doctor' ); ?></strong>
+								<?php echo esc_html( $result->get_expected() ); ?>
+							</p>
+						<?php endif; ?>
+
+						<?php $this->render_evidence( $result ); ?>
+
+						<?php if ( null !== $result->get_recommendation() ) : ?>
+							<p>
+								<strong><?php esc_html_e( 'Recommendation:', 'wp-doctor' ); ?></strong>
+								<?php echo esc_html( $result->get_recommendation() ); ?>
+							</p>
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
 			<?php endforeach; ?>
 		</div>
 		<?php
@@ -249,7 +266,7 @@ class Admin {
 							<?php if ( is_array( $value ) ) : ?>
 								<?php echo esc_html( (string) wp_json_encode( $value ) ); ?>
 							<?php else : ?>
-								<?php echo esc_html( (string) $value ); ?>
+								<?php echo esc_html( $this->format_evidence_scalar( $value ) ); ?>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -257,6 +274,31 @@ class Admin {
 			</tbody>
 		</table>
 		<?php
+	}
+
+	/**
+	 * Format a scalar evidence value for display.
+	 *
+	 * Booleans are rendered as explicit "true"/"false" and null as an em dash,
+	 * so empty or falsey values are not silently rendered as blank cells.
+	 * Strings and numeric scalars pass through unchanged. The result is still
+	 * escaped by the caller (esc_html) at the point of output.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param mixed $value A scalar evidence value (string, int, float, bool, null).
+	 * @return string
+	 */
+	private function format_evidence_scalar( $value ) {
+		if ( null === $value ) {
+			return '—';
+		}
+
+		if ( is_bool( $value ) ) {
+			return $value ? 'true' : 'false';
+		}
+
+		return (string) $value;
 	}
 
 	/**

@@ -174,6 +174,141 @@ if ( ! function_exists( 'wp_json_encode' ) ) {
 	}
 }
 
+// WordPress site-transient stand-in backed by an in-memory store.
+if ( ! function_exists( 'get_site_transient' ) ) {
+	$GLOBALS['_wp_doctor_site_transients'] = array();
+
+	/**
+	 * Retrieve a site transient from the in-memory store.
+	 *
+	 * @param string $key Transient key.
+	 * @return mixed The stored value, or false when absent.
+	 */
+	function get_site_transient( $key ) {
+		return isset( $GLOBALS['_wp_doctor_site_transients'][ $key ] ) ? $GLOBALS['_wp_doctor_site_transients'][ $key ] : false;
+	}
+}
+
+if ( ! function_exists( 'set_site_transient' ) ) {
+	/**
+	 * Store a site transient in the in-memory store.
+	 *
+	 * @param string $key   Transient key.
+	 * @param mixed  $value Value to store.
+	 * @return bool
+	 */
+	function set_site_transient( $key, $value ) {
+		$GLOBALS['_wp_doctor_site_transients'][ $key ] = $value;
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'is_ssl' ) ) {
+	/**
+	 * Stand-in for is_ssl() driven by a global flag.
+	 *
+	 * @return bool
+	 */
+	function is_ssl() {
+		return ! empty( $GLOBALS['_wp_doctor_is_ssl'] );
+	}
+}
+
+if ( ! function_exists( 'is_multisite' ) ) {
+	/**
+	 * Stand-in for is_multisite() driven by a global flag.
+	 *
+	 * @return bool
+	 */
+	function is_multisite() {
+		return ! empty( $GLOBALS['_wp_doctor_is_multisite'] );
+	}
+}
+
+if ( ! function_exists( 'wp_parse_url' ) ) {
+	/**
+	 * Stand-in for wp_parse_url() delegating to PHP parse_url().
+	 *
+	 * @param string $url       The URL to parse.
+	 * @param int    $component Optional component to retrieve.
+	 * @return mixed
+	 */
+	function wp_parse_url( $url, $component = -1 ) {
+		return parse_url( $url, $component );
+	}
+}
+
+if ( ! function_exists( 'home_url' ) ) {
+	/**
+	 * Stand-in for home_url() returning a configured global value.
+	 *
+	 * @return string
+	 */
+	function home_url() {
+		return isset( $GLOBALS['_wp_doctor_home_url'] ) ? $GLOBALS['_wp_doctor_home_url'] : '';
+	}
+}
+
+if ( ! function_exists( 'site_url' ) ) {
+	/**
+	 * Stand-in for site_url() returning a configured global value.
+	 *
+	 * @return string
+	 */
+	function site_url() {
+		return isset( $GLOBALS['_wp_doctor_site_url'] ) ? $GLOBALS['_wp_doctor_site_url'] : '';
+	}
+}
+
+if ( ! function_exists( 'wp_using_ext_object_cache' ) ) {
+	/**
+	 * Stand-in for wp_using_ext_object_cache() driven by a global flag.
+	 *
+	 * @return bool
+	 */
+	function wp_using_ext_object_cache() {
+		return ! empty( $GLOBALS['_wp_doctor_using_ext_object_cache'] );
+	}
+}
+
+if ( ! function_exists( 'count_users' ) ) {
+	/**
+	 * Stand-in for count_users() returning a configured global value.
+	 *
+	 * @return array
+	 */
+	function count_users() {
+		return isset( $GLOBALS['_wp_doctor_count_users'] ) ? $GLOBALS['_wp_doctor_count_users'] : array();
+	}
+}
+
+if ( ! function_exists( 'wp_get_theme' ) ) {
+	/**
+	 * Stand-in for wp_get_theme() returning a configured global object.
+	 *
+	 * @return object|false
+	 */
+	function wp_get_theme() {
+		if ( isset( $GLOBALS['_wp_doctor_wp_get_theme'] ) && is_object( $GLOBALS['_wp_doctor_wp_get_theme'] ) ) {
+			return $GLOBALS['_wp_doctor_wp_get_theme'];
+		}
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'is_child_theme' ) ) {
+	/**
+	 * Stand-in for is_child_theme() driven by a global flag.
+	 *
+	 * @return bool
+	 */
+	function is_child_theme() {
+		return ! empty( $GLOBALS['_wp_doctor_is_child_theme'] );
+	}
+}
+
 // Load the classes under test.
 require_once dirname( __DIR__ ) . '/includes/Core/Config.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Logger.php';
@@ -191,6 +326,22 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/DuplicateDiagnosticExce
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticRegistry.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticRunner.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/VersionPolicy.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/PerformancePolicy.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ByteSize.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/WordPressVersionDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PhpVersionDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugConfigurationDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/SiteUrlsDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/HttpsDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/FileEditDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/AdministratorCountDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/MemoryLimitDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ObjectCacheDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoloadedOptionsDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseVersionDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ActiveThemeDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Core/Loader.php';
+require_once dirname( __DIR__ ) . '/includes/Core/Plugin.php';

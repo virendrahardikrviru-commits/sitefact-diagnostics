@@ -184,6 +184,14 @@ Version 1.0 is designed to establish a minimal viable diagnostic system:
 
 Licensing will be determined in later phases.
 
+**Phase 3 status:** All 15 Phase 3 diagnostics (WordPress/PHP version, update
+availability, debug configuration, site/home URLs, HTTPS, file editing,
+administrator count, memory limit, object cache, autoloaded options, database
+version, database charset/collation, plugin updates, and active theme) ship in
+the Free version. Pro remains future planning only — its natural value is
+diagnostic *depth and remediation* (for example, identifying which autoloaded
+options to slim, or object-cache setup guidance), not gating basic detection.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

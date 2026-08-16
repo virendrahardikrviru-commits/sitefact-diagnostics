@@ -57,8 +57,25 @@ assert that malicious evidence is actually neutralized.
 - `WordPressVersionDiagnosticTest` / `PhpVersionDiagnosticTest` / `DebugConfigurationDiagnosticTest` — metadata, real environment values, severity branches, structured evidence, contextual (non-simplistic) debug reporting.
 - `AdminDiagnosticsTest` — diagnostics rendering, escaping of malicious evidence (`<script>` payloads), unexpected evidence types, and continued `manage_options` capability protection.
 
-## Testing Philosophy
+## Phase 3 Test Setup
 
+Phase 3 extends the same unit-test harness with the diagnostic pack. The
+bootstrap adds guarded WordPress stand-ins so the new diagnostics can run
+without a real installation: `get_site_transient`/`set_site_transient`,
+`is_ssl`, `is_multisite`, `wp_parse_url`, `home_url`, `site_url`,
+`wp_using_ext_object_cache`, `count_users`, `wp_get_theme`, and
+`is_child_theme`. Database diagnostics are tested with lightweight fake
+`$wpdb` objects injected through their constructors.
+
+**Phase 3 unit tests cover:**
+
+- `ByteSizeTest` — parsing (`128M`, `1G`, `-1`, `0`, empty, malformed, case-insensitive) and formatting.
+- `PerformancePolicyTest` — threshold constants and ordering.
+- One test class per diagnostic, exercising healthy, unhealthy, boundary, missing/undefined, malformed, multisite (where relevant), and exception/failure states.
+- `Phase3RegistryTest` — exactly 15 diagnostics registered (via the Plugin's real wiring), no duplicate IDs, deterministic ordering, duplicate-ID rejection.
+- `AdminCategoryGroupingTest` — category grouping with headings, omission of empty categories, and escaping of malicious evidence.
+
+## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests
 3. **High Coverage** — Aim for 80%+ code coverage

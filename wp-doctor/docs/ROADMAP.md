@@ -105,7 +105,17 @@ Phase 0 is complete when:
 
 ## Phase 3: WordPress Doctor
 
+**Status:** Complete
 **Goal:** Implement WordPress-level diagnostics
+
+**Actual shipped scope (supersedes the task list below):** Phase 3 delivered a
+curated pack of 15 read-only diagnostics across all seven categories (WordPress
+version, PHP version, debug configuration, update availability, site/home URLs,
+HTTPS, file editing, administrator count, memory limit, object cache,
+autoloaded options, database version, database charset/collation, plugin
+updates, active theme), plus the `ByteSize` and `PerformancePolicy` helpers and
+Admin category grouping. Core file integrity hashing and database size analysis
+were deferred to later phases (see DECISIONS.md ADR-016).
 
 ### Tasks
 

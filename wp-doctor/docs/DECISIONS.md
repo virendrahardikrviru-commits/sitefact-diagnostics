@@ -590,6 +590,65 @@ any `Throwable`, logs technical detail, and returns a generic ERROR result).
 
 ---
 
+## ADR-016: Phase 3 Diagnostic Pack Selection
+
+**Date:** 2026-08-16
+
+**Context:**
+Phase 3 expands the Phase 2 diagnostic framework into a useful, real-world
+diagnostic library. We needed to decide which diagnostics to ship first and how
+to centralize their evaluation thresholds without duplicating constants across
+diagnostics.
+
+**Options Considered:**
+1. Ship a large set (50+) of diagnostics to maximize coverage.
+2. Ship a small, curated set of 10–15 high-value diagnostics (chosen).
+3. Ship only WordPress/PHP version diagnostics (the existing proof-of-concepts).
+
+**Decision:**
+Ship 15 diagnostics: the three existing proof-of-concepts plus 12 new ones
+(`core.update_availability`, `configuration.site_urls`, `security.https`,
+`security.file_edit`, `security.administrator_count`, `performance.memory_limit`,
+`performance.object_cache`, `performance.autoloaded_options`, `database.version`,
+`database.charset_collation`, `plugins.update_available`, `themes.active_theme`).
+Each was selected against six criteria: problem frequency, potential harm,
+understandability by a non-technical owner, reliable detection, future
+fix/recommendation potential, and Free/Pro value.
+
+**Deferred diagnostics (and why):**
+- Core file integrity hashing (requires a reference manifest; not reliably
+  read-only-cacheable).
+- Plugin "abandonment"/"insecure" claims (no reliable evidence source without
+  external data).
+- Theme update availability (needs `update_themes` transient semantics).
+- Inactive plugin/theme diagnostics (weak standalone product value).
+
+**Reasoning:**
+- A curated pack keeps every diagnostic defensible and avoids fear-based or
+  count-padding diagnostics. Each result separates observed fact from
+  evaluation from recommendation.
+- Two tiny pure helpers were introduced rather than a base class or DI
+  container: `ByteSize` (parse/format byte sizes) and `PerformancePolicy`
+  (memory, autoloaded-options, and admin-count thresholds). `VersionPolicy` was
+  extended with MySQL/MariaDB minimum versions. These keep thresholds in one
+  place and reusable.
+- Admin rendering was changed minimally to group diagnostics by category using
+  the existing `Category::all()` and `get_by_category()` APIs.
+
+**Consequences:**
+- Positive: a genuinely useful, safe, dependency-free diagnostic pack; every
+  diagnostic independently testable and failure-isolated by the existing runner.
+- Negative: more files to maintain; deferred diagnostics remain for later phases.
+- Future Impact: Phase 8+ fixes can target the recommendations these
+  diagnostics produce; Pro value is diagnostic depth/remediation, not gating.
+
+**Related:**
+- ARCHITECTURE.md (Phase 3 Diagnostics)
+- API.md (ByteSize, PerformancePolicy)
+- PRODUCT.md (Free/Pro strategy)
+
+---
+
 ## Future Decisions
 
 **Decisions to be made in future phases:**

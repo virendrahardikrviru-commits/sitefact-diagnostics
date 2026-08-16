@@ -377,6 +377,13 @@ The Phase 2 diagnostic framework treats all diagnostic output as untrusted data:
 - **Failed diagnostics are sanitized.** When a diagnostic throws, the runner logs technical detail to the `Logger` (which redacts sensitive keys) and returns a generic `ERROR` result with the message "Diagnostic could not be completed." Raw exception messages, stack traces, and server paths are never shown to admin users.
 - **Admin rendering escapes everything.** Every dynamic value (title, category, severity, summary, observed, expected, evidence, recommendation) is escaped with `esc_html()`/`esc_attr()` at the point of output. Evidence is treated as untrusted data even though it was produced by the plugin.
 
+**Phase 3 additions:** the autoloaded-options diagnostic performs exactly one
+read-only aggregate `SELECT` (`COUNT(*)` and `SUM(LENGTH(option_value))`) and
+reports only the count and total size — it never lists option names or values,
+so it cannot leak plugin-structure details or user data. All Phase 3
+diagnostics remain read-only, perform no HTTP requests, and never force a
+WordPress/plugin/theme update check.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

@@ -261,6 +261,50 @@ $results = $runner->run_many( $diagnostics ); // DiagnosticResult[] (ID-sorted)
 // to each result.
 ```
 
+### ByteSize (Phase 3)
+
+A pure, dependency-free helper for parsing and formatting byte sizes. It never
+reads WordPress state or performs I/O.
+
+```php
+use WPDoctor\Diagnostics\ByteSize;
+
+ByteSize::parse( '128M' );        // 134217728
+ByteSize::parse( '1G' );          // 1073741824
+ByteSize::parse( '-1' );          // ByteSize::UNLIMITED (-1)
+ByteSize::parse( 'garbage' );     // null
+ByteSize::is_unlimited( $bytes ); // bool
+ByteSize::format( 134217728 );    // '128 MB'
+```
+
+### PerformancePolicy (Phase 3)
+
+Centralized performance thresholds used by the memory-limit, autoloaded-options,
+and administrator-count diagnostics. Single point of change.
+
+```php
+PerformancePolicy::WP_MEMORY_MIN_RECOMMENDED; // 67108864 (64 MB)
+PerformancePolicy::WP_MEMORY_MIN_VIABLE;      // 41943040 (40 MB)
+PerformancePolicy::AUTOLOAD_WARNING_BYTES;    // 307200 (300 KB)
+PerformancePolicy::AUTOLOAD_ERROR_BYTES;      // 1048576 (1 MB)
+PerformancePolicy::ADMIN_COUNT_MIN;           // 2
+PerformancePolicy::ADMIN_COUNT_MAX;           // 5
+```
+
+`VersionPolicy` was extended with `MIN_MYSQL_VERSION` (`5.7`) and
+`MIN_MARIADB_VERSION` (`10.2`).
+
+### Phase 3 Diagnostic IDs
+
+Twelve new diagnostics were added to the three existing ones:
+
+`core.update_availability`, `configuration.site_urls`, `security.https`,
+`security.file_edit`, `security.administrator_count`,
+`performance.memory_limit`, `performance.object_cache`,
+`performance.autoloaded_options`, `database.version`,
+`database.charset_collation`, `plugins.update_available`,
+`themes.active_theme`.
+
 ### Example Diagnostic Implementation
 
 ```php
