@@ -75,6 +75,22 @@ without a real installation: `get_site_transient`/`set_site_transient`,
 - `Phase3RegistryTest` — exactly 15 diagnostics registered (via the Plugin's real wiring), no duplicate IDs, deterministic ordering, duplicate-ID rejection.
 - `AdminCategoryGroupingTest` — category grouping with headings, omission of empty categories, and escaping of malicious evidence.
 
+## Phase 4 Test Setup
+
+Phase 4 extends the harness with the fix engine. The bootstrap adds guarded
+stand-ins for the mutation layer: `wp_create_nonce`/`wp_verify_nonce`/
+`wp_nonce_field`, `sanitize_key`, `set_transient`/`get_transient`/
+`delete_transient`, `wp_safe_redirect`, `admin_url`, and `esc_url`. Fixes are
+tested against the in-memory Options-API store.
+
+**Phase 4 unit tests cover:**
+
+- `RiskLevelTest` / `FixPreviewTest` / `FixResultTest` / `RecoveryPointTest` — closed models and immutable value objects.
+- `FixRegistryTest` — registration, duplicate-ID rejection, deterministic ordering, lookup by diagnostic ID.
+- `FixRunnerTest` — success, no_change, apply exception, verify failure, rollback success/failure, stale state, invalid token, apply refusal, invalid return values, exception isolation, and redacted logging.
+- `SiteUrlsAlignFixTest` — preview zero-writes, exact single-option writes, no unrelated-option modification, idempotency, invalid-direction refusal, multisite refusal, verification, rollback, and full-runner success/no-change.
+- `AdminFixTest` — capability, missing/invalid nonce, unknown/malicious fix ID, success + notice + redirect, refusal of a malicious direction, and escaped preview output.
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

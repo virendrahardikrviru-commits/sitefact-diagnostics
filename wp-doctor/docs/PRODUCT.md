@@ -192,6 +192,13 @@ the Free version. Pro remains future planning only — its natural value is
 diagnostic *depth and remediation* (for example, identifying which autoloaded
 options to slim, or object-cache setup guidance), not gating basic detection.
 
+**Phase 4 status:** the core "Scan → Diagnose → Explain → Preview → Fix →
+Verify → Rollback" loop is now demonstrated end-to-end via the Safe Fix
+Foundation and one reversible, option-level fix (`site/home URL alignment`).
+Fixes are preview-first, explicitly confirmed, capability- and nonce-gated, and
+reversible. They remain in the Free version; no licensing or gating is
+introduced.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

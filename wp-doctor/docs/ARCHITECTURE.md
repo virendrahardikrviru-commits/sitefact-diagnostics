@@ -378,28 +378,55 @@ The Admin interface groups diagnostics by category using `Category::all()` and
 each group. The wrapper element carries the `wp-doctor-diagnostics--grouped`
 class. All output remains fully escaped.
 
-## Future: Fix Architecture
+## Fix Architecture (Phase 4)
 
-When implemented, fixes should follow this pattern:
+Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path
+from "WP Doctor detected a problem" to "WP Doctor safely fixed it", with a
+strict read/write boundary between diagnostics and fixes.
 
 ```
-Diagnostic ↓
+Diagnostic (read-only) ↓
 Recommendation ↓
-Preview (what will change) ↓
-Recovery Point (before changes) ↓
-User Confirmation ↓
-Deterministic Fix (with verification) ↓
-Verification (confirm fix worked) ↓
-Rollback (if necessary)
+Preview (what will change, zero writes) ↓
+User confirmation + nonce + capability ↓
+Before-state capture (RecoveryPoint) ↓
+Deterministic fix (apply) ↓
+Verification (postcondition) ↓
+Rollback (on apply/verify failure, when reversible)
 ```
+
+The fix lifecycle is orchestrated by `FixRunner`, which mirrors `DiagnosticRunner`
+(deterministic, `Throwable`-isolated, redacted logging). Every fix is a
+concrete, deterministic class that owns its specific mutation, verification,
+and rollback logic — the runner is not a generic mutation executor and never
+interprets fix-specific input beyond passing an approved-action token through.
+
+**Fix module (all in `WPDoctor\Fixes`, plus `WPDoctor\Recovery`):**
+- `FixInterface` — metadata + `get_preview()`/`capture()`/`apply()`/`verify()`/`rollback()`.
+- `RiskLevel` — closed set: low/medium/high (no "critical").
+- `FixPreview` — immutable preview (exact before values + selectable options), zero writes.
+- `FixResult` — immutable outcome: success/no_change/state_changed/failed/rolled_back.
+- `RecoveryPoint` — minimal, fix-local, immutable before-state snapshot (not a general snapshot system).
+- `FixRegistry` — duplicate-ID rejection, deterministic ID-sorted retrieval, lookup by diagnostic ID.
+- `FixRunner` — enforces capability/nonce (at the Admin layer) plus preview → capture → stale-check → apply → verify → rollback.
+
+**Read/write boundary:** `WPDoctor\Diagnostics` remains 100% read-only. Only the
+`WPDoctor\Fixes` module performs writes, and only through concrete fix classes.
+A fix references its diagnostic by stable ID; a diagnostic never references or
+invokes a fix.
+
+**Reference fix (Phase 4):** `fix.site_urls_align` aligns the `home` and
+`siteurl` options to a value the user explicitly chooses. It never guesses which
+value is correct, offers only two strictly-validated action tokens
+(`use_siteurl`, `use_home`), writes exactly one option, and is reversible.
 
 Every fix requires:
 - Unique fix ID
-- Risk level (LOW, MEDIUM, HIGH, CRITICAL)
-- Required capability
+- Risk level (LOW, MEDIUM, HIGH)
+- Required capability (`manage_options`)
 - Explicit user confirmation
-- Recovery point requirement
-- Rollback capability
+- Before-state capture
+- Rollback capability (reversible fixes only)
 - Verification method
 
 ## Future: AI Provider Abstraction

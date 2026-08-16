@@ -356,44 +356,83 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 }
 ```
 
-## Fix Framework (Future)
+## Fix Framework (Phase 4)
 
-When implemented, fixes will follow this interface:
+The Safe Fix Foundation ships the following (PHP 7.4, untyped, matching the
+diagnostic framework conventions). The earlier typed-property sketch is
+superseded.
 
 ```php
 namespace WPDoctor\Fixes;
 
+use WPDoctor\Recovery\RecoveryPoint;
+
 interface FixInterface {
-    /**
-     * Get the fix ID.
-     *
-     * @return string
-     */
-    public function get_id(): string;
-    
-    /**
-     * Get the associated diagnostic.
-     *
-     * @return string Diagnostic ID
-     */
-    public function get_diagnostic_id(): string;
-    
-    /**
-     * Get the fix preview.
-     *
-     * @return FixPreview
-     */
-    public function get_preview(): FixPreview;
-    
-    /**
-     * Execute the fix.
-     *
-     * @param FixContext $context Fix execution context
-     * @return FixResult
-     */
-    public function execute( FixContext $context ): FixResult;
+    public function get_id();                         // unique, stable ID
+    public function get_title();                      // human-readable title
+    public function get_description();                // what this changes
+    public function get_diagnostic_id();              // associated diagnostic ID
+    public function get_risk();                       // RiskLevel constant
+    public function requires_confirmation();          // bool (always true)
+    public function is_reversible();                  // bool
+    public function get_preview();                    // FixPreview (zero writes)
+    public function capture( $direction = null );     // RecoveryPoint (zero writes)
+    public function apply( RecoveryPoint $recovery, $direction = null ); // bool
+    public function verify();                         // bool
+    public function rollback( RecoveryPoint $recovery ); // bool
 }
 ```
+
+### RiskLevel
+
+```php
+RiskLevel::LOW; RiskLevel::MEDIUM; RiskLevel::HIGH;
+RiskLevel::is_valid( $risk );   // bool
+RiskLevel::label( $risk );      // 'LOW', 'MEDIUM', 'HIGH' ('' when invalid)
+```
+
+There is no `CRITICAL` risk level.
+
+### FixPreview
+
+Immutable, zero-write description: `fix_id`, `title`, `description`, `risk`,
+`reversible` (bool), `applicable` (bool), `before` (exact before-state map),
+`options` (list of `{token, label}` selectable actions), `note`. Helper
+`is_valid_token( $token )` validates a submitted action token.
+
+### FixResult
+
+Immutable outcome with a closed status set:
+
+```php
+FixResult::SUCCESS; FixResult::NO_CHANGE; FixResult::STATE_CHANGED;
+FixResult::FAILED; FixResult::ROLLED_BACK;
+```
+
+Fields: `fix_id`, `status`, `message` (safe), `reversible`, `verify_passed`
+(bool|null). Getters: `get_fix_id()`, `get_status()`, `get_message()`,
+`is_reversible()`, `did_verify()`, `to_array()`.
+
+### FixRegistry / FixRunner
+
+```php
+$registry = new FixRegistry();
+$registry->register( $fix );              // throws DuplicateFixException on duplicate ID
+$registry->get( $id );                    // FixInterface|null
+$registry->get_all();                     // ID-sorted
+$registry->get_by_diagnostic_id( $id );   // FixInterface|null
+
+$runner = new FixRunner( $logger );       // Logger|null
+$result = $runner->run_one( $fix, $direction ); // FixResult
+```
+
+`FixRunner` enforces the full lifecycle (preview → applicability → token
+validation → capture → stale-check → apply → verify → rollback), isolates any
+`Throwable`, and logs redacted detail.
+
+### RecoveryPoint (WPDoctor\Recovery)
+
+Minimal, fix-local, immutable before-state: `fix_id` + `before` (scalar map).
 
 ## REST API Architecture (Future)
 

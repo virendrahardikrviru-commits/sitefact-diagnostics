@@ -14,6 +14,10 @@ use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\DiagnosticRegistry;
 use WPDoctor\Diagnostics\DiagnosticRunner;
 use WPDoctor\Diagnostics\Severity;
+use WPDoctor\Fixes\FixRegistry;
+use WPDoctor\Fixes\FixResult;
+use WPDoctor\Fixes\FixRunner;
+use WPDoctor\Fixes\RiskLevel;
 
 /**
  * Class Admin
@@ -44,6 +48,20 @@ class Admin {
 	private $registry;
 
 	/**
+	 * The fix runner, when fixes are available.
+	 *
+	 * @var FixRunner|null
+	 */
+	private $fix_runner;
+
+	/**
+	 * The fix registry, when fixes are available.
+	 *
+	 * @var FixRegistry|null
+	 */
+	private $fix_registry;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.1.0
@@ -51,11 +69,15 @@ class Admin {
 	 * @param Environment          $environment The environment information service.
 	 * @param DiagnosticRunner|null $runner      Optional. The diagnostic runner.
 	 * @param DiagnosticRegistry|null $registry  Optional. The diagnostic registry.
+	 * @param FixRunner|null       $fix_runner  Optional. The fix runner.
+	 * @param FixRegistry|null     $fix_registry Optional. The fix registry.
 	 */
-	public function __construct( Environment $environment, DiagnosticRunner $runner = null, DiagnosticRegistry $registry = null ) {
-		$this->environment = $environment;
-		$this->runner      = $runner;
-		$this->registry    = $registry;
+	public function __construct( Environment $environment, DiagnosticRunner $runner = null, DiagnosticRegistry $registry = null, FixRunner $fix_runner = null, FixRegistry $fix_registry = null ) {
+		$this->environment  = $environment;
+		$this->runner       = $runner;
+		$this->registry     = $registry;
+		$this->fix_runner   = $fix_runner;
+		$this->fix_registry = $fix_registry;
 	}
 
 	/**
@@ -102,6 +124,8 @@ class Admin {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'WP Doctor', 'wp-doctor' ); ?></h1>
+
+			<?php $this->render_fix_notice(); ?>
 
 			<p>
 				<strong><?php esc_html_e( 'Version:', 'wp-doctor' ); ?></strong>
@@ -234,6 +258,8 @@ class Admin {
 								<?php echo esc_html( $result->get_recommendation() ); ?>
 							</p>
 						<?php endif; ?>
+
+						<?php $this->render_fix_controls( $result ); ?>
 					</div>
 				<?php endforeach; ?>
 			<?php endforeach; ?>
@@ -299,6 +325,196 @@ class Admin {
 		}
 
 		return (string) $value;
+	}
+
+	/**
+	 * Render the fix affordance for a diagnostic result, when a fix exists.
+	 *
+	 * Shows the fix preview (exact before values and selectable actions) and,
+	 * when applicable, a plain confirmation form that posts to the admin-post
+	 * handler. All output is escaped. No JavaScript is used.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param \WPDoctor\Diagnostics\DiagnosticResult $result The diagnostic result.
+	 * @return void
+	 */
+	private function render_fix_controls( $result ) {
+		if ( null === $this->fix_registry ) {
+			return;
+		}
+
+		$fix = $this->fix_registry->get_by_diagnostic_id( $result->get_id() );
+
+		if ( null === $fix ) {
+			return;
+		}
+
+		$preview = $fix->get_preview();
+		?>
+		<div class="wp-doctor-fix">
+			<h5><?php echo esc_html( $fix->get_title() ); ?></h5>
+
+			<p>
+				<strong><?php esc_html_e( 'Risk:', 'wp-doctor' ); ?></strong>
+				<?php echo esc_html( RiskLevel::label( $preview->get_risk() ) ); ?>
+			</p>
+
+			<p>
+				<strong><?php esc_html_e( 'Reversible:', 'wp-doctor' ); ?></strong>
+				<?php echo esc_html( $preview->is_reversible() ? 'true' : 'false' ); ?>
+			</p>
+
+			<p><?php echo esc_html( $preview->get_description() ); ?></p>
+
+			<?php if ( ! $preview->is_applicable() ) : ?>
+				<p><em><?php echo esc_html( $preview->get_note() ); ?></em></p>
+			<?php else : ?>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="wp_doctor_fix" />
+					<input type="hidden" name="fix_id" value="<?php echo esc_attr( $fix->get_id() ); ?>" />
+					<?php wp_nonce_field( 'wp_doctor_fix' ); ?>
+					<?php foreach ( $preview->get_options() as $option ) : ?>
+						<label>
+							<input type="radio" name="direction" value="<?php echo esc_attr( $option['token'] ); ?>" required />
+							<?php echo esc_html( $option['label'] ); ?>
+						</label><br />
+					<?php endforeach; ?>
+					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'wp-doctor' ); ?></button></p>
+				</form>
+			<?php endif; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Handle the fix form submission (admin_post_wp_doctor_fix).
+	 *
+	 * Enforces capability and nonce, resolves the fix server-side by ID, runs
+	 * the safety lifecycle, stores a notice, and redirects. The browser is never
+	 * trusted for before/after values; the concrete fix re-reads live state.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return void
+	 */
+	public function handle_fix_post() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-doctor' ) );
+		}
+
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_doctor_fix' ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'wp-doctor' ) );
+		}
+
+		if ( null === $this->fix_registry || null === $this->fix_runner ) {
+			wp_die( esc_html__( 'Fixes are not available.', 'wp-doctor' ) );
+		}
+
+		$fix_id    = isset( $_POST['fix_id'] ) ? (string) $_POST['fix_id'] : '';
+		$direction = isset( $_POST['direction'] ) ? (string) $_POST['direction'] : '';
+
+		$fix = $this->fix_registry->get( $fix_id );
+
+		if ( null === $fix ) {
+			wp_die( esc_html__( 'Unknown fix.', 'wp-doctor' ) );
+		}
+
+		$result = $this->fix_runner->run_one( $fix, $direction, true );
+
+		$this->set_fix_notice( $result );
+
+		$this->redirect_after_fix( admin_url( 'admin.php?page=wp-doctor' ) );
+	}
+
+	/**
+	 * Redirect to the WP Doctor page and terminate the request.
+	 *
+	 * Kept as a single protected seam so tests can observe the redirect target
+	 * without terminating the process, while production always stops after the
+	 * redirect header.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param string $location The redirect target.
+	 * @return void
+	 */
+	protected function redirect_after_fix( $location ) {
+		wp_safe_redirect( $location );
+		exit;
+	}
+
+	/**
+	 * Store a transient notice describing the outcome of a fix.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param FixResult $result The fix result.
+	 * @return void
+	 */
+	private function set_fix_notice( FixResult $result ) {
+		set_transient(
+			$this->fix_notice_key(),
+			array(
+				'status'  => $result->get_status(),
+				'message' => $result->get_message(),
+			),
+			60
+		);
+	}
+
+	/**
+	 * Render (and clear) the fix outcome notice.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return void
+	 */
+	private function render_fix_notice() {
+		$notice = get_transient( $this->fix_notice_key() );
+
+		if ( ! is_array( $notice ) || empty( $notice['message'] ) ) {
+			return;
+		}
+
+		delete_transient( $this->fix_notice_key() );
+
+		$status = isset( $notice['status'] ) ? $notice['status'] : '';
+		?>
+		<div class="notice <?php echo esc_attr( $this->fix_notice_class( $status ) ); ?> is-dismissible">
+			<p><?php echo esc_html( $notice['message'] ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Resolve a WordPress notice class for a fix status.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param string $status A FixResult status.
+	 * @return string
+	 */
+	private function fix_notice_class( $status ) {
+		switch ( $status ) {
+			case FixResult::SUCCESS:
+				return 'notice-success';
+			case FixResult::NO_CHANGE:
+				return 'notice-info';
+			default:
+				return 'notice-warning';
+		}
+	}
+
+	/**
+	 * The transient key for the fix outcome notice.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return string
+	 */
+	private function fix_notice_key() {
+		return 'wp_doctor_fix_notice';
 	}
 
 	/**

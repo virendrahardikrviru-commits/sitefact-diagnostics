@@ -29,6 +29,9 @@ use WPDoctor\Diagnostics\PhpVersionDiagnostic;
 use WPDoctor\Diagnostics\PluginsUpdateAvailableDiagnostic;
 use WPDoctor\Diagnostics\SiteUrlsDiagnostic;
 use WPDoctor\Diagnostics\WordPressVersionDiagnostic;
+use WPDoctor\Fixes\FixRegistry;
+use WPDoctor\Fixes\FixRunner;
+use WPDoctor\Fixes\SiteUrlsAlignFix;
 
 /**
  * Class Plugin
@@ -123,6 +126,15 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ActiveThemeDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Recovery/RecoveryPoint.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/RiskLevel.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixInterface.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixPreview.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixResult.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/DuplicateFixException.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixRegistry.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixRunner.php';
+		require_once WP_DOCTOR_DIR . 'includes/Fixes/SiteUrlsAlignFix.php';
 	}
 
 	/**
@@ -140,10 +152,16 @@ final class Plugin {
 
 		$runner = new DiagnosticRunner( $logger );
 
-		$admin = new Admin( $environment, $runner, $registry );
+		$fix_registry = new FixRegistry();
+		$this->register_fixes( $fix_registry );
+
+		$fix_runner = new FixRunner( $logger );
+
+		$admin = new Admin( $environment, $runner, $registry, $fix_runner, $fix_registry );
 
 		$this->loader->add_action( 'admin_menu', $admin, 'register_menu' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_assets' );
+		$this->loader->add_action( 'admin_post_wp_doctor_fix', $admin, 'handle_fix_post' );
 
 		$logger->debug( 'WP Doctor core initialized.' );
 	}
@@ -177,5 +195,21 @@ final class Plugin {
 		$registry->register( new DatabaseCharsetCollationDiagnostic() );
 		$registry->register( new PluginsUpdateAvailableDiagnostic() );
 		$registry->register( new ActiveThemeDiagnostic() );
+	}
+
+	/**
+	 * Register every fix explicitly.
+	 *
+	 * Registration order does not affect retrieval order: the registry sorts by
+	 * fix ID. Explicit registration (rather than reflection or auto-discovery)
+	 * keeps the mutation surface auditable.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param FixRegistry $registry The registry to populate.
+	 * @return void
+	 */
+	private function register_fixes( FixRegistry $registry ) {
+		$registry->register( new SiteUrlsAlignFix() );
 	}
 }

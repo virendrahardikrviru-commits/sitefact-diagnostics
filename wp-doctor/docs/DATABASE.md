@@ -75,6 +75,11 @@ WordPress transients are time-limited key-value pairs. They are:
 - Perfect for temporary data
 - Highly cacheable
 
+**Phase 4 usage:** the fix engine introduces no custom tables. The fix outcome
+admin notice is stored in a short-lived transient (`wp_doctor_fix_notice`, 60s),
+and the fix-local before-state is held in memory for same-request rollback. No
+scan history, recovery history, or persistent results storage is introduced.
+
 ### Transient Usage Pattern
 
 ```php

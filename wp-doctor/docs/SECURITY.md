@@ -384,6 +384,33 @@ so it cannot leak plugin-structure details or user data. All Phase 3
 diagnostics remain read-only, perform no HTTP requests, and never force a
 WordPress/plugin/theme update check.
 
+## Fix Safety (Phase 4)
+
+Phase 4 introduces the plugin's first write-capable code. The following rules
+bound that mutation surface:
+
+- **Read/write boundary.** `WPDoctor\Diagnostics` remains 100% read-only. Only
+  the `WPDoctor\Fixes` module performs writes, and only through concrete fix
+  classes. A fix references its diagnostic by stable ID; a diagnostic never
+  invokes a fix.
+- **Every mutation requires:** `manage_options` capability, a valid nonce
+  (`wp_verify_nonce`), an explicit user confirmation, a server-side precondition
+  re-check against live state, before-state capture, apply, verification, and
+  rollback on failure (when reversible).
+- **No generic execution.** The `FixRunner` is an orchestrator over registered,
+  concrete `FixInterface` implementations. It never accepts arbitrary SQL,
+  option keys, callables, or code. The Admin POST handler resolves fixes by a
+  whitelisted registry ID and never trusts browser-supplied before/after values.
+- **No arbitrary SQL / filesystem / HTTP.** Phase 4 fixes use only
+  `update_option()`; there are no `$wpdb` writes, no `delete_option()`, no file
+  writes, no plugin/theme installation, no HTTP, no cron, no REST/AJAX.
+- **No guessing.** `fix.site_urls_align` never infers the "correct" URL from a
+  mismatch; it offers only two strictly-validated action tokens and writes
+  exactly one option.
+- **Audit logging.** Fix outcomes (success/failure/rollback) are logged via the
+  existing `Logger` with redaction; raw exception messages are never logged or
+  shown.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

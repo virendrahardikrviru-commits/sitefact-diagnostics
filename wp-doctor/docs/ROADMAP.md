@@ -135,23 +135,23 @@ were deferred to later phases (see DECISIONS.md ADR-016).
 
 ---
 
-## Phase 4: Plugin Doctor
+## Phase 4: Safe Fix Foundation
 
-**Goal:** Implement plugin-level diagnostics
+**Status:** Complete
+**Goal:** Introduce the minimal write-capable fix path
 
-### Tasks
-
-- [ ] Active plugins scan
-- [ ] Plugin conflicts detection (basic)
-- [ ] Plugin update availability
-- [ ] Plugin activation issues
-- [ ] Plugin deactivation issues
-- [ ] Write tests
+**Actual scope (supersedes the "Plugin Doctor" sketch below):** Phase 4
+delivered the Safe Fix Foundation — `FixInterface`, `RiskLevel`, `FixPreview`,
+`FixResult`, `RecoveryPoint`, `FixRegistry`, `FixRunner` — plus exactly one
+reversible, option-level fix (`fix.site_urls_align`) and a nonce-protected,
+capability-gated Admin preview/confirmation flow. Diagnostics remain read-only;
+only concrete fixes perform writes. See DECISIONS.md ADR-017.
 
 ### Deliverables
 
-- Plugin diagnostics module
-- Plugin conflict detection
+- Fix lifecycle (preview → capture → apply → verify → rollback)
+- One reference fix with full test coverage
+- Admin preview/confirmation flow
 
 ---
 

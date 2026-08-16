@@ -309,6 +309,151 @@ if ( ! function_exists( 'is_child_theme' ) ) {
 	}
 }
 
+// Nonce, transient, sanitization, and redirect stand-ins for the fix engine.
+if ( ! function_exists( 'sanitize_key' ) ) {
+	/**
+	 * Stand-in for sanitize_key() that lowercases and strips unsafe characters.
+	 *
+	 * @param string $key The key to sanitize.
+	 * @return string
+	 */
+	function sanitize_key( $key ) {
+		return strtolower( preg_replace( '/[^a-z0-9_\-]/', '', (string) $key ) );
+	}
+}
+
+if ( ! function_exists( 'wp_create_nonce' ) ) {
+	/**
+	 * Stand-in for wp_create_nonce() returning a deterministic token.
+	 *
+	 * @param string $action The nonce action.
+	 * @return string
+	 */
+	function wp_create_nonce( $action ) {
+		return 'nonce-' . $action;
+	}
+}
+
+if ( ! function_exists( 'wp_verify_nonce' ) ) {
+	/**
+	 * Stand-in for wp_verify_nonce() checking against the deterministic token.
+	 *
+	 * @param string $nonce  The nonce to verify.
+	 * @param string $action The nonce action.
+	 * @return bool
+	 */
+	function wp_verify_nonce( $nonce, $action ) {
+		return is_string( $nonce ) && $nonce === wp_create_nonce( $action );
+	}
+}
+
+if ( ! function_exists( 'wp_nonce_field' ) ) {
+	/**
+	 * Stand-in for wp_nonce_field() emitting a hidden nonce input.
+	 *
+	 * @param string $action  The nonce action.
+	 * @param string $name    The input name.
+	 * @param bool   $referer Whether to include a referer field.
+	 * @param bool   $echo    Whether to echo or return.
+	 * @return string
+	 */
+	function wp_nonce_field( $action, $name = '_wpnonce', $referer = true, $echo = true ) {
+		$out = '<input type="hidden" name="' . $name . '" value="' . wp_create_nonce( $action ) . '" />';
+
+		if ( $echo ) {
+			echo $out;
+		}
+
+		return $out;
+	}
+}
+
+if ( ! function_exists( 'set_transient' ) ) {
+	$GLOBALS['_wp_doctor_transients'] = array();
+
+	/**
+	 * Stand-in for set_transient() backed by an in-memory store.
+	 *
+	 * @param string $key   Transient key.
+	 * @param mixed  $value Value to store.
+	 * @param int    $ttl   Time to live.
+	 * @return bool
+	 */
+	function set_transient( $key, $value, $ttl = 0 ) {
+		$GLOBALS['_wp_doctor_transients'][ $key ] = $value;
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'get_transient' ) ) {
+	/**
+	 * Stand-in for get_transient() backed by an in-memory store.
+	 *
+	 * @param string $key Transient key.
+	 * @return mixed
+	 */
+	function get_transient( $key ) {
+		return isset( $GLOBALS['_wp_doctor_transients'][ $key ] ) ? $GLOBALS['_wp_doctor_transients'][ $key ] : false;
+	}
+}
+
+if ( ! function_exists( 'delete_transient' ) ) {
+	/**
+	 * Stand-in for delete_transient() backed by an in-memory store.
+	 *
+	 * @param string $key Transient key.
+	 * @return bool
+	 */
+	function delete_transient( $key ) {
+		unset( $GLOBALS['_wp_doctor_transients'][ $key ] );
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'wp_safe_redirect' ) ) {
+	/**
+	 * Stand-in for wp_safe_redirect() recording the target instead of redirecting.
+	 *
+	 * @param string $location The redirect target.
+	 * @return bool
+	 */
+	function wp_safe_redirect( $location ) {
+		if ( ! isset( $GLOBALS['_wp_doctor_redirects'] ) ) {
+			$GLOBALS['_wp_doctor_redirects'] = array();
+		}
+
+		$GLOBALS['_wp_doctor_redirects'][] = $location;
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'admin_url' ) ) {
+	/**
+	 * Stand-in for admin_url() returning a deterministic admin URL.
+	 *
+	 * @param string $path The path relative to the admin root.
+	 * @return string
+	 */
+	function admin_url( $path = '' ) {
+		return 'http://example.com/wp-admin/' . ltrim( $path, '/' );
+	}
+}
+
+if ( ! function_exists( 'esc_url' ) ) {
+	/**
+	 * Stand-in for esc_url() returning the URL unchanged for tests.
+	 *
+	 * @param string $url The URL to escape.
+	 * @return string
+	 */
+	function esc_url( $url ) {
+		return (string) $url;
+	}
+}
+
 // Load the classes under test.
 require_once dirname( __DIR__ ) . '/includes/Core/Config.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Logger.php';
@@ -343,5 +488,14 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseVersionDiagnost
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ActiveThemeDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Recovery/RecoveryPoint.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/RiskLevel.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/FixInterface.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/FixPreview.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/FixResult.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/DuplicateFixException.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/FixRegistry.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/FixRunner.php';
+require_once dirname( __DIR__ ) . '/includes/Fixes/SiteUrlsAlignFix.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Loader.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Plugin.php';

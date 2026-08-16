@@ -649,14 +649,64 @@ fix/recommendation potential, and Free/Pro value.
 
 ---
 
+## ADR-017: Safe Fix Foundation (Phase 4)
+
+**Date:** 2026-08-16
+
+**Context:**
+Phase 4 introduces the plugin's first write-capable code. We needed to define
+the minimum safe abstraction, the read/write boundary, and how fixes relate to
+the existing read-only diagnostics without turning the runner into a generic
+mutation executor.
+
+**Options Considered:**
+1. A generic "execute this option/query/code" mutation mechanism.
+2. A small FixInterface + FixRunner lifecycle, with concrete deterministic fixes
+   and a strict read/write boundary (chosen).
+
+**Decision:**
+Ship a minimal Safe Fix Foundation: `FixInterface`, `RiskLevel`
+(low/medium/high — no "critical"), immutable `FixPreview`/`FixResult`, a
+minimal `RecoveryPoint`, `FixRegistry`, and a `FixRunner` that orchestrates
+preview → applicability → token validation → capture → stale-check → apply →
+verify → rollback. Exactly one concrete fix ships: `fix.site_urls_align`.
+
+A fix references its diagnostic by stable ID; diagnostics remain read-only and
+never invoke fixes. Fixes perform writes only through concrete classes; the
+runner never interprets fix-specific input beyond an approved-action token.
+Recovery is a fix-local before-state snapshot (no custom table, no general
+snapshot system). The first mutation phase permits only `update_option()`
+writes; no SQL, no filesystem writes, no `delete_option()`, no plugin/theme
+installation.
+
+`fix.site_urls_align` never guesses the correct URL: a siteurl/home mismatch
+does not prove which value is correct. It offers two strictly-validated action
+tokens (`use_siteurl`, `use_home`), re-reads live option values at execution,
+writes exactly one option, and is reversible.
+
+**Consequences:**
+- Positive: the "preview → fix → verify → rollback" loop is proven end-to-end
+  on one reversible, option-level fix, fully gated by capability + nonce.
+- Negative: the fix library is intentionally tiny; broader fixes (wp-config,
+  database) are deferred until the safety machinery is proven.
+- Future Impact: Phase 5+ fixes implement the same interface; the runner stays
+  an orchestrator.
+
+**Related:**
+- ADR-008 (no automatic changes)
+- ADR-015 (diagnostic framework design)
+- ARCHITECTURE.md (Fix Architecture)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases:**
+**Decisions to be made in future phases (next ADR number: 018):**
 
-- ADR-016: AI Provider Interface Design (Phase 10)
-- ADR-017: Custom Table Schema (if needed, Phase 8+)
-- ADR-018: License/Subscription Model (Phase 14)
-- ADR-019: WordPress.org Submission Strategy (Phase 15)
+- ADR-018: AI Provider Interface Design (Phase 10+)
+- ADR-019: Custom Table Schema (if needed, Phase 8+)
+- ADR-020: License/Subscription Model (Phase 14)
+- ADR-021: WordPress.org Submission Strategy (Phase 15)
 
 ---
 
