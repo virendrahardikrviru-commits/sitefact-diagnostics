@@ -411,6 +411,27 @@ bound that mutation surface:
   existing `Logger` with redaction; raw exception messages are never logged or
   shown.
 
+## Debug-Log Read Boundary (Phase 5)
+
+Phase 5 introduces the plugin's first filesystem READ via `LogFileReader`. It is
+strictly read-only and bounded:
+
+- **Path boundary:** only paths proven to be descendants of the normalized
+  `WP_CONTENT_DIR` are read. Traversal (`..`), sibling-prefix paths, and
+  symlink escapes are rejected via lexical normalization plus a `realpath`
+  check. Relative custom `WP_DEBUG_LOG` paths are resolved against
+  `WP_CONTENT_DIR`.
+- **Bounded reads:** at most 512 lines / 1 MB of the log tail are read. The
+  whole file is never loaded into memory.
+- **No secret/raw exposure:** the reader exposes only aggregate facts (counts,
+  size, existence). Raw log lines, excerpts, and full paths never cross the
+  reader's public contract or reach diagnostic evidence, so no redaction
+  pipeline is required.
+- **Read-only:** the reader never writes, creates, deletes, truncates, rotates,
+  or locks the log.
+- **No attribution:** diagnostics count error patterns only; they never identify
+  a plugin/theme as responsible and never infer causation.
+
 ## Data Privacy
 
 WP Doctor respects WordPress privacy standards:

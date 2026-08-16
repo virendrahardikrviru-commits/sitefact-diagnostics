@@ -91,6 +91,28 @@ tested against the in-memory Options-API store.
 - `SiteUrlsAlignFixTest` — preview zero-writes, exact single-option writes, no unrelated-option modification, idempotency, invalid-direction refusal, multisite refusal, verification, rollback, and full-runner success/no-change.
 - `AdminFixTest` — capability, missing/invalid nonce, unknown/malicious fix ID, success + notice + redirect, refusal of a malicious direction, and escaped preview output.
 
+## Phase 5 Test Setup
+
+Phase 5 (Error Doctor) is tested with real temporary files under
+`sys_get_temp_dir()` for the reader, and with subclassed `LogFileReader` stubs
+for the diagnostics. No real WordPress installation is required.
+
+**Phase 5 unit tests cover:**
+
+- `LogFileReaderTest` — default/custom path resolution, `WP_DEBUG_LOG`
+  false/true, traversal and multiple-traversal rejection, outside-boundary and
+  sibling-prefix rejection, nested valid paths, missing/unreadable/empty files,
+  bounded line and byte limits, deterministic analysis, malformed content,
+  a throwing seam, no-write verification, realpath-escape (symlink) rejection,
+  and secret-line non-exposure.
+- `ErrorPolicyTest` — the single warning-count threshold.
+- `DebugLogDiagnosticTest` / `ErrorFatalCountDiagnosticTest` /
+  `ErrorWarningCountDiagnosticTest` — healthy/unhealthy/boundary states,
+  unavailable log, severity rules, aggregate-only evidence, and
+  DiagnosticRunner failure isolation for a throwing reader.
+- `Phase3RegistryTest` — extended to 18 diagnostics (unique IDs, deterministic
+  ordering, duplicate-ID rejection).
+
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation
 2. **Multiple Levels** — Unit tests, integration tests, and end-to-end tests

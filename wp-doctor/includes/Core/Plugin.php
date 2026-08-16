@@ -19,8 +19,11 @@ use WPDoctor\Diagnostics\CoreUpdateAvailabilityDiagnostic;
 use WPDoctor\Diagnostics\DatabaseCharsetCollationDiagnostic;
 use WPDoctor\Diagnostics\DatabaseVersionDiagnostic;
 use WPDoctor\Diagnostics\DebugConfigurationDiagnostic;
+use WPDoctor\Diagnostics\DebugLogDiagnostic;
 use WPDoctor\Diagnostics\DiagnosticRegistry;
 use WPDoctor\Diagnostics\DiagnosticRunner;
+use WPDoctor\Diagnostics\ErrorFatalCountDiagnostic;
+use WPDoctor\Diagnostics\ErrorWarningCountDiagnostic;
 use WPDoctor\Diagnostics\FileEditDiagnostic;
 use WPDoctor\Diagnostics\HttpsDiagnostic;
 use WPDoctor\Diagnostics\MemoryLimitDiagnostic;
@@ -99,6 +102,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Core/Config.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Logger.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Environment.php';
+		require_once WP_DOCTOR_DIR . 'includes/Core/LogFileReader.php';
 		require_once WP_DOCTOR_DIR . 'includes/Admin/Admin.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Category.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Severity.php';
@@ -110,6 +114,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DiagnosticRunner.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/VersionPolicy.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PerformancePolicy.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorPolicy.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ByteSize.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/WordPressVersionDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PhpVersionDiagnostic.php';
@@ -126,6 +131,9 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ActiveThemeDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugLogDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorFatalCountDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/ErrorWarningCountDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Recovery/RecoveryPoint.php';
 		require_once WP_DOCTOR_DIR . 'includes/Fixes/RiskLevel.php';
 		require_once WP_DOCTOR_DIR . 'includes/Fixes/FixInterface.php';
@@ -195,6 +203,9 @@ final class Plugin {
 		$registry->register( new DatabaseCharsetCollationDiagnostic() );
 		$registry->register( new PluginsUpdateAvailableDiagnostic() );
 		$registry->register( new ActiveThemeDiagnostic() );
+		$registry->register( new DebugLogDiagnostic() );
+		$registry->register( new ErrorFatalCountDiagnostic() );
+		$registry->register( new ErrorWarningCountDiagnostic() );
 	}
 
 	/**

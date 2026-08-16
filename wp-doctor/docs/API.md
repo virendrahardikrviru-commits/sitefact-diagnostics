@@ -305,6 +305,37 @@ Twelve new diagnostics were added to the three existing ones:
 `database.charset_collation`, `plugins.update_available`,
 `themes.active_theme`.
 
+### Phase 5 (Error Doctor)
+
+Three read-only diagnostics (category `core`) and one service:
+
+`error.debug_log`, `error.fatal_count`, `error.warning_count`.
+
+```php
+// WPDoctor\Core\LogFileReader — strictly read-only, injected into diagnostics.
+$reader = new LogFileReader( $content_dir, $debug_log ); // both optional
+
+$reader->is_enabled();          // bool  (WP_DEBUG_LOG on)
+$reader->exists();              // bool  (file exists)
+$reader->is_available();        // bool  (path valid + file exists + readable)
+$reader->size_bytes();          // int|null
+$reader->last_modified();       // int|null (unix timestamp)
+$reader->fatal_count();         // int (fatal/parse/uncaught in bounded window)
+$reader->warning_count();       // int (warning/notice/deprecation)
+$reader->analyzed_line_count(); // int (bounded window, <= 512 lines)
+$reader->resolve_path();        // string|null (validated path; never in evidence)
+```
+
+`LogFileReader` validates the effective path is a genuine descendant of
+`WP_CONTENT_DIR` (rejecting traversal, sibling-prefix, and symlink escapes) and
+reads at most 512 lines / 1 MB. It never writes and never exposes raw log lines
+or excerpts through its contract.
+
+```php
+// WPDoctor\Diagnostics\ErrorPolicy — the single warning-count threshold.
+ErrorPolicy::WARNING_COUNT_WARNING_THRESHOLD; // 100
+```
+
 ### Example Diagnostic Implementation
 
 ```php

@@ -458,6 +458,7 @@ if ( ! function_exists( 'esc_url' ) ) {
 require_once dirname( __DIR__ ) . '/includes/Core/Config.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Logger.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Environment.php';
+require_once dirname( __DIR__ ) . '/includes/Core/LogFileReader.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Activator.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Deactivator.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Uninstaller.php';
@@ -472,6 +473,7 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticRegistry.php'
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DiagnosticRunner.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/VersionPolicy.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PerformancePolicy.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorPolicy.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ByteSize.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/WordPressVersionDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PhpVersionDiagnostic.php';
@@ -488,6 +490,9 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseVersionDiagnost
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/ActiveThemeDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DebugLogDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorFatalCountDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/ErrorWarningCountDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Recovery/RecoveryPoint.php';
 require_once dirname( __DIR__ ) . '/includes/Fixes/RiskLevel.php';
 require_once dirname( __DIR__ ) . '/includes/Fixes/FixInterface.php';

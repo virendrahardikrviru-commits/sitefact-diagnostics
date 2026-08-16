@@ -199,6 +199,12 @@ Fixes are preview-first, explicitly confirmed, capability- and nonce-gated, and
 reversible. They remain in the Free version; no licensing or gating is
 introduced.
 
+**Phase 5 status:** the "Error Doctor" module is now partially delivered as a
+read-only diagnostic pack: `error.debug_log`, `error.fatal_count`, and
+`error.warning_count` report aggregate facts about the WordPress debug log (with
+no root-cause attribution, no raw-line exposure, and no error fixes). It remains
+Free.
+
 ## Non-Goals
 
 Phase 0 explicitly does NOT include:

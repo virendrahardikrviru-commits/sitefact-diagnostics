@@ -157,21 +157,21 @@ only concrete fixes perform writes. See DECISIONS.md ADR-017.
 
 ## Phase 5: Error Doctor
 
-**Goal:** Implement error detection and logging
+**Status:** Complete
+**Goal:** Implement read-only debug-log diagnostics
 
-### Tasks
-
-- [ ] Log file parser (error_log, debug.log)
-- [ ] Fatal error detection
-- [ ] Warning/notice collection
-- [ ] Error pattern recognition
-- [ ] Error deduplication
-- [ ] Write tests
+**Actual scope (supersedes the task list below):** Phase 5 delivered the Error
+Doctor — a strictly read-only `LogFileReader` (path-validated, bounded, secret
+free) plus three `Category::CORE` diagnostics (`error.debug_log`,
+`error.fatal_count`, `error.warning_count`). It performs no error attribution,
+no error fixes, no log deletion/rotation, and does not access server-level error
+logs. Error pattern recognition and deduplication were deferred (inference risk).
+See DECISIONS.md ADR-018.
 
 ### Deliverables
 
-- Error detection system
-- Log analysis
+- `Core\LogFileReader` (read-only, bounded, path-validated)
+- Three error diagnostics with full test coverage
 
 ---
 

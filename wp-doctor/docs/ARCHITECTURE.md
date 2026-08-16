@@ -378,6 +378,24 @@ The Admin interface groups diagnostics by category using `Category::all()` and
 each group. The wrapper element carries the `wp-doctor-diagnostics--grouped`
 class. All output remains fully escaped.
 
+## Error Doctor (Phase 5)
+
+Phase 5 adds three read-only diagnostics under `Category::CORE` that inspect the
+WordPress debug log:
+
+| ID | Detects |
+|---|---|
+| `error.debug_log` | Whether debug logging is enabled and the log exists, plus its size and mtime |
+| `error.fatal_count` | Count of fatal/parse/uncaught error entries in the bounded log window |
+| `error.warning_count` | Count of warning/notice/deprecation entries in the bounded log window |
+
+They consume facts from `WPDoctor\Core\LogFileReader`, a strictly read-only,
+injected service that resolves and validates the debug-log path (rejecting
+traversal, sibling-prefix, and symlink escapes outside `WP_CONTENT_DIR`) and
+performs a bounded read (at most 512 lines / 1 MB). The reader never exposes raw
+log lines, full paths, or excerpts; diagnostics report aggregate facts only.
+No error attribution, no error fixes, no log deletion/rotation are performed.
+
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path

@@ -699,14 +699,58 @@ writes exactly one option, and is reversible.
 
 ---
 
+## ADR-018: Bounded Debug-Log Read Boundary (Phase 5, Error Doctor)
+
+**Date:** 2026-08-16
+
+**Context:**
+Phase 5 adds the Error Doctor: three read-only diagnostics that inspect the
+WordPress debug log. This introduces the plugin's first filesystem READ, which
+requires a strict boundary to avoid path traversal, symlink escapes, unbounded
+memory use, and secret exposure.
+
+**Options Considered:**
+1. Read the whole `debug.log` and expose lines as evidence.
+2. A dedicated read-only `LogFileReader` with path validation, bounded reading,
+   and aggregate-only output (chosen).
+
+**Decision:**
+Introduce `WPDoctor\Core\LogFileReader` (outside the `Diagnostics` namespace,
+injected into diagnostics). It resolves the effective debug-log path
+(defaulting to `WP_CONTENT_DIR/debug.log`, honoring `WP_DEBUG_LOG`), validates
+the path is a genuine descendant of the normalized `WP_CONTENT_DIR` (rejecting
+traversal, sibling-prefix, and symlink escapes via lexical normalization plus a
+`realpath` check), and reads only a bounded tail (at most 512 lines / 1 MB).
+
+The reader exposes only aggregate facts (enabled, exists, size, mtime, fatal
+count, warning count, analyzed-line count). Raw log lines, full paths, and
+excerpts never cross the reader's public contract or reach `DiagnosticResult`
+evidence. No redaction pipeline is needed because excerpts are out of scope.
+
+**Consequences:**
+- Positive: a safe, bounded, secret-free filesystem-read boundary; three new
+  read-only diagnostics (`error.debug_log`, `error.fatal_count`,
+  `error.warning_count`) using `Category::CORE` and a single
+  `ErrorPolicy::WARNING_COUNT_WARNING_THRESHOLD`.
+- Negative: no error attribution, no error fixes, no log deletion/rotation, no
+  server-level log access (all deferred).
+- Future Impact: any future log-reading feature must reuse `LogFileReader`; the
+  diagnostics never write.
+
+**Related:**
+- SECURITY.md (File Handling, Fix Safety)
+- ARCHITECTURE.md (Error Doctor)
+
+---
+
 ## Future Decisions
 
-**Decisions to be made in future phases (next ADR number: 018):**
+**Decisions to be made in future phases (next ADR number: 019):**
 
-- ADR-018: AI Provider Interface Design (Phase 10+)
-- ADR-019: Custom Table Schema (if needed, Phase 8+)
-- ADR-020: License/Subscription Model (Phase 14)
-- ADR-021: WordPress.org Submission Strategy (Phase 15)
+- ADR-019: AI Provider Interface Design (Phase 10+)
+- ADR-020: Custom Table Schema (if needed, Phase 8+)
+- ADR-021: License/Subscription Model (Phase 14)
+- ADR-022: WordPress.org Submission Strategy (Phase 15)
 
 ---
 
