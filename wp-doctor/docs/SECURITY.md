@@ -1,8 +1,8 @@
-# WP Doctor — Security Document
+# SiteFact Diagnostics — Security Document
 
 ## Overview
 
-Security is a first-class architectural requirement for WP Doctor. This document outlines the security model, threat model, and security practices that guide development.
+Security is a first-class architectural requirement for SiteFact Diagnostics. This document outlines the security model, threat model, and security practices that guide development.
 
 ## Core Security Principles
 
@@ -15,10 +15,10 @@ Security is a first-class architectural requirement for WP Doctor. This document
 
 ## Authentication Model
 
-WP Doctor relies on **WordPress authentication only**. Do NOT implement custom authentication.
+SiteFact Diagnostics relies on **WordPress authentication only**. Do NOT implement custom authentication.
 
 - The plugin is only accessible to users logged into WordPress
-- Capability checks determine what users can do within WP Doctor
+- Capability checks determine what users can do within SiteFact Diagnostics
 - All admin actions require `manage_options` by default
 - Future features may introduce granular capabilities
 
@@ -26,13 +26,13 @@ WP Doctor relies on **WordPress authentication only**. Do NOT implement custom a
 
 ## Authorization Model
 
-WP Doctor uses **WordPress capabilities** for authorization.
+SiteFact Diagnostics uses **WordPress capabilities** for authorization.
 
 ### Core Capability Model
 
 | Capability | Description | Default Role |
 |------------|-------------|---------------|
-| `manage_options` | Full access to WP Doctor | Administrator |
+| `manage_options` | Full access to SiteFact Diagnostics | Administrator |
 
 ### Future Capabilities
 
@@ -267,7 +267,7 @@ public function handle_ajax_action() {
 
 ## File Handling
 
-WP Doctor should NEVER:
+SiteFact Diagnostics should NEVER:
 
 - Accept file uploads (unless required by future features)
 - Execute uploaded files
@@ -285,7 +285,7 @@ If files must be handled:
 
 ## External API Requests
 
-WP Doctor communicates with external APIs only when explicitly required (e.g., future AI providers).
+SiteFact Diagnostics communicates with external APIs only when explicitly required (e.g., future AI providers).
 
 ### Safe External Request Pattern
 
@@ -347,7 +347,7 @@ wp_safe_remote_post( $url, array(
 
 ## Password & Secret Handling
 
-WP Doctor should:
+SiteFact Diagnostics should:
 
 - **Never display passwords** to users (even partially)
 - **Never require password confirmation** for admin actions
@@ -487,7 +487,7 @@ evidence, paths, credentials, or PII, and renders via the existing
 
 ## Data Privacy
 
-WP Doctor respects WordPress privacy standards:
+SiteFact Diagnostics respects WordPress privacy standards:
 
 1. **User Data** — Diagnostic data about users should be minimal
 2. **No Tracking** — Do not track user behavior

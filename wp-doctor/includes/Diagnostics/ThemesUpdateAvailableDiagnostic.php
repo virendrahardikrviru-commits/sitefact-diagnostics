@@ -67,7 +67,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Theme Updates', 'wp-doctor' );
+		return __( 'Theme Updates', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports how many installed themes have a pending update, based on cached update information.', 'wp-doctor' );
+		return __( 'Reports how many installed themes have a pending update, based on cached update information.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -107,7 +107,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 				Severity::INFO,
 				null,
 				array(),
-				__( 'Cached theme update information is not available, so update status could not be determined.', 'wp-doctor' )
+				__( 'Cached theme update information is not available, so update status could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -119,7 +119,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 				Severity::SUCCESS,
 				0,
 				$capped,
-				__( 'All installed themes are up to date.', 'wp-doctor' )
+				__( 'All installed themes are up to date.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -129,7 +129,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 			$capped,
 			sprintf(
 				/* translators: %d: number of themes with updates. */
-				__( '%d theme(s) have a pending update.', 'wp-doctor' ),
+				__( '%d theme(s) have a pending update.', 'sitefact-diagnostics' ),
 				$count
 			)
 		);
@@ -245,13 +245,13 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Update themes with pending updates.', 'wp-doctor' );
+			return __( 'Update themes with pending updates.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep themes up to date.', 'wp-doctor' );
+			return __( 'Keep themes up to date.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Check for theme updates in the WordPress dashboard.', 'wp-doctor' );
+		return __( 'Check for theme updates in the WordPress dashboard.', 'sitefact-diagnostics' );
 	}
 }

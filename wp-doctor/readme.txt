@@ -1,9 +1,9 @@
-=== WP Doctor ===
-Contributors: wp-doctor
+=== SiteFact Diagnostics ===
+Contributors: sitefact-diagnostics
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,10 +11,10 @@ A read-only diagnostic plugin for WordPress that reports concrete, observable si
 
 == Description ==
 
-WP Doctor inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
+SiteFact Diagnostics inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
 
 **Project Philosophy:**
-> WP-Doctor should report what it can prove, not what it merely suspects.
+> SiteFact Diagnostics should report what it can prove, not what it merely suspects.
 
 **Current capabilities:**
 
@@ -24,13 +24,13 @@ WP Doctor inspects a WordPress installation and reports what it can directly obs
 - One reversible fix (`fix.site_urls_align`) with preview, confirmation, verification, and rollback.
 - A capability-gated admin page with fully escaped output.
 
-WP Doctor deliberately avoids speculative diagnosis, plugin blame, root-cause claims, health scoring, AI/ML, arbitrary filesystem scanning, arbitrary SQL, external HTTP, and telemetry. Diagnostics are read-only; the only mutation path is a single, explicitly confirmed, nonce-protected fix.
+SiteFact Diagnostics deliberately avoids speculative diagnosis, plugin blame, root-cause claims, health scoring, AI/ML, arbitrary filesystem scanning, arbitrary SQL, external HTTP, and telemetry. Diagnostics are read-only; the only mutation path is a single, explicitly confirmed, nonce-protected fix.
 
 == Installation ==
 
 1. Upload the plugin to `/wp-content/plugins/wp-doctor/`
 2. Activate the plugin through WordPress admin
-3. Open **WP Doctor** in the admin menu
+3. Open **SiteFact Diagnostics** in the admin menu
 
 == Requirements ==
 
@@ -48,6 +48,10 @@ WP Doctor deliberately avoids speculative diagnosis, plugin blame, root-cause cl
 See docs/SECURITY.md for details.
 
 == Changelog ==
+
+= 1.1.0 =
+* Rebranded public identity to SiteFact Diagnostics (text domain: sitefact-diagnostics).
+* No functional changes.
 
 = 1.0.0 =
 * Initial production release.

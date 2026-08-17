@@ -1,14 +1,14 @@
-# WP Doctor — Product Document
+# SiteFact Diagnostics — Product Document
 
 ## Overview
 
-WP Doctor is an affordable, diagnostic and safe-fix plugin for WordPress website owners. The core product philosophy is:
+SiteFact Diagnostics is an affordable, diagnostic and safe-fix plugin for WordPress website owners. The core product philosophy is:
 
 > **Scan → Diagnose → Explain → Preview → Protect → Fix → Verify → Rollback**
 
 ## Product Vision
 
-WP Doctor is intended to help ordinary website owners answer the fundamental questions about their WordPress installations:
+SiteFact Diagnostics is intended to help ordinary website owners answer the fundamental questions about their WordPress installations:
 
 1. **What is wrong with my WordPress website?**
 2. **How serious is the problem?**
@@ -51,7 +51,7 @@ The user interface must eventually be understandable by a non-technical person w
 
 ## Product Philosophy
 
-**WP Doctor is a diagnostic product, not merely a collection of optimization buttons.**
+**SiteFact Diagnostics is a diagnostic product, not merely a collection of optimization buttons.**
 
 The plugin strictly distinguishes between **FACT** and **INFERENCE**:
 

@@ -59,7 +59,7 @@ class ErrorFatalCountDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Fatal Error Count', 'wp-doctor' );
+		return __( 'Fatal Error Count', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class ErrorFatalCountDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Counts fatal, parse, and uncaught error entries in the debug log.', 'wp-doctor' );
+		return __( 'Counts fatal, parse, and uncaught error entries in the debug log.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -111,11 +111,11 @@ class ErrorFatalCountDiagnostic implements DiagnosticInterface {
 					'title'          => $this->get_title(),
 					'category'       => $this->get_category(),
 					'severity'       => Severity::INFO,
-					'summary'        => __( 'The debug log is not available, so fatal error activity could not be measured.', 'wp-doctor' ),
+					'summary'        => __( 'The debug log is not available, so fatal error activity could not be measured.', 'sitefact-diagnostics' ),
 					'observed'       => null,
 					'expected'       => '0',
 					'evidence'       => $evidence,
-					'recommendation' => __( 'Enable debug logging to collect fatal error information.', 'wp-doctor' ),
+					'recommendation' => __( 'Enable debug logging to collect fatal error information.', 'sitefact-diagnostics' ),
 				)
 			);
 		}
@@ -127,11 +127,11 @@ class ErrorFatalCountDiagnostic implements DiagnosticInterface {
 					'title'          => $this->get_title(),
 					'category'       => $this->get_category(),
 					'severity'       => Severity::SUCCESS,
-					'summary'        => __( 'No fatal, parse, or uncaught errors were found in the debug log.', 'wp-doctor' ),
+					'summary'        => __( 'No fatal, parse, or uncaught errors were found in the debug log.', 'sitefact-diagnostics' ),
 					'observed'       => (string) $fatal,
 					'expected'       => '0',
 					'evidence'       => $evidence,
-					'recommendation' => __( 'Keep the debug log clean and review it periodically.', 'wp-doctor' ),
+					'recommendation' => __( 'Keep the debug log clean and review it periodically.', 'sitefact-diagnostics' ),
 				)
 			);
 		}
@@ -144,13 +144,13 @@ class ErrorFatalCountDiagnostic implements DiagnosticInterface {
 				'severity'       => Severity::WARNING,
 				'summary'        => sprintf(
 					/* translators: %d: number of fatal errors. */
-					__( '%d fatal, parse, or uncaught error(s) were found in the debug log.', 'wp-doctor' ),
+					__( '%d fatal, parse, or uncaught error(s) were found in the debug log.', 'sitefact-diagnostics' ),
 					$fatal
 				),
 				'observed'       => (string) $fatal,
 				'expected'       => '0',
 				'evidence'       => $evidence,
-				'recommendation' => __( 'Review the debug log to investigate the logged fatal errors.', 'wp-doctor' ),
+				'recommendation' => __( 'Review the debug log to investigate the logged fatal errors.', 'sitefact-diagnostics' ),
 			)
 		);
 	}

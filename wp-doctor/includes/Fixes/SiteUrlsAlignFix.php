@@ -54,7 +54,7 @@ class SiteUrlsAlignFix implements FixInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Align Site & Home URLs', 'wp-doctor' );
+		return __( 'Align Site & Home URLs', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class SiteUrlsAlignFix implements FixInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Aligns the WordPress site URL and home URL to a single value that you choose.', 'wp-doctor' );
+		return __( 'Aligns the WordPress site URL and home URL to a single value that you choose.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -144,7 +144,7 @@ class SiteUrlsAlignFix implements FixInterface {
 					$base,
 					array(
 						'applicable' => false,
-						'note'       => __( 'This fix is not available on multisite networks.', 'wp-doctor' ),
+						'note'       => __( 'This fix is not available on multisite networks.', 'sitefact-diagnostics' ),
 					)
 				)
 			);
@@ -156,7 +156,7 @@ class SiteUrlsAlignFix implements FixInterface {
 					$base,
 					array(
 						'applicable' => false,
-						'note'       => __( 'The site or home URL could not be read.', 'wp-doctor' ),
+						'note'       => __( 'The site or home URL could not be read.', 'sitefact-diagnostics' ),
 					)
 				)
 			);
@@ -168,7 +168,7 @@ class SiteUrlsAlignFix implements FixInterface {
 					$base,
 					array(
 						'applicable' => false,
-						'note'       => __( 'The site and home URLs are already aligned.', 'wp-doctor' ),
+						'note'       => __( 'The site and home URLs are already aligned.', 'sitefact-diagnostics' ),
 					)
 				)
 			);
@@ -184,7 +184,7 @@ class SiteUrlsAlignFix implements FixInterface {
 							'token' => self::DIRECTION_USE_SITEURL,
 							'label' => sprintf(
 								/* translators: %s: the current site URL value. */
-								__( 'Set Home URL to %s', 'wp-doctor' ),
+								__( 'Set Home URL to %s', 'sitefact-diagnostics' ),
 								$siteurl
 							),
 						),
@@ -192,7 +192,7 @@ class SiteUrlsAlignFix implements FixInterface {
 							'token' => self::DIRECTION_USE_HOME,
 							'label' => sprintf(
 								/* translators: %s: the current home URL value. */
-								__( 'Set Site URL to %s', 'wp-doctor' ),
+								__( 'Set Site URL to %s', 'sitefact-diagnostics' ),
 								$home
 							),
 						),

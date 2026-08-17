@@ -76,7 +76,7 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Update Availability', 'wp-doctor' );
+		return __( 'Update Availability', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -98,7 +98,7 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether a WordPress core update is available based on cached update information.', 'wp-doctor' );
+		return __( 'Reports whether a WordPress core update is available based on cached update information.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 				null,
 				$current_version,
 				null,
-				__( 'Cached update information is not available, so update status could not be determined.', 'wp-doctor' )
+				__( 'Cached update information is not available, so update status could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -131,7 +131,7 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 				true,
 				$current_version,
 				$latest_version,
-				__( 'A WordPress core update is available.', 'wp-doctor' )
+				__( 'A WordPress core update is available.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -141,7 +141,7 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 				false,
 				$current_version,
 				$latest_version,
-				__( 'WordPress is up to date.', 'wp-doctor' )
+				__( 'WordPress is up to date.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -150,7 +150,7 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 			null,
 			$current_version,
 			$latest_version,
-			__( 'Update status could not be determined from cached information.', 'wp-doctor' )
+			__( 'Update status could not be determined from cached information.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -300,13 +300,13 @@ class CoreUpdateAvailabilityDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Update WordPress to the latest available version.', 'wp-doctor' );
+			return __( 'Update WordPress to the latest available version.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep WordPress up to date with the latest security releases.', 'wp-doctor' );
+			return __( 'Keep WordPress up to date with the latest security releases.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Check for updates in the WordPress dashboard.', 'wp-doctor' );
+		return __( 'Check for updates in the WordPress dashboard.', 'sitefact-diagnostics' );
 	}
 }

@@ -59,7 +59,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Autoloaded Options', 'wp-doctor' );
+		return __( 'Autoloaded Options', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the total size of autoloaded options, which load on every request.', 'wp-doctor' );
+		return __( 'Reports the total size of autoloaded options, which load on every request.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 				Severity::INFO,
 				null,
 				null,
-				__( 'The autoloaded options size could not be determined.', 'wp-doctor' )
+				__( 'The autoloaded options size could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -111,7 +111,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 				Severity::INFO,
 				$count,
 				$bytes,
-				__( 'The autoloaded options size could not be determined.', 'wp-doctor' )
+				__( 'The autoloaded options size could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -120,7 +120,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 				Severity::SUCCESS,
 				$count,
 				$bytes,
-				__( 'The autoloaded options are within a healthy size.', 'wp-doctor' )
+				__( 'The autoloaded options are within a healthy size.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -129,7 +129,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 				Severity::WARNING,
 				$count,
 				$bytes,
-				__( 'The autoloaded options are larger than recommended.', 'wp-doctor' )
+				__( 'The autoloaded options are larger than recommended.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -137,7 +137,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 			Severity::ERROR,
 			$count,
 			$bytes,
-			__( 'The autoloaded options are very large, which can slow every page load.', 'wp-doctor' )
+			__( 'The autoloaded options are very large, which can slow every page load.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -262,17 +262,17 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::ERROR === $severity ) {
-			return __( 'Identify and slim down large autoloaded options.', 'wp-doctor' );
+			return __( 'Identify and slim down large autoloaded options.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Review large autoloaded options for opportunities to reduce their size.', 'wp-doctor' );
+			return __( 'Review large autoloaded options for opportunities to reduce their size.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep the autoloaded options lean.', 'wp-doctor' );
+			return __( 'Keep the autoloaded options lean.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Verify the autoloaded options size.', 'wp-doctor' );
+		return __( 'Verify the autoloaded options size.', 'sitefact-diagnostics' );
 	}
 }

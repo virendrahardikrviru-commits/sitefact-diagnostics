@@ -68,7 +68,7 @@ class ObjectCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Object Cache', 'wp-doctor' );
+		return __( 'Object Cache', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class ObjectCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether a persistent object cache is active.', 'wp-doctor' );
+		return __( 'Reports whether a persistent object cache is active.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class ObjectCacheDiagnostic implements DiagnosticInterface {
 				Severity::SUCCESS,
 				$external,
 				$dropin,
-				__( 'A persistent object cache is active.', 'wp-doctor' )
+				__( 'A persistent object cache is active.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -117,7 +117,7 @@ class ObjectCacheDiagnostic implements DiagnosticInterface {
 			Severity::INFO,
 			$external,
 			$dropin,
-			__( 'No persistent object cache is active.', 'wp-doctor' )
+			__( 'No persistent object cache is active.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -195,9 +195,9 @@ class ObjectCacheDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::INFO === $severity ) {
-			return __( 'Consider enabling a persistent object cache if the site receives significant traffic.', 'wp-doctor' );
+			return __( 'Consider enabling a persistent object cache if the site receives significant traffic.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Keep the object cache active.', 'wp-doctor' );
+		return __( 'Keep the object cache active.', 'sitefact-diagnostics' );
 	}
 }

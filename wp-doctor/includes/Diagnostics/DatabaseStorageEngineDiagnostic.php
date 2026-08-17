@@ -69,7 +69,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Database Storage Engine', 'wp-doctor' );
+		return __( 'Database Storage Engine', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the storage engines used by the database tables.', 'wp-doctor' );
+		return __( 'Reports the storage engines used by the database tables.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 				0,
 				0,
 				0,
-				__( 'The database storage engines could not be determined.', 'wp-doctor' )
+				__( 'The database storage engines could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -126,7 +126,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 				$innodb,
 				$myisam,
 				$other,
-				__( 'No MyISAM tables were detected.', 'wp-doctor' )
+				__( 'No MyISAM tables were detected.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -137,7 +137,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 			$other,
 			sprintf(
 				/* translators: %d: number of MyISAM tables. */
-				__( '%d MyISAM table(s) were detected.', 'wp-doctor' ),
+				__( '%d MyISAM table(s) were detected.', 'sitefact-diagnostics' ),
 				$myisam
 			)
 		);
@@ -291,9 +291,9 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Consider converting MyISAM tables to InnoDB.', 'wp-doctor' );
+			return __( 'Consider converting MyISAM tables to InnoDB.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'All database tables use transactional storage engines.', 'wp-doctor' );
+		return __( 'All database tables use transactional storage engines.', 'sitefact-diagnostics' );
 	}
 }

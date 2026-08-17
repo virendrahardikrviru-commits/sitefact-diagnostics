@@ -1,8 +1,8 @@
-# WP Doctor — API Document
+# SiteFact Diagnostics — API Document
 
 ## Overview
 
-This document outlines the internal API architecture for WP Doctor. These are NOT public APIs but rather internal interfaces that guide future development.
+This document outlines the internal API architecture for SiteFact Diagnostics. These are NOT public APIs but rather internal interfaces that guide future development.
 
 **Note:** Phase 0 does not implement these APIs. They are documented to guide Phase 1+ development.
 
@@ -735,7 +735,7 @@ class AIProviderFactory {
 
 ## Error Handling
 
-WP Doctor APIs use WP_Error for error returns:
+SiteFact Diagnostics APIs use WP_Error for error returns:
 
 ```php
 // Success

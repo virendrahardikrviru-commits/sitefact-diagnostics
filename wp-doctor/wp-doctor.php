@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       WP Doctor
- * Description:       A read-only diagnostic plugin for WordPress that reports concrete, observable site facts.
- * Version:           1.0.0
+ * Plugin Name:       SiteFact Diagnostics
+ * Description:       A read-only diagnostic plugin for WordPress that reports concrete, observable site facts and provides one safe, reversible site URL alignment fix.
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
- * Author:            WP Doctor
+ * Author:            SiteFact Diagnostics
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       wp-doctor
+ * Text Domain:       sitefact-diagnostics
  * Domain Path:       /languages
  *
  * @package WPDoctor
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'WP_DOCTOR_VERSION', '1.0.0' );
+define( 'WP_DOCTOR_VERSION', '1.1.0' );
 define( 'WP_DOCTOR_FILE', __FILE__ );
 define( 'WP_DOCTOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_DOCTOR_URL', plugin_dir_url( __FILE__ ) );

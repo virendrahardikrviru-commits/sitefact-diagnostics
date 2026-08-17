@@ -77,7 +77,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Site & Home URLs', 'wp-doctor' );
+		return __( 'Site & Home URLs', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Compares the WordPress site and home URLs to detect a mismatch.', 'wp-doctor' );
+		return __( 'Compares the WordPress site and home URLs to detect a mismatch.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 				$site_host,
 				$home_host,
 				null,
-				__( 'The site or home URL could not be read, so consistency could not be determined.', 'wp-doctor' )
+				__( 'The site or home URL could not be read, so consistency could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -131,7 +131,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 				$site_host,
 				$home_host,
 				true,
-				__( 'The site and home URLs match.', 'wp-doctor' )
+				__( 'The site and home URLs match.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -141,7 +141,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 				$site_host,
 				$home_host,
 				false,
-				__( 'The site and home URLs differ, which is expected on a multisite network.', 'wp-doctor' )
+				__( 'The site and home URLs differ, which is expected on a multisite network.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -150,7 +150,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 			$site_host,
 			$home_host,
 			false,
-			__( 'The site and home URLs do not match, which can cause redirect loops or mixed-content issues.', 'wp-doctor' )
+			__( 'The site and home URLs do not match, which can cause redirect loops or mixed-content issues.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -269,13 +269,13 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Align the site and home URLs in the WordPress settings to match.', 'wp-doctor' );
+			return __( 'Align the site and home URLs in the WordPress settings to match.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep the site and home URLs consistent.', 'wp-doctor' );
+			return __( 'Keep the site and home URLs consistent.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Review the site and home URL settings.', 'wp-doctor' );
+		return __( 'Review the site and home URL settings.', 'sitefact-diagnostics' );
 	}
 }

@@ -87,7 +87,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'HTTPS', 'wp-doctor' );
+		return __( 'HTTPS', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether the site is served over HTTPS.', 'wp-doctor' );
+		return __( 'Reports whether the site is served over HTTPS.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -132,14 +132,14 @@ class HttpsDiagnostic implements DiagnosticInterface {
 				$home_scheme,
 				$site_scheme,
 				$force_ssl_admin,
-				__( 'The site is served over HTTPS.', 'wp-doctor' )
+				__( 'The site is served over HTTPS.', 'sitefact-diagnostics' )
 			);
 		}
 
 		if ( 'http' === $home_scheme || 'http' === $site_scheme ) {
 			$summary = $ssl
-				? __( 'The site URL uses HTTP, although SSL appears active at the server level (possibly behind a reverse proxy).', 'wp-doctor' )
-				: __( 'The site is served over HTTP rather than HTTPS.', 'wp-doctor' );
+				? __( 'The site URL uses HTTP, although SSL appears active at the server level (possibly behind a reverse proxy).', 'sitefact-diagnostics' )
+				: __( 'The site is served over HTTP rather than HTTPS.', 'sitefact-diagnostics' );
 
 			return $this->build_result(
 				Severity::WARNING,
@@ -157,7 +157,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 			$home_scheme,
 			$site_scheme,
 			$force_ssl_admin,
-			__( 'The HTTPS status could not be determined from the available URL information.', 'wp-doctor' )
+			__( 'The HTTPS status could not be determined from the available URL information.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -301,13 +301,13 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'On a production site, obtain an SSL certificate and force HTTPS so login credentials and session data are encrypted.', 'wp-doctor' );
+			return __( 'On a production site, obtain an SSL certificate and force HTTPS so login credentials and session data are encrypted.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep HTTPS enabled for all site traffic.', 'wp-doctor' );
+			return __( 'Keep HTTPS enabled for all site traffic.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Verify the site and home URL schemes.', 'wp-doctor' );
+		return __( 'Verify the site and home URL schemes.', 'sitefact-diagnostics' );
 	}
 }

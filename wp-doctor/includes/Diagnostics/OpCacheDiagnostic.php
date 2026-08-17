@@ -68,7 +68,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'OPcache', 'wp-doctor' );
+		return __( 'OPcache', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the aggregate status of PHP OPcache.', 'wp-doctor' );
+		return __( 'Reports the aggregate status of PHP OPcache.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				null,
 				null,
 				null,
-				__( 'OPcache status could not be determined.', 'wp-doctor' )
+				__( 'OPcache status could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -128,7 +128,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				$cache_full,
 				$used,
 				$free,
-				__( 'OPcache status could not be determined from the available data.', 'wp-doctor' )
+				__( 'OPcache status could not be determined from the available data.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -140,7 +140,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				$cache_full,
 				$used,
 				$free,
-				__( 'OPcache is disabled.', 'wp-doctor' )
+				__( 'OPcache is disabled.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -152,7 +152,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				true,
 				$used,
 				$free,
-				__( 'OPcache is enabled but its cache is full.', 'wp-doctor' )
+				__( 'OPcache is enabled but its cache is full.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -163,7 +163,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 			$cache_full,
 			$used,
 			$free,
-			__( 'OPcache is enabled and operating normally.', 'wp-doctor' )
+			__( 'OPcache is enabled and operating normally.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -321,17 +321,17 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity, $enabled, $cache_full ) {
 		if ( null === $enabled ) {
-			return __( 'Verify the server OPcache configuration.', 'wp-doctor' );
+			return __( 'Verify the server OPcache configuration.', 'sitefact-diagnostics' );
 		}
 
 		if ( ! $enabled ) {
-			return __( 'OPcache is disabled; enabling it can significantly improve PHP performance.', 'wp-doctor' );
+			return __( 'OPcache is disabled; enabling it can significantly improve PHP performance.', 'sitefact-diagnostics' );
 		}
 
 		if ( true === $cache_full ) {
-			return __( 'OPcache memory is full; consider reviewing and increasing the OPcache memory configuration.', 'wp-doctor' );
+			return __( 'OPcache memory is full; consider reviewing and increasing the OPcache memory configuration.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'OPcache is enabled and operating normally.', 'wp-doctor' );
+		return __( 'OPcache is enabled and operating normally.', 'sitefact-diagnostics' );
 	}
 }

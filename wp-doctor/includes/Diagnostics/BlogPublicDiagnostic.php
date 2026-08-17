@@ -64,7 +64,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Search Visibility', 'wp-doctor' );
+		return __( 'Search Visibility', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether WordPress discourages search engines from indexing the site.', 'wp-doctor' );
+		return __( 'Reports whether WordPress discourages search engines from indexing the site.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				null,
-				__( 'The search-engine visibility setting could not be determined.', 'wp-doctor' )
+				__( 'The search-engine visibility setting could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -111,14 +111,14 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::SUCCESS,
 				true,
-				__( 'The site is visible to search engines.', 'wp-doctor' )
+				__( 'The site is visible to search engines.', 'sitefact-diagnostics' )
 			);
 		}
 
 		return $this->build_result(
 			Severity::WARNING,
 			false,
-			__( 'The site is configured to discourage search engines.', 'wp-doctor' )
+			__( 'The site is configured to discourage search engines.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -203,13 +203,13 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $public ) {
 		if ( null === $public ) {
-			return __( 'Verify the search-engine visibility setting.', 'wp-doctor' );
+			return __( 'Verify the search-engine visibility setting.', 'sitefact-diagnostics' );
 		}
 
 		if ( $public ) {
-			return __( 'The site is visible to search engines.', 'wp-doctor' );
+			return __( 'The site is visible to search engines.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'If this site should be publicly indexable, enable search-engine visibility in Reading settings. Discouraging search engines may be intentional.', 'wp-doctor' );
+		return __( 'If this site should be publicly indexable, enable search-engine visibility in Reading settings. Discouraging search engines may be intentional.', 'sitefact-diagnostics' );
 	}
 }

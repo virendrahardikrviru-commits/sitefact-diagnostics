@@ -68,7 +68,7 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Database Size', 'wp-doctor' );
+		return __( 'Database Size', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the aggregate size and table count of the WordPress database.', 'wp-doctor' );
+		return __( 'Reports the aggregate size and table count of the WordPress database.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -104,19 +104,19 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 		$row = $this->read_row();
 
 		if ( null === $row ) {
-			return $this->build_result( null, null, __( 'The database size could not be determined.', 'wp-doctor' ) );
+			return $this->build_result( null, null, __( 'The database size could not be determined.', 'sitefact-diagnostics' ) );
 		}
 
 		$size  = $this->extract_numeric( $row, 'size_bytes' );
 		$count = $this->extract_numeric( $row, 'table_count' );
 
 		if ( null === $size || null === $count ) {
-			return $this->build_result( $size, $count, __( 'The database size could not be fully determined.', 'wp-doctor' ) );
+			return $this->build_result( $size, $count, __( 'The database size could not be fully determined.', 'sitefact-diagnostics' ) );
 		}
 
 		$summary = sprintf(
 			/* translators: 1: human-readable size, 2: table count. */
-			__( 'The database is approximately %1$s across %2$d tables.', 'wp-doctor' ),
+			__( 'The database is approximately %1$s across %2$d tables.', 'sitefact-diagnostics' ),
 			ByteSize::format( $size ),
 			$count
 		);
@@ -237,7 +237,7 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 					'size_human'  => null !== $size ? ByteSize::format( $size ) : null,
 					'table_count' => $count,
 				),
-				'recommendation' => __( 'Large databases may warrant review, particularly on shared hosting.', 'wp-doctor' ),
+				'recommendation' => __( 'Large databases may warrant review, particularly on shared hosting.', 'sitefact-diagnostics' ),
 			)
 		);
 	}

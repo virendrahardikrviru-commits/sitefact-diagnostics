@@ -61,7 +61,7 @@ final class FixRunner {
 		$recovery = null;
 
 		if ( $this->safe_requires_confirmation( $fix ) && true !== $confirmed ) {
-			return $this->result( $fix, FixResult::NOT_CONFIRMED, __( 'This fix requires explicit confirmation and was not confirmed.', 'wp-doctor' ), null );
+			return $this->result( $fix, FixResult::NOT_CONFIRMED, __( 'This fix requires explicit confirmation and was not confirmed.', 'sitefact-diagnostics' ), null );
 		}
 
 		try {
@@ -81,7 +81,7 @@ final class FixRunner {
 				return $this->result(
 					$fix,
 					FixResult::STATE_CHANGED,
-					__( 'The fix could not be applied because the selection is no longer valid. Please re-run the preview.', 'wp-doctor' ),
+					__( 'The fix could not be applied because the selection is no longer valid. Please re-run the preview.', 'sitefact-diagnostics' ),
 					null
 				);
 			}
@@ -98,7 +98,7 @@ final class FixRunner {
 				return $this->result(
 					$fix,
 					FixResult::STATE_CHANGED,
-					__( 'The site state changed after the preview was shown. No changes were made. Please re-run the preview.', 'wp-doctor' ),
+					__( 'The site state changed after the preview was shown. No changes were made. Please re-run the preview.', 'sitefact-diagnostics' ),
 					null
 				);
 			}
@@ -109,7 +109,7 @@ final class FixRunner {
 				return $this->result(
 					$fix,
 					FixResult::STATE_CHANGED,
-					__( 'The fix could not be applied because the current state no longer matches the preview. No changes were made.', 'wp-doctor' ),
+					__( 'The fix could not be applied because the current state no longer matches the preview. No changes were made.', 'sitefact-diagnostics' ),
 					null
 				);
 			}
@@ -120,7 +120,7 @@ final class FixRunner {
 				$this->attempt_rollback( $fix, $recovery );
 			}
 
-			return $this->result( $fix, FixResult::FAILED, __( 'The fix could not be applied.', 'wp-doctor' ), null );
+			return $this->result( $fix, FixResult::FAILED, __( 'The fix could not be applied.', 'sitefact-diagnostics' ), null );
 		}
 
 		try {
@@ -132,24 +132,24 @@ final class FixRunner {
 				$this->attempt_rollback( $fix, $recovery );
 			}
 
-			return $this->result( $fix, FixResult::FAILED, __( 'The fix was applied but could not be verified.', 'wp-doctor' ), null );
+			return $this->result( $fix, FixResult::FAILED, __( 'The fix was applied but could not be verified.', 'sitefact-diagnostics' ), null );
 		}
 
 		if ( $verified ) {
-			return $this->result( $fix, FixResult::SUCCESS, __( 'The fix was applied successfully.', 'wp-doctor' ), true );
+			return $this->result( $fix, FixResult::SUCCESS, __( 'The fix was applied successfully.', 'sitefact-diagnostics' ), true );
 		}
 
 		if ( $this->safe_reversible( $fix ) ) {
 			if ( $this->attempt_rollback( $fix, $recovery ) ) {
 				$this->log_status( $fix, FixResult::ROLLED_BACK );
 
-				return $this->result( $fix, FixResult::ROLLED_BACK, __( 'The fix was applied but could not be verified, so it was rolled back.', 'wp-doctor' ), false );
+				return $this->result( $fix, FixResult::ROLLED_BACK, __( 'The fix was applied but could not be verified, so it was rolled back.', 'sitefact-diagnostics' ), false );
 			}
 
-			return $this->result( $fix, FixResult::FAILED, __( 'The fix was applied, could not be verified, and could not be rolled back.', 'wp-doctor' ), false );
+			return $this->result( $fix, FixResult::FAILED, __( 'The fix was applied, could not be verified, and could not be rolled back.', 'sitefact-diagnostics' ), false );
 		}
 
-		return $this->result( $fix, FixResult::FAILED, __( 'The fix was applied but could not be verified.', 'wp-doctor' ), false );
+		return $this->result( $fix, FixResult::FAILED, __( 'The fix was applied but could not be verified.', 'sitefact-diagnostics' ), false );
 	}
 
 	/**

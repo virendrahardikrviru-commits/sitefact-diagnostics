@@ -1,8 +1,8 @@
-# WP Doctor — Testing Document
+# SiteFact Diagnostics — Testing Document
 
 ## Overview
 
-This document defines the testing strategy for WP Doctor. Testing is a first-class concern and all future functionality must include appropriate tests.
+This document defines the testing strategy for SiteFact Diagnostics. Testing is a first-class concern and all future functionality must include appropriate tests.
 
 ## Phase 1 Test Setup
 

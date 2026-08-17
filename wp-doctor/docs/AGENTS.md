@@ -1,8 +1,8 @@
-# WP Doctor — Agent Instructions
+# SiteFact Diagnostics — Agent Instructions
 
 ## Overview
 
-This document defines rules and guidelines for AI agents working on the WP Doctor codebase.
+This document defines rules and guidelines for AI agents working on the SiteFact Diagnostics codebase.
 
 ## Pre-Implementation Rules
 

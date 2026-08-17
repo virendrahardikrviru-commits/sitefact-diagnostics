@@ -58,7 +58,7 @@ class ErrorWarningCountDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Warning Count', 'wp-doctor' );
+		return __( 'Warning Count', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class ErrorWarningCountDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Counts warning, notice, and deprecation entries in the debug log.', 'wp-doctor' );
+		return __( 'Counts warning, notice, and deprecation entries in the debug log.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -110,11 +110,11 @@ class ErrorWarningCountDiagnostic implements DiagnosticInterface {
 					'title'          => $this->get_title(),
 					'category'       => $this->get_category(),
 					'severity'       => Severity::INFO,
-					'summary'        => __( 'The debug log is not available, so warning activity could not be measured.', 'wp-doctor' ),
+					'summary'        => __( 'The debug log is not available, so warning activity could not be measured.', 'sitefact-diagnostics' ),
 					'observed'       => null,
 					'expected'       => '0',
 					'evidence'       => $evidence,
-					'recommendation' => __( 'Enable debug logging to collect warning information.', 'wp-doctor' ),
+					'recommendation' => __( 'Enable debug logging to collect warning information.', 'sitefact-diagnostics' ),
 				)
 			);
 		}
@@ -126,11 +126,11 @@ class ErrorWarningCountDiagnostic implements DiagnosticInterface {
 					'title'          => $this->get_title(),
 					'category'       => $this->get_category(),
 					'severity'       => Severity::SUCCESS,
-					'summary'        => __( 'No warnings, notices, or deprecations were found in the debug log.', 'wp-doctor' ),
+					'summary'        => __( 'No warnings, notices, or deprecations were found in the debug log.', 'sitefact-diagnostics' ),
 					'observed'       => (string) $warnings,
 					'expected'       => '0',
 					'evidence'       => $evidence,
-					'recommendation' => __( 'Keep the debug log clean and review it periodically.', 'wp-doctor' ),
+					'recommendation' => __( 'Keep the debug log clean and review it periodically.', 'sitefact-diagnostics' ),
 				)
 			);
 		}
@@ -144,13 +144,13 @@ class ErrorWarningCountDiagnostic implements DiagnosticInterface {
 					'severity'       => Severity::WARNING,
 					'summary'        => sprintf(
 						/* translators: %d: number of warnings. */
-						__( '%d warning(s), notice(s), or deprecation(s) were found in the debug log.', 'wp-doctor' ),
+						__( '%d warning(s), notice(s), or deprecation(s) were found in the debug log.', 'sitefact-diagnostics' ),
 						$warnings
 					),
 					'observed'       => (string) $warnings,
 					'expected'       => '0',
 					'evidence'       => $evidence,
-					'recommendation' => __( 'Review the debug log to investigate the logged warnings and notices.', 'wp-doctor' ),
+					'recommendation' => __( 'Review the debug log to investigate the logged warnings and notices.', 'sitefact-diagnostics' ),
 				)
 			);
 		}
@@ -163,13 +163,13 @@ class ErrorWarningCountDiagnostic implements DiagnosticInterface {
 				'severity'       => Severity::INFO,
 				'summary'        => sprintf(
 					/* translators: %d: number of warnings. */
-					__( '%d warning(s), notice(s), or deprecation(s) were found in the debug log.', 'wp-doctor' ),
+					__( '%d warning(s), notice(s), or deprecation(s) were found in the debug log.', 'sitefact-diagnostics' ),
 					$warnings
 				),
 				'observed'       => (string) $warnings,
 				'expected'       => '0',
 				'evidence'       => $evidence,
-				'recommendation' => __( 'Review the debug log to investigate the logged warnings and notices.', 'wp-doctor' ),
+				'recommendation' => __( 'Review the debug log to investigate the logged warnings and notices.', 'sitefact-diagnostics' ),
 			)
 		);
 	}

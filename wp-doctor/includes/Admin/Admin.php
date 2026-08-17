@@ -95,8 +95,8 @@ class Admin {
 		}
 
 		add_menu_page(
-			__( 'WP Doctor', 'wp-doctor' ),
-			__( 'WP Doctor', 'wp-doctor' ),
+			__( 'SiteFact Diagnostics', 'sitefact-diagnostics' ),
+			__( 'SiteFact Diagnostics', 'sitefact-diagnostics' ),
 			'manage_options',
 			'wp-doctor',
 			array( $this, 'render_page' ),
@@ -115,67 +115,67 @@ class Admin {
 	 */
 	public function render_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'wp-doctor' ) );
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'sitefact-diagnostics' ) );
 		}
 
 		$version   = defined( 'WP_DOCTOR_VERSION' ) ? WP_DOCTOR_VERSION : '0.0.0';
 		$env       = $this->environment->get_all();
-		$multisite = $env['multisite'] ? __( 'Yes', 'wp-doctor' ) : __( 'No', 'wp-doctor' );
-		$debug     = $env['debug'] ? __( 'Enabled', 'wp-doctor' ) : __( 'Disabled', 'wp-doctor' );
+		$multisite = $env['multisite'] ? __( 'Yes', 'sitefact-diagnostics' ) : __( 'No', 'sitefact-diagnostics' );
+		$debug     = $env['debug'] ? __( 'Enabled', 'sitefact-diagnostics' ) : __( 'Disabled', 'sitefact-diagnostics' );
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'WP Doctor', 'wp-doctor' ); ?></h1>
+			<h1><?php esc_html_e( 'SiteFact Diagnostics', 'sitefact-diagnostics' ); ?></h1>
 
 			<?php $this->render_fix_notice(); ?>
 
 			<p>
-				<strong><?php esc_html_e( 'Version:', 'wp-doctor' ); ?></strong>
+				<strong><?php esc_html_e( 'Version:', 'sitefact-diagnostics' ); ?></strong>
 				<?php echo esc_html( $version ); ?>
 			</p>
 
 			<p>
-				<strong><?php esc_html_e( 'Status:', 'wp-doctor' ); ?></strong>
-				<?php esc_html_e( 'Core infrastructure initialized.', 'wp-doctor' ); ?>
+				<strong><?php esc_html_e( 'Status:', 'sitefact-diagnostics' ); ?></strong>
+				<?php esc_html_e( 'Core infrastructure initialized.', 'sitefact-diagnostics' ); ?>
 			</p>
 
-			<h2><?php esc_html_e( 'Environment', 'wp-doctor' ); ?></h2>
+			<h2><?php esc_html_e( 'Environment', 'sitefact-diagnostics' ); ?></h2>
 
 			<table class="widefat striped">
 				<tbody>
 					<tr>
-						<td><?php esc_html_e( 'WordPress Version', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'WordPress Version', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['wordpress']['version'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'PHP Version', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'PHP Version', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['php']['version'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Multisite', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'Multisite', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $multisite ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Active Theme', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'Active Theme', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['theme']['name'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Site Locale', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'Site Locale', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['locale'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Database Version', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'Database Version', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['database']['version'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'WordPress Memory Limit', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'WordPress Memory Limit', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['memory']['wordpress'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'PHP Memory Limit', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'PHP Memory Limit', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['memory']['php'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Debug Mode', 'wp-doctor' ); ?></td>
+						<td><?php esc_html_e( 'Debug Mode', 'sitefact-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $debug ); ?></td>
 					</tr>
 				</tbody>
@@ -214,7 +214,7 @@ class Admin {
 			$grouped[ $category ][] = $result;
 		}
 		?>
-		<h2><?php esc_html_e( 'Diagnostics', 'wp-doctor' ); ?></h2>
+		<h2><?php esc_html_e( 'Diagnostics', 'sitefact-diagnostics' ); ?></h2>
 
 		<?php $this->render_summary( $summary ); ?>
 
@@ -227,12 +227,12 @@ class Admin {
 						<h4><?php echo esc_html( $result->get_title() ); ?></h4>
 
 						<p>
-							<strong><?php esc_html_e( 'Category:', 'wp-doctor' ); ?></strong>
+							<strong><?php esc_html_e( 'Category:', 'sitefact-diagnostics' ); ?></strong>
 							<?php echo esc_html( $result->get_category() ); ?>
 						</p>
 
 						<p>
-							<strong><?php esc_html_e( 'Severity:', 'wp-doctor' ); ?></strong>
+							<strong><?php esc_html_e( 'Severity:', 'sitefact-diagnostics' ); ?></strong>
 							<?php echo esc_html( Severity::label( $result->get_severity() ) ); ?>
 						</p>
 
@@ -242,14 +242,14 @@ class Admin {
 
 						<?php if ( null !== $result->get_observed() ) : ?>
 							<p>
-								<strong><?php esc_html_e( 'Observed:', 'wp-doctor' ); ?></strong>
+								<strong><?php esc_html_e( 'Observed:', 'sitefact-diagnostics' ); ?></strong>
 								<?php echo esc_html( $result->get_observed() ); ?>
 							</p>
 						<?php endif; ?>
 
 						<?php if ( null !== $result->get_expected() ) : ?>
 							<p>
-								<strong><?php esc_html_e( 'Expected:', 'wp-doctor' ); ?></strong>
+								<strong><?php esc_html_e( 'Expected:', 'sitefact-diagnostics' ); ?></strong>
 								<?php echo esc_html( $result->get_expected() ); ?>
 							</p>
 						<?php endif; ?>
@@ -258,7 +258,7 @@ class Admin {
 
 						<?php if ( null !== $result->get_recommendation() ) : ?>
 							<p>
-								<strong><?php esc_html_e( 'Recommendation:', 'wp-doctor' ); ?></strong>
+								<strong><?php esc_html_e( 'Recommendation:', 'sitefact-diagnostics' ); ?></strong>
 								<?php echo esc_html( $result->get_recommendation() ); ?>
 							</p>
 						<?php endif; ?>
@@ -288,7 +288,7 @@ class Admin {
 		foreach ( Severity::all() as $severity ) {
 			$severity_parts[] = sprintf(
 				/* translators: 1: severity label, 2: count. */
-				__( '%1$s: %2$d', 'wp-doctor' ),
+				__( '%1$s: %2$d', 'sitefact-diagnostics' ),
 				Severity::label( $severity ),
 				$summary->get_severity_count( $severity )
 			);
@@ -299,7 +299,7 @@ class Admin {
 		foreach ( Category::all() as $category ) {
 			$category_parts[] = sprintf(
 				/* translators: 1: category label, 2: count. */
-				__( '%1$s: %2$d', 'wp-doctor' ),
+				__( '%1$s: %2$d', 'sitefact-diagnostics' ),
 				ucfirst( $category ),
 				$summary->get_category_count( $category )
 			);
@@ -307,7 +307,7 @@ class Admin {
 		?>
 		<div class="wp-doctor-summary">
 			<p>
-				<strong><?php esc_html_e( 'Diagnostics:', 'wp-doctor' ); ?></strong>
+				<strong><?php esc_html_e( 'Diagnostics:', 'sitefact-diagnostics' ); ?></strong>
 				<?php echo esc_html( (string) $summary->get_total() ); ?>
 			</p>
 			<p><?php echo esc_html( implode( ' · ', $severity_parts ) ); ?></p>
@@ -405,12 +405,12 @@ class Admin {
 			<h5><?php echo esc_html( $fix->get_title() ); ?></h5>
 
 			<p>
-				<strong><?php esc_html_e( 'Risk:', 'wp-doctor' ); ?></strong>
+				<strong><?php esc_html_e( 'Risk:', 'sitefact-diagnostics' ); ?></strong>
 				<?php echo esc_html( RiskLevel::label( $preview->get_risk() ) ); ?>
 			</p>
 
 			<p>
-				<strong><?php esc_html_e( 'Reversible:', 'wp-doctor' ); ?></strong>
+				<strong><?php esc_html_e( 'Reversible:', 'sitefact-diagnostics' ); ?></strong>
 				<?php echo esc_html( $preview->is_reversible() ? 'true' : 'false' ); ?>
 			</p>
 
@@ -429,7 +429,7 @@ class Admin {
 							<?php echo esc_html( $option['label'] ); ?>
 						</label><br />
 					<?php endforeach; ?>
-					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'wp-doctor' ); ?></button></p>
+					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'sitefact-diagnostics' ); ?></button></p>
 				</form>
 			<?php endif; ?>
 		</div>
@@ -449,15 +449,15 @@ class Admin {
 	 */
 	public function handle_fix_post() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-doctor' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'sitefact-diagnostics' ) );
 		}
 
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_doctor_fix' ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'wp-doctor' ) );
+			wp_die( esc_html__( 'Security check failed.', 'sitefact-diagnostics' ) );
 		}
 
 		if ( null === $this->fix_registry || null === $this->fix_runner ) {
-			wp_die( esc_html__( 'Fixes are not available.', 'wp-doctor' ) );
+			wp_die( esc_html__( 'Fixes are not available.', 'sitefact-diagnostics' ) );
 		}
 
 		$fix_id    = isset( $_POST['fix_id'] ) ? (string) $_POST['fix_id'] : '';
@@ -466,7 +466,7 @@ class Admin {
 		$fix = $this->fix_registry->get( $fix_id );
 
 		if ( null === $fix ) {
-			wp_die( esc_html__( 'Unknown fix.', 'wp-doctor' ) );
+			wp_die( esc_html__( 'Unknown fix.', 'sitefact-diagnostics' ) );
 		}
 
 		$result = $this->fix_runner->run_one( $fix, $direction, true );

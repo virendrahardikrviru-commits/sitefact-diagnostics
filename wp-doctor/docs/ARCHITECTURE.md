@@ -1,8 +1,8 @@
-# WP Doctor — Architecture Document
+# SiteFact Diagnostics — Architecture Document
 
 ## Overview
 
-WP Doctor is designed as a modular, testable WordPress plugin with a clear separation of concerns. This document outlines the architectural foundation and principles that guide future development.
+SiteFact Diagnostics is designed as a modular, testable WordPress plugin with a clear separation of concerns. This document outlines the architectural foundation and principles that guide future development.
 
 ## Core Principles
 
@@ -175,7 +175,7 @@ Responsibility: Database schema and operations (future)
 - Data migration
 - Cleanup operations
 
-**Important:** In Phase 0 and beyond, WP Doctor should prefer WordPress options, transients, and APIs over custom tables.
+**Important:** In Phase 0 and beyond, SiteFact Diagnostics should prefer WordPress options, transients, and APIs over custom tables.
 
 ### Security Module
 
@@ -264,12 +264,12 @@ The plugin should be compatible with:
 ### Admin Menu Structure
 
 ```
-WP Doctor (top-level)
+SiteFact Diagnostics (top-level)
 ```
 
 Future menu structure (post-Phase 0):
 ```
-WP Doctor (top-level)
+SiteFact Diagnostics (top-level)
 ├── Dashboard
 ├── WordPress Doctor
 ├── Plugin Doctor
@@ -286,11 +286,11 @@ WP Doctor (top-level)
 ### Capability Model
 
 The plugin uses WordPress standard capabilities:
-- `manage_options` — Full admin access to WP Doctor
+- `manage_options` — Full admin access to SiteFact Diagnostics
 
 Future capability model:
 - `view_wp_doctor` — View diagnostic results
-- `manage_wp_doctor` — Make changes via WP Doctor
+- `manage_wp_doctor` — Make changes via SiteFact Diagnostics
 - `manage_wp_doctor_fixes` — Execute fixes
 
 ## Future: REST API Architecture
@@ -502,7 +502,7 @@ single-fix boundary remain unchanged.
 ## Fix Architecture (Phase 4)
 
 Phase 4 introduces the Safe Fix Foundation: the smallest write-capable path
-from "WP Doctor detected a problem" to "WP Doctor safely fixed it", with a
+from "SiteFact Diagnostics detected a problem" to "SiteFact Diagnostics safely fixed it", with a
 strict read/write boundary between diagnostics and fixes.
 
 ```
@@ -574,7 +574,7 @@ User Interface
 
 **Important Constraints:**
 - AI does NOT directly control WordPress changes
-- AI recommendations pass through deterministic WP Doctor logic
+- AI recommendations pass through deterministic SiteFact Diagnostics logic
 - AI provider is pluggable without changing core plugin
 - No API credentials exposed in logs
 - No sensitive data sent to AI providers

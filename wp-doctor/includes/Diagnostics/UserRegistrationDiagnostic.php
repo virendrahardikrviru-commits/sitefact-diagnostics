@@ -63,7 +63,7 @@ class UserRegistrationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'User Registration', 'wp-doctor' );
+		return __( 'User Registration', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -85,7 +85,7 @@ class UserRegistrationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether open self-registration is enabled.', 'wp-doctor' );
+		return __( 'Reports whether open self-registration is enabled.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -102,7 +102,7 @@ class UserRegistrationDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				null,
-				__( 'The user-registration setting could not be determined.', 'wp-doctor' )
+				__( 'The user-registration setting could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -110,14 +110,14 @@ class UserRegistrationDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::SUCCESS,
 				false,
-				__( 'Open self-registration is disabled.', 'wp-doctor' )
+				__( 'Open self-registration is disabled.', 'sitefact-diagnostics' )
 			);
 		}
 
 		return $this->build_result(
 			Severity::WARNING,
 			true,
-			__( 'Open self-registration is enabled.', 'wp-doctor' )
+			__( 'Open self-registration is enabled.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -191,7 +191,7 @@ class UserRegistrationDiagnostic implements DiagnosticInterface {
 				'evidence'       => array(
 					'users_can_register' => $enabled,
 				),
-				'recommendation' => __( 'Disable open registration unless you need it.', 'wp-doctor' ),
+				'recommendation' => __( 'Disable open registration unless you need it.', 'sitefact-diagnostics' ),
 			)
 		);
 	}

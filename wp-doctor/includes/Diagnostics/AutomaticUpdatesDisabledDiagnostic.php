@@ -66,7 +66,7 @@ class AutomaticUpdatesDisabledDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Automatic Updates Disabled', 'wp-doctor' );
+		return __( 'Automatic Updates Disabled', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -88,7 +88,7 @@ class AutomaticUpdatesDisabledDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether all WordPress automatic updates are globally disabled.', 'wp-doctor' );
+		return __( 'Reports whether all WordPress automatic updates are globally disabled.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -105,7 +105,7 @@ class AutomaticUpdatesDisabledDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				null,
-				__( 'The automatic-updates configuration could not be determined.', 'wp-doctor' )
+				__( 'The automatic-updates configuration could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -113,14 +113,14 @@ class AutomaticUpdatesDisabledDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::WARNING,
 				true,
-				__( 'All automatic updates are globally disabled.', 'wp-doctor' )
+				__( 'All automatic updates are globally disabled.', 'sitefact-diagnostics' )
 			);
 		}
 
 		return $this->build_result(
 			Severity::SUCCESS,
 			false,
-			__( 'Automatic updates are not globally disabled.', 'wp-doctor' )
+			__( 'Automatic updates are not globally disabled.', 'sitefact-diagnostics' )
 		);
 	}
 
@@ -205,13 +205,13 @@ class AutomaticUpdatesDisabledDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $disabled ) {
 		if ( null === $disabled ) {
-			return __( 'Verify the automatic-updates configuration.', 'wp-doctor' );
+			return __( 'Verify the automatic-updates configuration.', 'sitefact-diagnostics' );
 		}
 
 		if ( $disabled ) {
-			return __( 'All automatic updates are disabled; consider enabling them to receive security releases. This global setting is distinct from the core auto-update configuration.', 'wp-doctor' );
+			return __( 'All automatic updates are disabled; consider enabling them to receive security releases. This global setting is distinct from the core auto-update configuration.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Automatic updates are enabled. This global setting is distinct from the core auto-update configuration.', 'wp-doctor' );
+		return __( 'Automatic updates are enabled. This global setting is distinct from the core auto-update configuration.', 'sitefact-diagnostics' );
 	}
 }

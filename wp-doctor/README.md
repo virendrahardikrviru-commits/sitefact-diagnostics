@@ -1,14 +1,14 @@
-# WP Doctor
+# SiteFact Diagnostics
 
 A read-only diagnostic plugin for WordPress that reports concrete, observable site facts.
 
 ## Overview
 
-WP Doctor inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
+SiteFact Diagnostics inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
 
 **Governing principle:**
 
-> WP-Doctor should report what it can prove, not what it merely suspects.
+> SiteFact Diagnostics should report what it can prove, not what it merely suspects.
 
 ## Current Capabilities
 
@@ -21,7 +21,7 @@ WP Doctor inspects a WordPress installation and reports what it can directly obs
 
 ## Security Philosophy
 
-WP Doctor deliberately avoids:
+SiteFact Diagnostics deliberately avoids:
 
 - speculative diagnosis
 - plugin blame and root-cause claims
@@ -42,7 +42,7 @@ The static diagnostic engine is complete (28 diagnostics). Phase 13 added the re
 
 1. Upload the plugin to `/wp-content/plugins/wp-doctor/`
 2. Activate the plugin through WordPress admin
-3. Open **WP Doctor** in the admin menu
+3. Open **SiteFact Diagnostics** in the admin menu
 
 ## Requirements
 
@@ -77,4 +77,4 @@ See [TESTING.md](docs/TESTING.md) for details.
 
 ## License
 
-WP Doctor is licensed under the [GPL v2 or later](https://www.gnu.org/licenses/gpl-2.0.html).
+SiteFact Diagnostics is licensed under the [GPL v2 or later](https://www.gnu.org/licenses/gpl-2.0.html).

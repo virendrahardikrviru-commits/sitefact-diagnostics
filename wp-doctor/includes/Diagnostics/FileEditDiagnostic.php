@@ -59,7 +59,7 @@ class FileEditDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'File Editing', 'wp-doctor' );
+		return __( 'File Editing', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class FileEditDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether WordPress admin file editing is disabled.', 'wp-doctor' );
+		return __( 'Reports whether WordPress admin file editing is disabled.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -97,10 +97,10 @@ class FileEditDiagnostic implements DiagnosticInterface {
 
 		if ( true === $file_edit ) {
 			$severity = Severity::SUCCESS;
-			$summary  = __( 'Admin file editing is disabled.', 'wp-doctor' );
+			$summary  = __( 'Admin file editing is disabled.', 'sitefact-diagnostics' );
 		} else {
 			$severity = Severity::WARNING;
-			$summary  = __( 'Admin file editing is enabled, which widens the attack surface if an editor account is compromised.', 'wp-doctor' );
+			$summary  = __( 'Admin file editing is enabled, which widens the attack surface if an editor account is compromised.', 'sitefact-diagnostics' );
 		}
 
 		return new DiagnosticResult(
@@ -169,9 +169,9 @@ class FileEditDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Unless you actively use the theme and plugin editors, define DISALLOW_FILE_EDIT as true in wp-config.php.', 'wp-doctor' );
+			return __( 'Unless you actively use the theme and plugin editors, define DISALLOW_FILE_EDIT as true in wp-config.php.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Keep file editing disabled.', 'wp-doctor' );
+		return __( 'Keep file editing disabled.', 'sitefact-diagnostics' );
 	}
 }

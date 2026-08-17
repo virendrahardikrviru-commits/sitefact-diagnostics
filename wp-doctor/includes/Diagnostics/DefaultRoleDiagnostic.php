@@ -63,7 +63,7 @@ class DefaultRoleDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Default User Role', 'wp-doctor' );
+		return __( 'Default User Role', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -85,7 +85,7 @@ class DefaultRoleDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the default role assigned to newly registered users.', 'wp-doctor' );
+		return __( 'Reports the default role assigned to newly registered users.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -102,7 +102,7 @@ class DefaultRoleDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				null,
-				__( 'The default user role could not be determined.', 'wp-doctor' )
+				__( 'The default user role could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -112,7 +112,7 @@ class DefaultRoleDiagnostic implements DiagnosticInterface {
 				$role,
 				sprintf(
 					/* translators: %s: the default role slug. */
-					__( 'The default role for new users is %s.', 'wp-doctor' ),
+					__( 'The default role for new users is %s.', 'sitefact-diagnostics' ),
 					$role
 				)
 			);
@@ -123,7 +123,7 @@ class DefaultRoleDiagnostic implements DiagnosticInterface {
 			$role,
 			sprintf(
 				/* translators: %s: the default role slug. */
-				__( 'The default role for new users is %s.', 'wp-doctor' ),
+				__( 'The default role for new users is %s.', 'sitefact-diagnostics' ),
 				$role
 			)
 		);
@@ -191,7 +191,7 @@ class DefaultRoleDiagnostic implements DiagnosticInterface {
 				'evidence'       => array(
 					'default_role' => $role,
 				),
-				'recommendation' => __( 'Set the default role to the least-privileged role.', 'wp-doctor' ),
+				'recommendation' => __( 'Set the default role to the least-privileged role.', 'sitefact-diagnostics' ),
 			)
 		);
 	}

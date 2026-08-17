@@ -60,7 +60,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Administrator Count', 'wp-doctor' );
+		return __( 'Administrator Count', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -82,7 +82,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Counts administrator accounts on the current site to flag lockout and attack-surface risks.', 'wp-doctor' );
+		return __( 'Counts administrator accounts on the current site to flag lockout and attack-surface risks.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				null,
-				__( 'The number of administrators could not be determined.', 'wp-doctor' )
+				__( 'The number of administrators could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -107,7 +107,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::ERROR,
 				$count,
-				__( 'No administrator accounts exist, which means the site cannot be managed.', 'wp-doctor' )
+				__( 'No administrator accounts exist, which means the site cannot be managed.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -115,7 +115,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				$count,
-				__( 'There is a single administrator account, which risks lockout if that account is lost.', 'wp-doctor' )
+				__( 'There is a single administrator account, which risks lockout if that account is lost.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -125,7 +125,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 				$count,
 				sprintf(
 					/* translators: %d: administrator count. */
-					__( 'There are %d administrator accounts, which is a healthy number.', 'wp-doctor' ),
+					__( 'There are %d administrator accounts, which is a healthy number.', 'sitefact-diagnostics' ),
 					$count
 				)
 			);
@@ -136,7 +136,7 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 			$count,
 			sprintf(
 				/* translators: %d: administrator count. */
-				__( 'There are %d administrator accounts, which is a larger attack surface than necessary.', 'wp-doctor' ),
+				__( 'There are %d administrator accounts, which is a larger attack surface than necessary.', 'sitefact-diagnostics' ),
 				$count
 			)
 		);
@@ -233,17 +233,17 @@ class AdministratorCountDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::ERROR === $severity ) {
-			return __( 'Create at least one administrator account.', 'wp-doctor' );
+			return __( 'Create at least one administrator account.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::INFO === $severity ) {
-			return __( 'Consider adding a second administrator account to avoid lockout.', 'wp-doctor' );
+			return __( 'Consider adding a second administrator account to avoid lockout.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Review administrator accounts and remove any that are no longer needed.', 'wp-doctor' );
+			return __( 'Review administrator accounts and remove any that are no longer needed.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Keep administrator accounts limited to those who need them.', 'wp-doctor' );
+		return __( 'Keep administrator accounts limited to those who need them.', 'sitefact-diagnostics' );
 	}
 }

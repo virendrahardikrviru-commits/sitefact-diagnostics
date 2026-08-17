@@ -56,7 +56,7 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Debug Configuration', 'wp-doctor' );
+		return __( 'Debug Configuration', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the WordPress debugging configuration so it can be understood in context.', 'wp-doctor' );
+		return __( 'Reports the WordPress debugging configuration so it can be understood in context.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 					'wp_debug_display' => $this->format_flag( $wp_debug_display ),
 					'script_debug'     => $this->format_flag( $script_debug ),
 				),
-				'recommendation' => __( 'Debug mode is useful during development. On a production site, keep debug display off so error details are not shown to visitors, and prefer writing errors to a log file.', 'wp-doctor' ),
+				'recommendation' => __( 'Debug mode is useful during development. On a production site, keep debug display off so error details are not shown to visitors, and prefer writing errors to a log file.', 'sitefact-diagnostics' ),
 			)
 		);
 	}
@@ -163,17 +163,17 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	 */
 	private function build_summary( $wp_debug, $wp_debug_display ) {
 		if ( null === $wp_debug ) {
-			return __( 'Debug mode is not defined.', 'wp-doctor' );
+			return __( 'Debug mode is not defined.', 'sitefact-diagnostics' );
 		}
 
 		if ( $wp_debug && $wp_debug_display ) {
-			return __( 'Debug mode is enabled with on-screen error display.', 'wp-doctor' );
+			return __( 'Debug mode is enabled with on-screen error display.', 'sitefact-diagnostics' );
 		}
 
 		if ( $wp_debug ) {
-			return __( 'Debug mode is enabled.', 'wp-doctor' );
+			return __( 'Debug mode is enabled.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Debug mode is disabled.', 'wp-doctor' );
+		return __( 'Debug mode is disabled.', 'sitefact-diagnostics' );
 	}
 }

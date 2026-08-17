@@ -1,12 +1,12 @@
-# WP Doctor — Database Document
+# SiteFact Diagnostics — Database Document
 
 ## Overview
 
-WP Doctor's database philosophy prioritizes simplicity and safety. This document outlines the database architecture, schema design principles, and future custom table requirements.
+The SiteFact Diagnostics database philosophy prioritizes simplicity and safety. This document outlines the database architecture, schema design principles, and future custom table requirements.
 
 ## Core Philosophy
 
-**WP Doctor should avoid creating custom database tables unless there is a clear technical requirement.**
+**SiteFact Diagnostics should avoid creating custom database tables unless there is a clear technical requirement.**
 
 Rationale:
 
@@ -56,7 +56,7 @@ delete_option( 'wp_doctor_scan_frequency' );
 
 ### Option Naming Convention
 
-All WP Doctor options should be prefixed with `wp_doctor_`:
+All SiteFact Diagnostics options should be prefixed with `wp_doctor_`:
 
 ```
 wp_doctor_enabled
@@ -101,7 +101,7 @@ delete_transient( 'wp_doctor_scan_results' );
 
 ### Transient Naming Convention
 
-All WP Doctor transients should be prefixed with `wp_doctor_`:
+All SiteFact Diagnostics transients should be prefixed with `wp_doctor_`:
 
 ```
 wp_doctor_scan_results_v1
@@ -230,7 +230,7 @@ class Schema {
 
 ## Data Retention & Cleanup
 
-WP Doctor should NOT accumulate data indefinitely.
+SiteFact Diagnostics should NOT accumulate data indefinitely.
 
 ### Retention Policy
 
@@ -268,7 +268,7 @@ public function cleanup_old_data() {
 
 ## WordPress Multisite Considerations
 
-WP Doctor should support WordPress Multisite properly.
+SiteFact Diagnostics should support WordPress Multisite properly.
 
 ### Options in Multisite
 
@@ -346,7 +346,7 @@ if ( false === $results ) {
 
 ### Backup Compatibility
 
-All WP Doctor data must be included in standard WordPress backups:
+All SiteFact Diagnostics data must be included in standard WordPress backups:
 
 - ✅ Options table — automatically backed up
 - ✅ Custom post types — automatically backed up

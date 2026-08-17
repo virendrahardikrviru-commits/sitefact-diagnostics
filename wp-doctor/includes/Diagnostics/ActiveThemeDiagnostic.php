@@ -86,7 +86,7 @@ class ActiveThemeDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Active Theme', 'wp-doctor' );
+		return __( 'Active Theme', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -108,7 +108,7 @@ class ActiveThemeDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the active theme name and version and whether it is a child theme.', 'wp-doctor' );
+		return __( 'Reports the active theme name and version and whether it is a child theme.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -130,20 +130,20 @@ class ActiveThemeDiagnostic implements DiagnosticInterface {
 				$version,
 				$is_child_theme,
 				$parent_name,
-				__( 'The active theme could not be determined.', 'wp-doctor' )
+				__( 'The active theme could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
 		$summary = sprintf(
 			/* translators: %s: theme name. */
-			__( 'The active theme is %s.', 'wp-doctor' ),
+			__( 'The active theme is %s.', 'sitefact-diagnostics' ),
 			$name
 		);
 
 		if ( $is_child_theme && null !== $parent_name ) {
 			$summary = sprintf(
 				/* translators: 1: theme name, 2: parent theme name. */
-				__( 'The active theme is %1$s, a child theme of %2$s.', 'wp-doctor' ),
+				__( 'The active theme is %1$s, a child theme of %2$s.', 'sitefact-diagnostics' ),
 				$name,
 				$parent_name
 			);
@@ -300,8 +300,8 @@ class ActiveThemeDiagnostic implements DiagnosticInterface {
 					'parent_name'    => $parent_name,
 				),
 				'recommendation' => $is_child_theme
-					? __( 'Keep theme customizations in the child theme.', 'wp-doctor' )
-					: __( 'Consider using a child theme so customizations are not lost on theme updates.', 'wp-doctor' ),
+					? __( 'Keep theme customizations in the child theme.', 'sitefact-diagnostics' )
+					: __( 'Consider using a child theme so customizations are not lost on theme updates.', 'sitefact-diagnostics' ),
 			)
 		);
 	}

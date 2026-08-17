@@ -1,8 +1,8 @@
-# WP Doctor — Development Roadmap
+# SiteFact Diagnostics — Development Roadmap
 
 ## Overview
 
-This document outlines the development roadmap for WP Doctor across 16 phases, from foundation to launch.
+This document outlines the development roadmap for SiteFact Diagnostics across 16 phases, from foundation to launch.
 
 ## Release Schedule
 

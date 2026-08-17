@@ -67,7 +67,7 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'WordPress Version', 'wp-doctor' );
+		return __( 'WordPress Version', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the installed WordPress version and whether it meets the minimum supported version.', 'wp-doctor' );
+		return __( 'Reports the installed WordPress version and whether it meets the minimum supported version.', 'sitefact-diagnostics' );
 	}
 
 	/**
@@ -106,7 +106,7 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::WARNING,
 				$observed,
-				__( 'The WordPress version could not be determined.', 'wp-doctor' )
+				__( 'The WordPress version could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
 
@@ -116,7 +116,7 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 				$observed,
 				sprintf(
 					/* translators: 1: observed version, 2: minimum supported version. */
-					__( 'WordPress %1$s is below the minimum supported version %2$s.', 'wp-doctor' ),
+					__( 'WordPress %1$s is below the minimum supported version %2$s.', 'sitefact-diagnostics' ),
 					$observed,
 					VersionPolicy::MIN_WORDPRESS_VERSION
 				)
@@ -128,7 +128,7 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 			$observed,
 			sprintf(
 				/* translators: %s: observed version. */
-				__( 'WordPress %s meets the minimum supported version.', 'wp-doctor' ),
+				__( 'WordPress %s meets the minimum supported version.', 'sitefact-diagnostics' ),
 				$observed
 			)
 		);
@@ -200,13 +200,13 @@ class WordPressVersionDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::ERROR === $severity ) {
-			return __( 'Update WordPress to a supported version.', 'wp-doctor' );
+			return __( 'Update WordPress to a supported version.', 'sitefact-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Verify the WordPress version is readable on this installation.', 'wp-doctor' );
+			return __( 'Verify the WordPress version is readable on this installation.', 'sitefact-diagnostics' );
 		}
 
-		return __( 'Keep WordPress up to date with the latest security releases.', 'wp-doctor' );
+		return __( 'Keep WordPress up to date with the latest security releases.', 'sitefact-diagnostics' );
 	}
 }
