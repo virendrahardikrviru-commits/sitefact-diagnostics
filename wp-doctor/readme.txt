@@ -1,7 +1,7 @@
 === SiteFact Diagnostics ===
-Contributors: sitefact-diagnostics
+Contributors: virendrasingh06
 Requires at least: 6.0
-Tested up to: 6.4
+Tested up to: 7.0.4
 Requires PHP: 7.4
 Stable tag: 1.1.2
 License: GPL-2.0-or-later
@@ -28,7 +28,7 @@ SiteFact Diagnostics deliberately avoids speculative diagnosis, plugin blame, ro
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/wp-doctor/`
+1. Upload the `sitefact-diagnostics` plugin to `/wp-content/plugins/`
 2. Activate the plugin through WordPress admin
 3. Open **SiteFact Diagnostics** in the admin menu
 
@@ -48,6 +48,10 @@ SiteFact Diagnostics deliberately avoids speculative diagnosis, plugin blame, ro
 See docs/SECURITY.md for details.
 
 == Changelog ==
+
+= 1.1.2 =
+* Updated plugin version metadata to 1.1.2.
+* Updated WordPress.org readme metadata and release documentation.
 
 = 1.1.0 =
 * Rebranded public identity to SiteFact Diagnostics (text domain: sitefact-diagnostics).
