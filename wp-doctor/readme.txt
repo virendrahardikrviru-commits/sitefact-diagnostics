@@ -3,7 +3,7 @@ Contributors: virendrasingh06
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,9 @@ SiteFact Diagnostics deliberately avoids speculative diagnosis, plugin blame, ro
 See docs/SECURITY.md for details.
 
 == Changelog ==
+
+= 1.1.3 =
+* Prepared the WordPress.org release package and finalized release metadata.
 
 = 1.1.2 =
 * Updated plugin version metadata to 1.1.2.

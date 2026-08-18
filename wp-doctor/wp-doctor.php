@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       SiteFact Diagnostics
  * Description:       A read-only diagnostic plugin for WordPress that reports concrete, observable site facts and provides one safe, reversible site URL alignment fix.
- * Version:           1.1.2
+ * Version:           1.1.3
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            SiteFact Diagnostics
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'WP_DOCTOR_VERSION', '1.1.2' );
+define( 'WP_DOCTOR_VERSION', '1.1.3' );
 define( 'WP_DOCTOR_FILE', __FILE__ );
 define( 'WP_DOCTOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_DOCTOR_URL', plugin_dir_url( __FILE__ ) );
