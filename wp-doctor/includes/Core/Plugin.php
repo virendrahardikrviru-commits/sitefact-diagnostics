@@ -88,6 +88,7 @@ final class Plugin {
 	 * @since 0.1.0
 	 */
 	private function __construct() {
+		require_once WP_DOCTOR_DIR . 'includes/Core/Loader.php';
 		$this->loader = new Loader();
 	}
 
@@ -109,6 +110,7 @@ final class Plugin {
 	 */
 	private function load_dependencies() {
 		require_once WP_DOCTOR_DIR . 'includes/Core/Loader.php';
+		require_once WP_DOCTOR_DIR . 'includes/Core/DiagnosticSummary.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Config.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Logger.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Environment.php';
