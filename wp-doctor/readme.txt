@@ -1,7 +1,7 @@
 === SiteFact Diagnostics ===
 Contributors: virendrasingh06
 Requires at least: 6.0
-Tested up to: 7.0.4
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 1.1.2
 License: GPL-2.0-or-later
