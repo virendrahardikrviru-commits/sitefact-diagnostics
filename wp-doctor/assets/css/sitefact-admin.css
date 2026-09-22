@@ -1,0 +1,234 @@
+/**
+ * SiteFact Diagnostics admin dashboard styles.
+ * Scoped to plugin classes only.
+ */
+
+.wp-doctor-dashboard {
+	max-width: 960px;
+	margin-top: 1.5em;
+}
+
+.wp-doctor-summary,
+.wp-doctor-attention,
+.wp-doctor-healthy,
+.wp-doctor-informational,
+.wp-doctor-diagnostics {
+	margin: 0 0 2em;
+}
+
+.wp-doctor-summary-total {
+	font-size: 1.1em;
+}
+
+.wp-doctor-summary-counts {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+	margin: 1em 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wp-doctor-summary-item {
+	margin: 0;
+	padding: 12px 14px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left-width: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.wp-doctor-summary-item--error {
+	border-left-color: #d63638;
+}
+
+.wp-doctor-summary-item--warning {
+	border-left-color: #dba617;
+}
+
+.wp-doctor-summary-item--success {
+	border-left-color: #00a32a;
+}
+
+.wp-doctor-summary-item--info {
+	border-left-color: #72aee6;
+}
+
+.wp-doctor-summary-label,
+.wp-doctor-summary-number {
+	display: block;
+}
+
+.wp-doctor-summary-label {
+	font-weight: 600;
+}
+
+.wp-doctor-summary-number {
+	font-size: 1.75em;
+	line-height: 1.2;
+	margin-top: 4px;
+}
+
+.wp-doctor-summary-categories {
+	color: #50575e;
+}
+
+.wp-doctor-diagnostic {
+	margin: 0 0 1em;
+	padding: 14px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left-width: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.wp-doctor-diagnostic--error {
+	border-left-color: #d63638;
+}
+
+.wp-doctor-diagnostic--warning {
+	border-left-color: #dba617;
+}
+
+.wp-doctor-diagnostic--success {
+	border-left-color: #00a32a;
+}
+
+.wp-doctor-diagnostic--info {
+	border-left-color: #72aee6;
+}
+
+.wp-doctor-diagnostic-header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.wp-doctor-diagnostic-title {
+	margin: 0;
+	font-size: 1.1em;
+}
+
+.wp-doctor-status {
+	margin: 0;
+	padding: 2px 8px;
+	border: 1px solid #c3c4c7;
+	border-radius: 2px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-transform: none;
+}
+
+.wp-doctor-status--error {
+	background: #fcf0f1;
+	border-color: #d63638;
+	border-style: solid;
+}
+
+.wp-doctor-status--error::before {
+	content: "■ ";
+}
+
+.wp-doctor-status--warning {
+	background: #fcf9e8;
+	border-color: #dba617;
+	border-style: dashed;
+}
+
+.wp-doctor-status--warning::before {
+	content: "▲ ";
+}
+
+.wp-doctor-status--success {
+	background: #edfaef;
+	border-color: #00a32a;
+	border-style: solid;
+}
+
+.wp-doctor-status--success::before {
+	content: "● ";
+}
+
+.wp-doctor-status--info {
+	background: #f0f6fc;
+	border-color: #72aee6;
+	border-style: dotted;
+}
+
+.wp-doctor-status--info::before {
+	content: "ℹ ";
+}
+
+.wp-doctor-healthy-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wp-doctor-healthy-list > li {
+	margin: 0;
+}
+
+.wp-doctor-informational-note {
+	max-width: 46em;
+}
+
+.wp-doctor-category {
+	margin: 1.5em 0 0.75em;
+}
+
+.wp-doctor-evidence {
+	margin: 12px 0;
+}
+
+.wp-doctor-fix {
+	margin-top: 1em;
+	padding-top: 1em;
+	border-top: 1px solid #dcdcde;
+}
+
+.wp-doctor-fix h5 {
+	margin: 0 0 0.5em;
+}
+
+.wp-doctor-fix label {
+	display: inline-block;
+	margin: 4px 0;
+}
+
+.wp-doctor-diagnostic details {
+	margin-top: 8px;
+}
+
+.wp-doctor-diagnostic summary {
+	cursor: pointer;
+}
+
+.wp-doctor-diagnostic-details {
+	margin-top: 10px;
+}
+
+@media screen and (max-width: 782px) {
+	.wp-doctor-summary-counts {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.wp-doctor-dashboard {
+		max-width: none;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.wp-doctor-summary-counts {
+		grid-template-columns: 1fr;
+	}
+
+	.wp-doctor-diagnostic-header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
