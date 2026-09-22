@@ -3,7 +3,7 @@ Contributors: virendrasingh06
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,7 +49,7 @@ See docs/SECURITY.md for details.
 
 == Changelog ==
 
-= 1.1.3 =
+= 1.1.4 =
 * Prepared the WordPress.org release package and finalized release metadata.
 
 = 1.1.2 =
