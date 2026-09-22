@@ -734,7 +734,7 @@ class Admin {
 			wp_die( esc_html__( 'You do not have permission to perform this action.', 'sitefact-diagnostics' ) );
 		}
 
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_doctor_fix' ) ) {
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wp_doctor_fix' ) ) {
 			wp_die( esc_html__( 'Security check failed.', 'sitefact-diagnostics' ) );
 		}
 
@@ -742,8 +742,8 @@ class Admin {
 			wp_die( esc_html__( 'Fixes are not available.', 'sitefact-diagnostics' ) );
 		}
 
-		$fix_id    = isset( $_POST['fix_id'] ) ? (string) $_POST['fix_id'] : '';
-		$direction = isset( $_POST['direction'] ) ? (string) $_POST['direction'] : '';
+		$fix_id    = isset( $_POST['fix_id'] ) ? sanitize_text_field( wp_unslash( $_POST['fix_id'] ) ) : '';
+		$direction = isset( $_POST['direction'] ) ? sanitize_text_field( wp_unslash( $_POST['direction'] ) ) : '';
 
 		$fix = $this->fix_registry->get( $fix_id );
 

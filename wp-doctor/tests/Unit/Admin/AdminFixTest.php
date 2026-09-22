@@ -170,7 +170,7 @@ class AdminFixTest extends TestCase {
 	public function test_handle_fix_post_rejects_malicious_fix_id() {
 		$GLOBALS['_wp_doctor_can_manage_options'] = true;
 		$_POST['_wpnonce']                        = $this->valid_nonce();
-		$_POST['fix_id']                          = 'fix.site_urls_align<script>';
+		$_POST['fix_id']                          = 'fix.nope<script>';
 		$_POST['direction']                       = SiteUrlsAlignFix::DIRECTION_USE_SITEURL;
 
 		$this->expectException( WpDieException::class );

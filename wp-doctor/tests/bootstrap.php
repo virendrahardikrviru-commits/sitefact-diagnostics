@@ -325,6 +325,37 @@ if ( ! function_exists( 'sanitize_key' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_unslash' ) ) {
+	/**
+	 * Stand-in for wp_unslash() that strips slashes from a string.
+	 *
+	 * @param mixed $value The value to unslash.
+	 * @return mixed
+	 */
+	function wp_unslash( $value ) {
+		return is_string( $value ) ? stripslashes( $value ) : $value;
+	}
+}
+
+if ( ! function_exists( 'sanitize_text_field' ) ) {
+	/**
+	 * Stand-in for sanitize_text_field() that strips tags and extra whitespace.
+	 *
+	 * @param string $str The field to sanitize.
+	 * @return string
+	 */
+	function sanitize_text_field( $str ) {
+		if ( is_object( $str ) || is_array( $str ) ) {
+			return '';
+		}
+
+		$str = strip_tags( (string) $str );
+		$str = preg_replace( '/[\r\n\t ]+/', ' ', $str );
+
+		return trim( $str );
+	}
+}
+
 if ( ! function_exists( 'wp_create_nonce' ) ) {
 	/**
 	 * Stand-in for wp_create_nonce() returning a deterministic token.
