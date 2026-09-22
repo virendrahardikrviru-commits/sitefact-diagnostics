@@ -23,6 +23,9 @@ if ( ! defined( 'WP_MEMORY_LIMIT' ) ) {
 	define( 'WP_MEMORY_LIMIT', '256M' );
 }
 
+if ( ! defined( 'WP_DOCTOR_DIR' ) ) {
+        define( 'WP_DOCTOR_DIR', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
+}
 // Minimal WordPress Options API stand-in.
 if ( ! function_exists( 'get_option' ) ) {
 	$GLOBALS['_wp_doctor_test_options'] = array();

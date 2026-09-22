@@ -207,7 +207,13 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 			return null;
 		}
 
-		$query = "SELECT `engine`, COUNT(*) AS `cnt` FROM `information_schema`.`TABLES` WHERE `table_schema` = '{$db_name}' GROUP BY `engine`";
+                $query = $wpdb->prepare(
+                        "SELECT `engine`, COUNT(*) AS `cnt`
+                        FROM `information_schema`.`TABLES`
+                        WHERE `table_schema` = %s
+                        GROUP BY `engine`",
+                        $db_name
+                );
 
 		$rows = $wpdb->get_results( $query, 'ARRAY_A' );
 
