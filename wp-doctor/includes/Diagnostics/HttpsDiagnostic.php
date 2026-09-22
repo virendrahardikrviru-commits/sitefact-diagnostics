@@ -244,9 +244,11 @@ class HttpsDiagnostic implements DiagnosticInterface {
 			return null;
 		}
 
-		$parsed = function_exists( 'wp_parse_url' )
-			? wp_parse_url( trim( $url ) )
-			: parse_url( trim( $url ) );
+		if ( ! function_exists( 'wp_parse_url' ) ) {
+			return null;
+		}
+
+		$parsed = wp_parse_url( trim( $url ) );
 
 		if ( ! is_array( $parsed ) || ! isset( $parsed['scheme'] ) ) {
 			return null;
