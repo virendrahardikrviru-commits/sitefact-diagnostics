@@ -31,6 +31,21 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 			public function __construct( $result ) {
 				$this->result = $result;
 			}
+                        public function prepare( $query, ...$args ) {
+                                if ( empty( $args ) ) {
+                                        return $query;
+                                }
+
+                                return vsprintf(
+                                        str_replace( '%s', "'%s'", $query ),
+                                        array_map(
+                                                static function ( $arg ) {
+                                                        return addslashes( (string) $arg );
+                                                },
+                                                $args
+                                        )
+                                );
+                        }
 
 			public function get_row( $query, $output = 'ARRAY_A' ) {
 				$this->last_query = $query;
