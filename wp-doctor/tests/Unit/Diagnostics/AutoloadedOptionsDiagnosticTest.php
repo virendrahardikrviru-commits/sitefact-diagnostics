@@ -158,6 +158,19 @@ class AutoloadedOptionsDiagnosticTest extends TestCase {
 	}
 
 	/**
+	 * The options table identifier is rejected when it contains unsafe characters.
+	 */
+	public function test_invalid_options_table_name_is_info() {
+		$wpdb = $this->make_wpdb( array( 'cnt' => '1', 'bytes' => '512' ) );
+		$wpdb->options = "wp_options; DROP TABLE wp_users";
+
+		$result = ( new AutoloadedOptionsDiagnostic( $wpdb ) )->execute();
+
+		$this->assertSame( Severity::INFO, $result->get_severity() );
+		$this->assertSame( '', $wpdb->last_query );
+	}
+
+	/**
 	 * The "expected" display text derives from the policy threshold, so it
 	 * cannot silently diverge from PerformancePolicy.
 	 */
