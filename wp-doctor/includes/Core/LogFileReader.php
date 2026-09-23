@@ -307,6 +307,7 @@ class LogFileReader {
 	 * @return string|null The bounded tail content, or null when unreadable.
 	 */
 	private function read_tail( $path, $size ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Read-only open of a path already validated inside WP_CONTENT_DIR; read is deliberately bounded to MAX_BYTES; WP_Filesystem has no offset/partial-read API.
 		$handle = @fopen( $path, 'rb' );
 
 		if ( false === $handle ) {
@@ -317,15 +318,19 @@ class LogFileReader {
 		$offset        = ( $size > $bytes_to_read ) ? ( $size - $bytes_to_read ) : 0;
 
 		if ( $offset > 0 ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- Read-only offset positioning on an already-validated, deliberately bounded read; WP_Filesystem has no offset/partial-read API.
 			if ( 0 !== @fseek( $handle, $offset ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Read-only handle cleanup after a validated, bounded read; WP_Filesystem has no offset/partial-read API.
 				fclose( $handle );
 
 				return null;
 			}
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread,WordPress.PHP.NoSilencedErrors.Discouraged -- Read-only read of a path already validated inside WP_CONTENT_DIR; deliberately bounded to MAX_BYTES; WP_Filesystem has no offset/partial-read API.
 		$content = ( $bytes_to_read > 0 ) ? @fread( $handle, $bytes_to_read ) : '';
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Read-only handle cleanup after a validated, bounded read; WP_Filesystem has no offset/partial-read API.
 		fclose( $handle );
 
 		return ( false === $content ) ? null : $content;
@@ -534,6 +539,7 @@ class LogFileReader {
 	 * @return string|false
 	 */
 	protected function real_path( $path ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- Read-only path resolution on an already-validated path; no WP_Filesystem equivalent exists (it has no offset/partial-read API).
 		return @realpath( $path );
 	}
 }
