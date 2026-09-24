@@ -184,6 +184,7 @@ class AutoloadedOptionsDiagnostic implements DiagnosticInterface {
 
 		$query = "SELECT COUNT(*) AS `cnt`, COALESCE(SUM(LENGTH(`option_value`)), 0) AS `bytes` FROM `{$table}` WHERE `autoload` = 'yes'";
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Read-only aggregate query required to inspect current autoloaded-option state; the validated table identifier cannot be parameterized and the result must reflect current database state.
 		$row = $wpdb->get_row( $query, 'ARRAY_A' );
 
 		return is_array( $row ) ? $row : null;

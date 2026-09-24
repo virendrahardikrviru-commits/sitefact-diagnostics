@@ -207,15 +207,17 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 			return null;
 		}
 
-                $query = $wpdb->prepare(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Read-only information_schema query required to report the current storage-engine distribution; caching would make the diagnostic stale.
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
                         "SELECT `engine`, COUNT(*) AS `cnt`
                         FROM `information_schema`.`TABLES`
                         WHERE `table_schema` = %s
                         GROUP BY `engine`",
                         $db_name
-                );
-
-		$rows = $wpdb->get_results( $query, 'ARRAY_A' );
+                ),
+			'ARRAY_A'
+		);
 
 		return is_array( $rows ) ? $rows : null;
 	}

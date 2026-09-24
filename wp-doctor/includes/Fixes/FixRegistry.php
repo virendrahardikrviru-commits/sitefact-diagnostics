@@ -41,6 +41,7 @@ final class FixRegistry {
 		}
 
 		if ( isset( $this->fixes[ $id ] ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message contains a validated fix ID; it is not direct HTML output.
 			throw new DuplicateFixException( sprintf( 'A fix with ID "%s" is already registered.', $id ) );
 		}
 

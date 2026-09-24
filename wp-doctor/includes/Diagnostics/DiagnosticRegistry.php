@@ -46,6 +46,7 @@ final class DiagnosticRegistry {
 		}
 
 		if ( isset( $this->diagnostics[ $id ] ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message contains a validated diagnostic ID; it is not direct HTML output.
 			throw new DuplicateDiagnosticException( sprintf( 'A diagnostic with ID "%s" is already registered.', $id ) );
 		}
 

@@ -187,14 +187,16 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 		if ( null === $db_name ) {
 			return null;
 		}
-                $query = $wpdb->prepare(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Read-only information_schema aggregate query required to report current database size and table count; caching would make the diagnostic stale.
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
                         "SELECT COALESCE(SUM(`data_length` + `index_length`), 0) AS `size_bytes`, COUNT(*) AS `table_count`
                         FROM `information_schema`.`TABLES`
                         WHERE `table_schema` = %s",
                         $db_name
-                );
-
-		$row = $wpdb->get_row( $query, 'ARRAY_A' );
+                ),
+			'ARRAY_A'
+		);
 
 		return is_array( $row ) ? $row : null;
 	}
