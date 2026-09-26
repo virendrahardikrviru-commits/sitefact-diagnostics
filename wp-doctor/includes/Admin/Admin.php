@@ -706,10 +706,13 @@ class Admin {
 					<input type="hidden" name="fix_id" value="<?php echo esc_attr( $fix->get_id() ); ?>" />
 					<?php wp_nonce_field( 'wp_doctor_fix' ); ?>
 					<?php foreach ( $preview->get_options() as $option ) : ?>
+						<?php $bound_token = $preview->get_confirmation_token( $option['token'] ); ?>
 						<label>
 							<input type="radio" name="direction" value="<?php echo esc_attr( $option['token'] ); ?>" required />
 							<?php echo esc_html( $option['label'] ); ?>
-						</label><br />
+						</label>
+						<input type="hidden" name="confirmation_token[<?php echo esc_attr( $option['token'] ); ?>]" value="<?php echo esc_attr( (string) $bound_token ); ?>" />
+						<br />
 					<?php endforeach; ?>
 					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'sitefact-diagnostics' ); ?></button></p>
 				</form>
@@ -745,13 +748,24 @@ class Admin {
 		$fix_id    = isset( $_POST['fix_id'] ) ? sanitize_text_field( wp_unslash( $_POST['fix_id'] ) ) : '';
 		$direction = isset( $_POST['direction'] ) ? sanitize_text_field( wp_unslash( $_POST['direction'] ) ) : '';
 
+		$confirmation_token = '';
+
+		if ( isset( $_POST['confirmation_token'] ) && is_array( $_POST['confirmation_token'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each submitted token is sanitized below.
+			$submitted_tokens = wp_unslash( $_POST['confirmation_token'] );
+
+			if ( isset( $submitted_tokens[ $direction ] ) && is_string( $submitted_tokens[ $direction ] ) ) {
+				$confirmation_token = sanitize_text_field( $submitted_tokens[ $direction ] );
+			}
+		}
+
 		$fix = $this->fix_registry->get( $fix_id );
 
 		if ( null === $fix ) {
 			wp_die( esc_html__( 'Unknown fix.', 'sitefact-diagnostics' ) );
 		}
 
-		$result = $this->fix_runner->run_one( $fix, $direction, true );
+		$result = $this->fix_runner->run_one( $fix, $direction, true, $confirmation_token );
 
 		$this->set_fix_notice( $result );
 

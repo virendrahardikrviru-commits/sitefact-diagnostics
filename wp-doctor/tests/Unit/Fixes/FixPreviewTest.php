@@ -141,4 +141,72 @@ class FixPreviewTest extends TestCase {
 		$this->assertArrayHasKey( 'before', $array );
 		$this->assertArrayHasKey( 'options', $array );
 	}
+
+	/**
+	 * A confirmation token is required only when the preview offers options.
+	 */
+	public function test_confirmation_token_requirement() {
+		$with_options = new FixPreview( $this->data( array( 'options' => array( array( 'token' => 'use_a', 'label' => 'Use A' ) ) ) ) );
+		$without      = new FixPreview( $this->data() );
+
+		$this->assertTrue( $with_options->requires_confirmation_token() );
+		$this->assertFalse( $without->requires_confirmation_token() );
+	}
+
+	/**
+	 * The confirmation token is deterministic and bound to the direction.
+	 */
+	public function test_confirmation_token_is_deterministic_and_direction_bound() {
+		$preview = new FixPreview(
+			$this->data(
+				array(
+					'options' => array(
+						array( 'token' => 'use_a', 'label' => 'Use A' ),
+						array( 'token' => 'use_b', 'label' => 'Use B' ),
+					),
+				)
+			)
+		);
+
+		$token_a = $preview->get_confirmation_token( 'use_a' );
+		$token_b = $preview->get_confirmation_token( 'use_b' );
+
+		$this->assertIsString( $token_a );
+		$this->assertSame( $token_a, $preview->get_confirmation_token( 'use_a' ) );
+		$this->assertNotSame( $token_a, $token_b );
+	}
+
+	/**
+	 * An invalid direction produces no token.
+	 */
+	public function test_confirmation_token_null_for_invalid_direction() {
+		$preview = new FixPreview( $this->data( array( 'options' => array( array( 'token' => 'use_a', 'label' => 'Use A' ) ) ) ) );
+
+		$this->assertNull( $preview->get_confirmation_token( 'use_b' ) );
+		$this->assertNull( $preview->get_confirmation_token( null ) );
+	}
+
+	/**
+	 * The token changes when the previewed before-state changes.
+	 */
+	public function test_confirmation_token_depends_on_before_state() {
+		$options = array( array( 'token' => 'use_a', 'label' => 'Use A' ) );
+		$one     = new FixPreview( $this->data( array( 'options' => $options, 'before' => array( 'a' => 1 ) ) ) );
+		$two     = new FixPreview( $this->data( array( 'options' => $options, 'before' => array( 'a' => 2 ) ) ) );
+
+		$this->assertNotSame(
+			$one->get_confirmation_token( 'use_a' ),
+			$two->get_confirmation_token( 'use_a' )
+		);
+	}
+
+	/**
+	 * Without options, the token binds the before-state and the empty direction.
+	 */
+	public function test_confirmation_token_without_options() {
+		$preview = new FixPreview( $this->data() );
+
+		$this->assertIsString( $preview->get_confirmation_token( null ) );
+		$this->assertNull( $preview->get_confirmation_token( 'unexpected' ) );
+	}
 }

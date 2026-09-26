@@ -250,6 +250,72 @@ final class FixPreview {
 	}
 
 	/**
+	 * Whether this preview requires a value-bound confirmation token.
+	 *
+	 * A fix that offers selectable actions binds the confirmation to the exact
+	 * previewed before-state and the chosen action. A deterministic fix with no
+	 * options has nothing to bind beyond its before-state, so it does not
+	 * require a token.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return bool
+	 */
+	public function requires_confirmation_token() {
+		return ! empty( $this->options );
+	}
+
+	/**
+	 * Build the value-bound confirmation token for a chosen direction.
+	 *
+	 * The token is a deterministic, server-recomputable digest of the preview's
+	 * trusted state: the fix ID, the exact before-state, the offered action
+	 * tokens, and the selected direction. It carries no secret and is not an
+	 * authorization credential; authority remains the capability check and the
+	 * nonce. Its purpose is to bind the final confirmation to the exact state
+	 * and action that the preview displayed, so a token issued for one state or
+	 * direction cannot validate against another.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string|null $direction The selected action token (null/'' when the
+	 *                               preview offers no options).
+	 * @return string|null A hex token, or null when the direction is invalid.
+	 */
+	public function get_confirmation_token( $direction = null ) {
+		if ( ! empty( $this->options ) ) {
+			if ( ! $this->is_valid_token( $direction ) ) {
+				return null;
+			}
+		} elseif ( null !== $direction && '' !== $direction ) {
+			return null;
+		}
+
+		$before = $this->before;
+
+		if ( is_array( $before ) ) {
+			ksort( $before );
+		}
+
+		$option_tokens = array();
+
+		foreach ( $this->options as $option ) {
+			if ( isset( $option['token'] ) ) {
+				$option_tokens[] = $option['token'];
+			}
+		}
+
+		$payload = array(
+			'fix_id'    => $this->fix_id,
+			'direction' => (string) $direction,
+			'before'    => $before,
+			'options'   => $option_tokens,
+		);
+
+		return hash( 'sha256', serialize( $payload ) );
+	}
+
+	/**
 	 * Return a predictable, serializable representation.
 	 *
 	 * @since 0.4.0

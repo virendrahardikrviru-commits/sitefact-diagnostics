@@ -281,7 +281,9 @@ class SiteUrlsAlignFixTest extends TestCase {
 			}
 		};
 
-		$result = ( new FixRunner() )->run_one( $fix, SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true );
+		$token = $fix->get_preview()->get_confirmation_token( SiteUrlsAlignFix::DIRECTION_USE_SITEURL );
+
+		$result = ( new FixRunner() )->run_one( $fix, SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true, $token );
 
 		$this->assertSame( FixResult::ROLLED_BACK, $result->get_status() );
 		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['siteurl'] );
@@ -294,10 +296,25 @@ class SiteUrlsAlignFixTest extends TestCase {
 	public function test_runner_applies_successfully() {
 		$this->seed( 'https://a.example', 'https://b.example' );
 
-		$result = ( new FixRunner() )->run_one( new SiteUrlsAlignFix(), SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true );
+		$fix   = new SiteUrlsAlignFix();
+		$token = $fix->get_preview()->get_confirmation_token( SiteUrlsAlignFix::DIRECTION_USE_SITEURL );
+
+		$result = ( new FixRunner() )->run_one( $fix, SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true, $token );
 
 		$this->assertSame( FixResult::SUCCESS, $result->get_status() );
 		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['home'] );
+	}
+
+	/**
+	 * The runner rejects a missing value-bound confirmation token without writing.
+	 */
+	public function test_runner_missing_confirmation_token_is_state_changed() {
+		$this->seed( 'https://a.example', 'https://b.example' );
+
+		$result = ( new FixRunner() )->run_one( new SiteUrlsAlignFix(), SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true );
+
+		$this->assertSame( FixResult::STATE_CHANGED, $result->get_status() );
+		$this->assertSame( 'https://b.example', $GLOBALS['_wp_doctor_test_options']['home'] );
 	}
 
 	/**

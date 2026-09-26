@@ -132,6 +132,10 @@ class AdminFixTest extends TestCase {
 		$_POST['fix_id']                          = 'fix.site_urls_align';
 		$_POST['direction']                       = SiteUrlsAlignFix::DIRECTION_USE_SITEURL;
 
+		$token = ( new SiteUrlsAlignFix() )->get_preview()->get_confirmation_token( SiteUrlsAlignFix::DIRECTION_USE_SITEURL );
+
+		$_POST['confirmation_token'] = array( SiteUrlsAlignFix::DIRECTION_USE_SITEURL => $token );
+
 		$this->make_admin()->handle_fix_post();
 
 		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['home'] );
@@ -140,6 +144,27 @@ class AdminFixTest extends TestCase {
 		$this->assertSame( 'success', $notice['status'] );
 
 		$this->assertContains( 'http://example.com/wp-admin/admin.php?page=wp-doctor', $GLOBALS['_wp_doctor_redirects'] );
+	}
+
+	/**
+	 * A submission without the value-bound confirmation token is refused.
+	 */
+	public function test_handle_fix_post_rejects_missing_confirmation_token() {
+		$GLOBALS['_wp_doctor_test_options']['siteurl'] = 'https://a.example';
+		$GLOBALS['_wp_doctor_test_options']['home']    = 'https://b.example';
+
+		$GLOBALS['_wp_doctor_can_manage_options'] = true;
+		$_POST['_wpnonce']                        = $this->valid_nonce();
+		$_POST['fix_id']                          = 'fix.site_urls_align';
+		$_POST['direction']                       = SiteUrlsAlignFix::DIRECTION_USE_SITEURL;
+
+		$this->make_admin()->handle_fix_post();
+
+		// Nothing was written and the fix reported a state mismatch.
+		$this->assertSame( 'https://b.example', $GLOBALS['_wp_doctor_test_options']['home'] );
+
+		$notice = get_transient( 'wp_doctor_fix_notice' );
+		$this->assertSame( 'state_changed', $notice['status'] );
 	}
 
 	/**

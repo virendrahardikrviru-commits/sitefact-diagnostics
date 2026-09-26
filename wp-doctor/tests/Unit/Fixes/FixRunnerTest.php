@@ -426,4 +426,93 @@ class FixRunnerTest extends TestCase {
 
 		$this->assertSame( FixResult::FAILED, $result->get_status() );
 	}
+
+	/**
+	 * Build the two selectable direction options used by the token tests.
+	 *
+	 * @return array
+	 */
+	private function direction_options() {
+		return array(
+			array( 'token' => 'use_a', 'label' => 'Use A' ),
+			array( 'token' => 'use_b', 'label' => 'Use B' ),
+		);
+	}
+
+	/**
+	 * A valid value-bound confirmation token is accepted.
+	 */
+	public function test_valid_confirmation_token_is_accepted() {
+		$runner = new FixRunner();
+		$fix    = $this->make_fix( array( 'options' => $this->direction_options() ) );
+		$token  = $fix->get_preview()->get_confirmation_token( 'use_a' );
+
+		$result = $runner->run_one( $fix, 'use_a', true, $token );
+
+		$this->assertSame( FixResult::SUCCESS, $result->get_status() );
+	}
+
+	/**
+	 * A missing confirmation token is rejected.
+	 */
+	public function test_missing_confirmation_token_is_state_changed() {
+		$runner = new FixRunner();
+		$fix    = $this->make_fix( array( 'options' => $this->direction_options() ) );
+
+		$result = $runner->run_one( $fix, 'use_a', true );
+
+		$this->assertSame( FixResult::STATE_CHANGED, $result->get_status() );
+	}
+
+	/**
+	 * A tampered confirmation token is rejected.
+	 */
+	public function test_tampered_confirmation_token_is_state_changed() {
+		$runner = new FixRunner();
+		$fix    = $this->make_fix( array( 'options' => $this->direction_options() ) );
+
+		$result = $runner->run_one( $fix, 'use_a', true, str_repeat( 'f', 64 ) );
+
+		$this->assertSame( FixResult::STATE_CHANGED, $result->get_status() );
+	}
+
+	/**
+	 * A token issued for one direction is rejected for another direction.
+	 */
+	public function test_confirmation_token_is_direction_bound() {
+		$runner = new FixRunner();
+		$fix    = $this->make_fix( array( 'options' => $this->direction_options() ) );
+		$token  = $fix->get_preview()->get_confirmation_token( 'use_a' );
+
+		$result = $runner->run_one( $fix, 'use_b', true, $token );
+
+		$this->assertSame( FixResult::STATE_CHANGED, $result->get_status() );
+	}
+
+	/**
+	 * A token issued for one previewed state is rejected after that state changes.
+	 */
+	public function test_confirmation_token_rejected_after_state_change() {
+		$runner   = new FixRunner();
+		$original = $this->make_fix(
+			array(
+				'options'        => $this->direction_options(),
+				'preview_before' => array( 'a' => 1 ),
+				'capture_before' => array( 'a' => 1 ),
+			)
+		);
+		$token    = $original->get_preview()->get_confirmation_token( 'use_a' );
+
+		$changed = $this->make_fix(
+			array(
+				'options'        => $this->direction_options(),
+				'preview_before' => array( 'a' => 2 ),
+				'capture_before' => array( 'a' => 2 ),
+			)
+		);
+
+		$result = $runner->run_one( $changed, 'use_a', true, $token );
+
+		$this->assertSame( FixResult::STATE_CHANGED, $result->get_status() );
+	}
 }
