@@ -673,14 +673,28 @@ wp-doctor/
 
 ## Next Steps
 
-Post-Phase 0 development should:
+## Current State (1.2.0 development)
 
-1. Implement diagnostic framework
-2. Implement first diagnostic modules (WordPress Doctor)
-3. Implement REST API for diagnostics
-4. Implement admin interface for viewing diagnostics
-5. Implement fix preview and execution
-6. Implement recovery point system
-7. Build comprehensive test suite
+The framework and modules originally sketched as "next steps" are implemented:
+the diagnostic framework, the WordPress/PHP/security/performance/database/theme
+modules, the admin interface, the safe fix with preview/confirmation/rollback,
+and a comprehensive unit suite. There is no REST API, AI provider, health-score,
+or persistence layer.
 
-See [ROADMAP.md](ROADMAP.md) for full development phases.
+1.2.0 additions:
+
+- `WPDoctor\Core\SiteUrl` — shared deterministic URL comparison used by both
+  `configuration.site_urls` and `fix.site_urls_align`.
+- `WPDoctor\Core\EnvironmentType` — fail-safe environment detection and the
+  approved suppression policy.
+- Shared `LogFileReader` and shared `DatabaseMetadata` injected by the
+  composition root (`Plugin::register_diagnostics()`).
+- Value-bound fix confirmation (see docs/SECURITY.md).
+- 32 registered diagnostics; the single fix remains
+  `fix.site_urls_align → configuration.site_urls`.
+- Admin UX: collapsed "All Diagnostics" disclosure and trusted Before → After
+  fix rendering.
+- Committed PHPUnit config, GitHub Actions CI, reproducible packaging scripts,
+  and the `sitefact-diagnostics` translation template.
+
+See [ROADMAP.md](ROADMAP.md) for historical phase planning.

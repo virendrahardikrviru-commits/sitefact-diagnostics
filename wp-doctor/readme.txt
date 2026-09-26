@@ -49,6 +49,18 @@ See docs/SECURITY.md for details.
 
 == Changelog ==
 
+= 1.2.0 (development) =
+* Rollback outcome correctness: an unchanged write is no longer misreported as a rollback failure.
+* Value-bound fix confirmation: approval is now bound to the exact previewed before-state and direction.
+* Shared LogFileReader across the debug-log diagnostics, so the bounded log tail is read once per scan.
+* Coalesced database metadata queries via a shared read-only DatabaseMetadata provider.
+* Four new read-only diagnostics: core.wp_cron, database.upgrade_pending, configuration.upload_limits, security.xmlrpc (32 total).
+* Unified site URL comparison semantics shared by configuration.site_urls and fix.site_urls_align.
+* Environment-aware suppression for approved environment-sensitive diagnostics; unknown environments never suppress and security-posture/ERROR results are never suppressed.
+* Admin UX: "All Diagnostics" is a collapsed native disclosure and the fix confirmation shows trusted Before -> After values.
+* Tooling: committed PHPUnit configuration, GitHub Actions CI, and reproducible forward-slash packaging scripts.
+* Added the sitefact-diagnostics translation template and text-domain loading.
+
 = 1.1.4 =
 * Prepared the WordPress.org release package and finalized release metadata.
 

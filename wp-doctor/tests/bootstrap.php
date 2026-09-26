@@ -26,6 +26,34 @@ if ( ! defined( 'WP_MEMORY_LIMIT' ) ) {
 if ( ! defined( 'WP_DOCTOR_DIR' ) ) {
         define( 'WP_DOCTOR_DIR', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
 }
+
+if ( ! defined( 'WP_DOCTOR_BASENAME' ) ) {
+	define( 'WP_DOCTOR_BASENAME', 'sitefact-diagnostics/wp-doctor.php' );
+}
+
+// Minimal WordPress translation-loading stand-in so text-domain wiring can be
+// asserted without WordPress.
+if ( ! function_exists( 'load_plugin_textdomain' ) ) {
+	$GLOBALS['_wp_doctor_test_textdomain_calls'] = array();
+
+	/**
+	 * Record a load_plugin_textdomain() call.
+	 *
+	 * @param string      $domain     Text domain.
+	 * @param string|bool $deprecated Deprecated argument.
+	 * @param string|null $path       Relative path to the languages directory.
+	 * @return bool
+	 */
+	function load_plugin_textdomain( $domain, $deprecated = false, $path = null ) {
+		$GLOBALS['_wp_doctor_test_textdomain_calls'][] = array(
+			'domain' => $domain,
+			'path'   => $path,
+		);
+
+		return true;
+	}
+}
+
 // Minimal WordPress Options API stand-in.
 if ( ! function_exists( 'get_option' ) ) {
 	$GLOBALS['_wp_doctor_test_options'] = array();

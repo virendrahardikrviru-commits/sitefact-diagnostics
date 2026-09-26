@@ -1,0 +1,1294 @@
+# Copyright (C) 2026 SiteFact Diagnostics
+# This file is distributed under the GPL-2.0-or-later license.
+msgid ""
+msgstr ""
+"Project-Id-Version: SiteFact Diagnostics 1.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/virendrahardikrviru-commits/sitefact-diagnostics/issues\n"
+"POT-Creation-Date: 2026-09-26 20:26+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: sitefact-diagnostics\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:129
+msgid "%1$s %2$s is below the recommended minimum %3$s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:144
+msgid "%1$s %2$s meets the recommended minimum."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:376
+msgid "%1$s: %2$d"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:131
+msgid "%d MyISAM table(s) were detected."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:389
+msgid "%d diagnostics checked"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:147
+msgid "%d fatal, parse, or uncaught error(s) were found in the debug log."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:146
+msgid "%d plugin(s) have a pending update."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:132
+msgid "%d theme(s) have a pending update."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:147 wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:166
+msgid "%d warning(s), notice(s), or deprecation(s) were found in the debug log."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:134
+msgid "A WordPress core update is available."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:148
+msgid "A database upgrade is pending (stored version %1$d, expected %2$d)."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:111
+msgid "A debug log file exists with a size of %s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:176
+msgid "A full-page-cache drop-in is present."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ObjectCacheDiagnostic.php:112
+msgid "A persistent object cache is active."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:159 wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:89
+msgid "Active Theme"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/FileEditDiagnostic.php:100
+msgid "Admin file editing is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/FileEditDiagnostic.php:103
+msgid "Admin file editing is enabled, which widens the attack surface if an editor account is compromised."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:63
+msgid "Administrator Count"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:720
+msgid "After:"
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:58
+msgid "Align Site & Home URLs"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:244
+msgid "Align the site and home URLs in the WordPress settings to match."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:69
+msgid "Aligns the WordPress site URL and home URL to a single value that you choose."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:309
+msgid "All Diagnostics"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:212
+msgid "All automatic updates are disabled; consider enabling them to receive security releases. This global setting is distinct from the core auto-update configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:116
+msgid "All automatic updates are globally disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:194
+msgid "All database tables use transactional storage engines."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:135
+msgid "All installed plugins are up to date."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:122
+msgid "All installed themes are up to date."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:726
+msgid "Apply fix"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:560
+msgid "Attention"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:62
+msgid "Autoloaded Options"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:69
+msgid "Automatic Updates Disabled"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:215
+msgid "Automatic updates are enabled. This global setting is distinct from the core auto-update configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:123
+msgid "Automatic updates are not globally disabled."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:717
+msgid "Before:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:122
+msgid "Cached plugin update information is not available, so update status could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:110
+msgid "Cached theme update information is not available, so update status could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:121
+msgid "Cached update information is not available, so update status could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:461
+msgid "Category:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:292
+msgid "Check for plugin updates in the WordPress dashboard."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:255
+msgid "Check for theme updates in the WordPress dashboard."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:310
+msgid "Check for updates in the WordPress dashboard."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:106
+msgid "Compares the WordPress site and home URLs to detect a mismatch."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:310
+msgid "Complete results grouped by category, including evidence."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:278
+msgid "Complete the pending database upgrade from the WordPress dashboard."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:240
+msgid "Consider adding a second administrator account to avoid lockout."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:191
+msgid "Consider converting MyISAM tables to InnoDB."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:280
+msgid "Consider converting the database to utf8mb4 to support the full range of characters."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:225
+msgid "Consider enabling a core auto-update policy. Plugin and theme auto-updates are configured separately and are not covered by this diagnostic."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ObjectCacheDiagnostic.php:198
+msgid "Consider enabling a persistent object cache if the site receives significant traffic."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:261
+msgid "Consider raising the memory limit to at least 64M."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:200
+msgid "Consider upgrading PHP to a currently supported version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:304
+msgid "Consider using a child theme so customizations are not lost on theme updates."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:70
+msgid "Core Auto-Updates"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:109
+msgid "Core auto-updates are disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:124
+msgid "Core auto-updates are enabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:117
+msgid "Core auto-updates use the WordPress default policy."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:139
+msgid "Core infrastructure initialized."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:85
+msgid "Counts administrator accounts on the current site to flag lockout and attack-surface risks."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:84
+msgid "Counts fatal, parse, and uncaught error entries in the debug log."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:83
+msgid "Counts warning, notice, and deprecation entries in the debug log."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:236
+msgid "Create at least one administrator account."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:558
+msgid "Critical"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:88
+msgid "Database Charset & Collation"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseSizeDiagnostic.php:64
+msgid "Database Size"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:65
+msgid "Database Storage Engine"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:80
+msgid "Database Upgrade Status"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:167 wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:72
+msgid "Database Version"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:70
+msgid "Debug Configuration"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:62
+msgid "Debug Log"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:179
+msgid "Debug Mode"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:105
+msgid "Debug logging is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:107
+msgid "Debug logging is enabled, but no debug log file exists yet."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:209
+msgid "Debug mode is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:202
+msgid "Debug mode is enabled with on-screen error display."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:206
+msgid "Debug mode is enabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:198
+msgid "Debug mode is not defined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:133
+msgid "Debug mode is useful during development. On a production site, keep debug display off so error details are not shown to visitors, and prefer writing errors to a log file."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DefaultRoleDiagnostic.php:66
+msgid "Default User Role"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DiagnosticRunner.php:169
+msgid "Diagnostic could not be completed."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UserRegistrationDiagnostic.php:194
+msgid "Disable open registration unless you need it."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:125
+msgid "Disabled"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:118
+msgid "Enable debug logging to collect fatal error information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:117
+msgid "Enable debug logging to collect warning information."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:125
+msgid "Enabled"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:142
+msgid "Environment"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:527
+msgid "Expected:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:62
+msgid "Fatal Error Count"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/FileEditDiagnostic.php:62
+msgid "File Editing"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:754
+msgid "Fixes are not available."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:298
+msgid "HTTP is expected in a %s environment."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:101
+msgid "HTTPS"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:562
+msgid "Healthy"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:256
+msgid "Healthy Checks"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:266
+msgid "Identify and slim down large autoloaded options."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:255
+msgid "If this site should be publicly indexable, enable search-engine visibility in Reading settings. Discouraging search engines may be intentional."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:328
+msgid "Increase post_max_size or reduce upload_max_filesize so the request body limit is at least the upload limit."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:283 wp-doctor/includes/Admin/Admin.php:564
+msgid "Informational"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:285
+msgid "Informational results are not failures. They report facts, or they could not determine a problem from the available data."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:352
+msgid "Keep HTTPS enabled for all site traffic."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:203
+msgid "Keep PHP up to date with the latest security releases."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:289
+msgid "Keep WordPress core and its database schema up to date."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:307 wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:210
+msgid "Keep WordPress up to date with the latest security releases."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:247
+msgid "Keep administrator accounts limited to those who need them."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/FileEditDiagnostic.php:175
+msgid "Keep file editing disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:289
+msgid "Keep plugins up to date."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:274
+msgid "Keep the autoloaded options lean."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:320
+msgid "Keep the database server up to date."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:134 wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:133
+msgid "Keep the debug log clean and review it periodically."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:265
+msgid "Keep the memory limit at its current healthy level."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ObjectCacheDiagnostic.php:201
+msgid "Keep the object cache active."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:248
+msgid "Keep the site and home URLs consistent."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:284
+msgid "Keep the utf8mb4 charset."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:303
+msgid "Keep theme customizations in the child theme."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:252
+msgid "Keep themes up to date."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseSizeDiagnostic.php:157
+msgid "Large databases may warrant review, particularly on shared hosting."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:64
+msgid "Memory Limit"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:155
+msgid "Multisite"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:124
+msgid "No"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:120
+msgid "No MyISAM tables were detected."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:110
+msgid "No administrator accounts exist, which means the site cannot be managed."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:179
+msgid "No advanced-cache.php drop-in is present. Server-level, reverse-proxy, or CDN caching may still be active outside WordPress."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:258
+msgid "No checks reported a Healthy result."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:130
+msgid "No fatal, parse, or uncaught errors were found in the debug log."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:288
+msgid "No informational results were reported."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ObjectCacheDiagnostic.php:120
+msgid "No persistent object cache is active."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:129
+msgid "No warnings, notices, or deprecations were found in the debug log."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:235
+msgid "None of the checks reported Critical or Attention results."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:71
+msgid "OPcache"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:143
+msgid "OPcache is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:328
+msgid "OPcache is disabled; enabling it can significantly improve PHP performance."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:166 wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:335
+msgid "OPcache is enabled and operating normally."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:155
+msgid "OPcache is enabled but its cache is full."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:332
+msgid "OPcache memory is full; consider reviewing and increasing the OPcache memory configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:131
+msgid "OPcache status could not be determined from the available data."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:114
+msgid "OPcache status could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ObjectCacheDiagnostic.php:71
+msgid "Object Cache"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:518
+msgid "Observed:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:348
+msgid "On a production site, obtain an SSL certificate and force HTTPS so login credentials and session data are encrypted."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UserRegistrationDiagnostic.php:113
+msgid "Open self-registration is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UserRegistrationDiagnostic.php:120
+msgid "Open self-registration is enabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:110
+msgid "PHP %1$s is below the minimum supported version %2$s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:123
+msgid "PHP %1$s works but is below the recommended version %2$s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:135
+msgid "PHP %s meets the recommended version."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:175
+msgid "PHP Memory Limit"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:151 wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:61
+msgid "PHP Version"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:61
+msgid "Page Cache"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:80
+msgid "Plugin Updates"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:228
+msgid "Plugin and theme auto-updates are configured separately and are not covered by this diagnostic."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:257
+msgid "Raise the WordPress and PHP memory limits."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:540
+msgid "Recommendation:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:84
+msgid "Reports factual information about the WordPress debug log."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:102
+msgid "Reports how many installed plugins have a pending update, based on cached update information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:92
+msgid "Reports how many installed themes have a pending update, based on cached update information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:83
+msgid "Reports the PHP version and whether it meets the minimum and recommended versions."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:86
+msgid "Reports the WordPress and PHP memory limits and whether they are healthy."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugConfigurationDiagnostic.php:92
+msgid "Reports the WordPress debugging configuration so it can be understood in context."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:115
+msgid "Reports the WordPress upload limit and the PHP upload and POST size limits."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:111
+msgid "Reports the active theme name and version and whether it is a child theme."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseSizeDiagnostic.php:86
+msgid "Reports the aggregate size and table count of the WordPress database."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:93
+msgid "Reports the aggregate status of PHP OPcache."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoUpdateCoreDiagnostic.php:92
+msgid "Reports the configured WordPress core auto-update behavior."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:110
+msgid "Reports the database character set and collation and flags legacy utf8 setups."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:94
+msgid "Reports the database engine and version and checks it against the minimum supported versions."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DefaultRoleDiagnostic.php:88
+msgid "Reports the default role assigned to newly registered users."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:92
+msgid "Reports the installed WordPress version and whether it meets the minimum supported version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:87
+msgid "Reports the storage engines used by the database tables."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:84
+msgid "Reports the total size of autoloaded options, which load on every request."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:113
+msgid "Reports whether WP-Cron is disabled and summarizes the scheduled event queue."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/FileEditDiagnostic.php:84
+msgid "Reports whether WordPress admin file editing is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:100
+msgid "Reports whether WordPress discourages search engines from indexing the site."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:95
+msgid "Reports whether XML-RPC is effectively enabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:101
+msgid "Reports whether a WordPress core update is available based on cached update information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:83
+msgid "Reports whether a full-page-cache drop-in is present."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ObjectCacheDiagnostic.php:93
+msgid "Reports whether a persistent object cache is active."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:91
+msgid "Reports whether all WordPress automatic updates are globally disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UserRegistrationDiagnostic.php:88
+msgid "Reports whether open self-registration is enabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:123
+msgid "Reports whether the site is served over HTTPS."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:102
+msgid "Reports whether the stored database schema version is behind the running WordPress core version."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:695
+msgid "Reversible:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:244
+msgid "Review administrator accounts and remove any that are no longer needed."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:270
+msgid "Review large autoloaded options for opportunities to reduce their size."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:153
+msgid "Review the debug log to investigate the logged fatal errors."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:153 wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:172
+msgid "Review the debug log to investigate the logged warnings and notices."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:132
+msgid "Review the debug log when appropriate. It records PHP errors, warnings, and notices for troubleshooting."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:251
+msgid "Review the site and home URL settings."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:690
+msgid "Risk:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:78
+msgid "Search Visibility"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:201
+msgid "Search-engine visibility is expected to be discouraged in a %s environment."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:750
+msgid "Security check failed."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:188
+msgid "Set Home URL to %s"
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:198
+msgid "Set Site URL to %s"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DefaultRoleDiagnostic.php:194
+msgid "Set the default role to the least-privileged role."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:84
+msgid "Site & Home URLs"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:163
+msgid "Site Locale"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:99 wp-doctor/includes/Admin/Admin.php:100 wp-doctor/includes/Admin/Admin.php:128
+msgid "SiteFact Diagnostics"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:138 wp-doctor/includes/Admin/Admin.php:454
+msgid "Status:"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:171
+msgid "The HTTPS status could not be determined from the available URL information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:233
+msgid "The PHP memory limit is lower than the WordPress memory limit."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:100
+msgid "The PHP version could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:132
+msgid "The WP-Cron configuration could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:241
+msgid "The WordPress memory limit is below the recommended size."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:244
+msgid "The WordPress memory limit is healthy."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:225
+msgid "The WordPress memory limit is not defined or could not be read."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:229
+msgid "The WordPress memory limit is unlimited."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:237
+msgid "The WordPress memory limit is very low, which can cause fatal out-of-memory errors."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:109
+msgid "The WordPress version could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:116
+msgid "The XML-RPC state could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:133
+msgid "The active theme could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:146
+msgid "The active theme is %1$s, a child theme of %2$s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ActiveThemeDiagnostic.php:139
+msgid "The active theme is %s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:115
+msgid "The advanced-cache.php drop-in is not present."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:108
+msgid "The advanced-cache.php drop-in is present."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:132
+msgid "The autoloaded options are larger than recommended."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:140
+msgid "The autoloaded options are very large, which can slow every page load."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:123
+msgid "The autoloaded options are within a healthy size."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:102 wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:114
+msgid "The autoloaded options size could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:108
+msgid "The automatic-updates configuration could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:152
+msgid "The database charset could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseSizeDiagnostic.php:112
+msgid "The database is approximately %1$s across %2$d tables."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:134
+msgid "The database schema is up to date (version %d)."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseSizeDiagnostic.php:100
+msgid "The database size could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseSizeDiagnostic.php:107
+msgid "The database size could not be fully determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php:106
+msgid "The database storage engines could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:117
+msgid "The database type or version could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:122
+msgid "The database upgrade status could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:143
+msgid "The database uses legacy utf8 (three-byte), which cannot store emoji and some other characters."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:133
+msgid "The database uses utf8mb4, which fully supports four-byte characters."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorFatalCountDiagnostic.php:114
+msgid "The debug log is not available, so fatal error activity could not be measured."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:113
+msgid "The debug log is not available, so warning activity could not be measured."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DefaultRoleDiagnostic.php:115 wp-doctor/includes/Diagnostics/DefaultRoleDiagnostic.php:126
+msgid "The default role for new users is %s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DefaultRoleDiagnostic.php:105
+msgid "The default user role could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:95
+msgid "The fix could not be applied because the confirmation is missing or no longer matches the preview. Please re-run the preview."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:123
+msgid "The fix could not be applied because the current state no longer matches the preview. No changes were made."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:86
+msgid "The fix could not be applied because the selection is no longer valid. Please re-run the preview."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:134
+msgid "The fix could not be applied."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:157
+msgid "The fix was applied but could not be verified, so it was rolled back."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:146 wp-doctor/includes/Fixes/FixRunner.php:163
+msgid "The fix was applied but could not be verified."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:150
+msgid "The fix was applied successfully."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:160
+msgid "The fix was applied, could not be verified, and could not be rolled back."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PageCacheDiagnostic.php:100
+msgid "The full-page-cache drop-in presence could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:159
+msgid "The maximum upload size is %s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:102
+msgid "The number of administrators could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:117
+msgid "The search-engine visibility setting could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:152
+msgid "The site URL uses HTTP, although SSL appears active at the server level (possibly behind a reverse proxy)."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:172
+msgid "The site and home URLs are already aligned."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:153
+msgid "The site and home URLs differ, which is expected on a multisite network."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:162
+msgid "The site and home URLs do not match, which can cause redirect loops or mixed-content issues."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:143
+msgid "The site and home URLs match."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:132
+msgid "The site is configured to discourage search engines."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:153
+msgid "The site is served over HTTP rather than HTTPS."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:146
+msgid "The site is served over HTTPS."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:125 wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:252
+msgid "The site is visible to search engines."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/SiteUrlsDiagnostic.php:129
+msgid "The site or home URL could not be read, so consistency could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:160
+msgid "The site or home URL could not be read."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:112
+msgid "The site state changed after the preview was shown. No changes were made. Please re-run the preview."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:286
+msgid "The stored database schema is newer than the running core expects; verify the WordPress core files and version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:162
+msgid "The stored database schema version (%1$d) is newer than the running core expects (%2$d)."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:170
+msgid "The upload and POST size limits could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:162
+msgid "The upload and POST size limits were determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UserRegistrationDiagnostic.php:105
+msgid "The user-registration setting could not be determined."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:70
+msgid "Theme Updates"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:128
+msgid "There are %d administrator accounts, which is a healthy number."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:139
+msgid "There are %d administrator accounts, which is a larger attack surface than necessary."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AdministratorCountDiagnostic.php:118
+msgid "There is a single administrator account, which risks lockout if that account is lost."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:332
+msgid "These limits depend on your host and site requirements; raise them if large uploads are rejected."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/SiteUrlsAlignFix.php:148
+msgid "This fix is not available on multisite networks."
+msgstr ""
+
+#: wp-doctor/includes/Fixes/FixRunner.php:66
+msgid "This fix requires explicit confirmation and was not confirmed."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DiagnosticRunner.php:252
+msgid "Unknown diagnostic"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:774
+msgid "Unknown fix."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/FileEditDiagnostic.php:172
+msgid "Unless you actively use the theme and plugin editors, define DISALLOW_FILE_EDIT as true in wp-config.php."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:79
+msgid "Update Availability"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:203
+msgid "Update WordPress to a supported version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:303
+msgid "Update WordPress to the latest available version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:153
+msgid "Update status could not be determined from cached information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PluginsUpdateAvailableDiagnostic.php:285
+msgid "Update the plugins with pending updates to receive security and bug fixes."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ThemesUpdateAvailableDiagnostic.php:248
+msgid "Update themes with pending updates."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/PhpVersionDiagnostic.php:196
+msgid "Upgrade PHP to a supported version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:316
+msgid "Upgrade the database server to a supported version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:93
+msgid "Upload & POST Limits"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UserRegistrationDiagnostic.php:66
+msgid "User Registration"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:335
+msgid "Verify the PHP upload and POST size configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:318
+msgid "Verify the WP-Cron configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseUpgradeDiagnostic.php:282
+msgid "Verify the WordPress database version information."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:207
+msgid "Verify the WordPress version is readable on this installation."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:236
+msgid "Verify the XML-RPC configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutoloadedOptionsDiagnostic.php:277
+msgid "Verify the autoloaded options size."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php:208
+msgid "Verify the automatic-updates configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php:287
+msgid "Verify the database charset and collation."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DatabaseVersionDiagnostic.php:323
+msgid "Verify the database server version."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/MemoryLimitDiagnostic.php:268
+msgid "Verify the memory limit configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/BlogPublicDiagnostic.php:248
+msgid "Verify the search-engine visibility setting."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/OpCacheDiagnostic.php:324
+msgid "Verify the server OPcache configuration."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/HttpsDiagnostic.php:355
+msgid "Verify the site and home URL schemes."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:133
+msgid "Version:"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:472
+msgid "View details"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:91
+msgid "WP-Cron"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:141
+msgid "WP-Cron is disabled, so scheduled events depend on an external system cron."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:314
+msgid "WP-Cron is disabled; ensure a system cron job regularly requests wp-cron.php so scheduled events still run. Due events are reported as facts only and are normal on low-traffic sites."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:149
+msgid "WP-Cron is enabled with %d scheduled event(s)."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:146
+msgid "WP-Cron is enabled, but the scheduled event queue could not be read."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WpCronDiagnostic.php:321
+msgid "WP-Cron is enabled. On low-traffic sites, a system cron may trigger scheduled events more reliably; due events are normal and are not reported as failures."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/ErrorWarningCountDiagnostic.php:61
+msgid "Warning Count"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:383
+msgid "Website Health Check"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:233
+msgid "What Needs Attention"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:119
+msgid "WordPress %1$s is below the minimum supported version %2$s."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:131
+msgid "WordPress %s meets the minimum supported version."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:171
+msgid "WordPress Memory Limit"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:147 wp-doctor/includes/Diagnostics/WordPressVersionDiagnostic.php:70
+msgid "WordPress Version"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php:144
+msgid "WordPress is up to date."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:73
+msgid "XML-RPC"
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:135
+msgid "XML-RPC is disabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:233
+msgid "XML-RPC is disabled. Keep it disabled unless a feature or integration requires it."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:126
+msgid "XML-RPC is enabled."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/XmlRpcDiagnostic.php:229
+msgid "XML-RPC is enabled. If it is not required by your site, it can be disabled with the xmlrpc_enabled filter or a security plugin."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:124
+msgid "Yes"
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:119
+msgid "You do not have permission to access this page."
+msgstr ""
+
+#: wp-doctor/includes/Admin/Admin.php:746
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/UploadLimitsDiagnostic.php:148
+msgid "post_max_size (%1$s) is smaller than upload_max_filesize (%2$s); large uploads may fail."
+msgstr ""
+
+#: wp-doctor/includes/Diagnostics/DebugLogDiagnostic.php:112
+msgid "unknown"
+msgstr ""
+

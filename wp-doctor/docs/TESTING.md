@@ -82,7 +82,7 @@ without a real installation: `get_site_transient`/`set_site_transient`,
 - `ByteSizeTest` — parsing (`128M`, `1G`, `-1`, `0`, empty, malformed, case-insensitive) and formatting.
 - `PerformancePolicyTest` — threshold constants and ordering.
 - One test class per diagnostic, exercising healthy, unhealthy, boundary, missing/undefined, malformed, multisite (where relevant), and exception/failure states.
-- `Phase3RegistryTest` — exactly 15 diagnostics registered (via the Plugin's real wiring), no duplicate IDs, deterministic ordering, duplicate-ID rejection.
+- `Phase3RegistryTest` — the registered diagnostics (currently 32; 15 at Phase 3) via the Plugin's real wiring, no duplicate IDs, deterministic ordering, duplicate-ID rejection.
 - `AdminCategoryGroupingTest` — category grouping with headings, omission of empty categories, and escaping of malicious evidence.
 
 ## Phase 4 Test Setup
@@ -239,6 +239,46 @@ or registry change.
   skipped, deterministic `to_array()`, complete closed-model count keys, and
   unknown-count queries returning 0.
 - Registry remains at 28 diagnostics; fix count remains 1.
+
+## 1.2.0 Test Setup
+
+The suite is a committed, reproducible unit-test harness (no WordPress
+installation required).
+
+**Configuration and run:**
+
+- `phpunit.xml` — committed at the plugin root; bootstraps `tests/bootstrap.php`
+  and discovers `*Test.php` under `tests/Unit`.
+- `tests/bootstrap.php` — in-memory stand-ins for the WordPress Options API,
+  transients, redirects, filters (`add_filter`/`apply_filters`), HTTP
+  (`wp_remote_get`/`wp_remote_post` throw, so any outbound request fails a
+  test), environment signals, and text-domain loading.
+- Run from `wp-doctor/`:
+
+  ```bash
+  composer install
+  vendor/bin/phpunit --configuration phpunit.xml
+  ```
+
+**Continuous integration:** `.github/workflows/ci.yml` runs on every push and
+pull request across PHP 7.4–8.3, executes a PHP lint pass, `composer install`,
+and `vendor/bin/phpunit --configuration phpunit.xml`.
+
+**Production packaging validation:** `tools/build-package.php` (and the
+`tools/build-package.ps1` wrapper) build the production ZIP from an explicit
+allowlist, verify version consistency and the production file count, use
+forward-slash ZIP entry names, refuse to overwrite an existing artifact without
+`--force`, and report the SHA-256. See [Production Packaging](#production-packaging).
+
+**1.2.0 coverage highlights:** rollback-outcome correctness; value-bound
+confirmation (accept/missing/tampered/direction-bound/stale); shared
+`LogFileReader` and coalesced `DatabaseMetadata` sharing; the four new
+diagnostics (`core.wp_cron`, `database.upgrade_pending`,
+`configuration.upload_limits`, `security.xmlrpc`); unified `SiteUrl` semantics
+with diagnostic/fix agreement; environment detection precedence and the
+suppression policy (including never-suppressing the security diagnostics and
+ERROR results); Admin disclosure and trusted Before→After rendering; and
+text-domain loading.
 
 ## Testing Philosophy
 1. **Test-Driven Development** — Write tests before or alongside implementation

@@ -485,6 +485,40 @@ listing of `id`/`severity`/`summary`/`recommendation`; it never exposes raw
 evidence, paths, credentials, or PII, and renders via the existing
 `manage_options`-gated admin page with full output escaping.
 
+## Value-Bound Fix Confirmation (1.2.0)
+
+The single fix's confirmation is bound to the exact previewed state:
+
+- `FixPreview::get_confirmation_token()` derives a SHA-256 digest from the fix
+  ID, the chosen direction, the canonicalized before-state, and the offered
+  option tokens. It is a state-binding integrity value, not a secret.
+- `FixRunner::run_one()` recomputes the expected token from a freshly generated
+  preview and compares the submitted token with `hash_equals()` **before any
+  write**. Missing, malformed, tampered, stale, or wrong-direction tokens are
+  rejected as a state change.
+- The before→after values shown in the admin form are derived from trusted
+  server-side preview data only. No browser-supplied URL is trusted, and
+  `SiteUrlsAlignFix::apply()` re-reads the live options and writes exactly one
+  option using one of the two existing values.
+- The nonce, capability, confirmation, direction-token, stale-state,
+  verification, rollback, and multisite protections are unchanged.
+
+## Environment Suppression Hard Rule (1.2.0)
+
+Environment-aware suppression never hides a security-posture finding:
+
+- Only `configuration.blog_public`, `security.https`, and `configuration.debug`
+  are suppressible. All security-posture diagnostics (including
+  `security.user_registration`, `security.default_role`,
+  `security.administrator_count`, `security.file_edit`, and `security.xmlrpc`)
+  are never suppressed.
+- Any ERROR result is never suppressed.
+- An unknown environment is treated as production and never suppresses, so a
+  finding is never hidden because environment detection was inconclusive.
+- Suppression only downgrades a WARNING to INFO; the result remains visible and
+  the original observation and severity are retained in evidence
+  (`environment`, `suppressed`, `original_severity`, `suppression_reason`).
+
 ## Data Privacy
 
 SiteFact Diagnostics respects WordPress privacy standards:
