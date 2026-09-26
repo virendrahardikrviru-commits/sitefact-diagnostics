@@ -41,14 +41,30 @@ if ( ! function_exists( 'get_option' ) ) {
 		return isset( $GLOBALS['_wp_doctor_test_options'][ $key ] ) ? $GLOBALS['_wp_doctor_test_options'][ $key ] : $default;
 	}
 
+	$GLOBALS['_wp_doctor_test_update_option_callback'] = null;
+
 	/**
 	 * Update (or create) an option in the in-memory store.
 	 *
+	 * Mirrors WordPress semantics: returns true when the stored value changed
+	 * and false when the requested value already equals the stored value (an
+	 * unchanged write). Tests may install an override callback through the
+	 * `_wp_doctor_test_update_option_callback` global to simulate a write that
+	 * cannot be performed.
+	 *
 	 * @param string $key   Option name.
 	 * @param mixed  $value Option value.
-	 * @return bool
+	 * @return bool True when the stored value changed, false otherwise.
 	 */
 	function update_option( $key, $value ) {
+		if ( is_callable( $GLOBALS['_wp_doctor_test_update_option_callback'] ) ) {
+			return (bool) call_user_func( $GLOBALS['_wp_doctor_test_update_option_callback'], $key, $value );
+		}
+
+		if ( array_key_exists( $key, $GLOBALS['_wp_doctor_test_options'] ) && $GLOBALS['_wp_doctor_test_options'][ $key ] === $value ) {
+			return false;
+		}
+
 		$GLOBALS['_wp_doctor_test_options'][ $key ] = $value;
 
 		return true;

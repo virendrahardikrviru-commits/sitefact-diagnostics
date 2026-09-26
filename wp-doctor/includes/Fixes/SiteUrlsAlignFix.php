@@ -291,6 +291,12 @@ class SiteUrlsAlignFix implements FixInterface {
 	/**
 	 * Roll back by restoring the captured before-state.
 	 *
+	 * Success is determined by the option's final value, not by the boolean
+	 * return of update_option(): WordPress returns false when the requested
+	 * value already equals the stored value (an unchanged write), which is
+	 * still a successful restore. A genuine inability to establish the
+	 * intended value is reported as failure.
+	 *
 	 * @since 0.4.0
 	 *
 	 * @param RecoveryPoint $recovery The captured before-state.
@@ -300,14 +306,33 @@ class SiteUrlsAlignFix implements FixInterface {
 		$restored = true;
 
 		if ( array_key_exists( 'siteurl', $recovery->get_before() ) ) {
-			$restored = $restored && (bool) update_option( 'siteurl', $recovery->get( 'siteurl' ) );
+			$restored = $restored && $this->restore_option( 'siteurl', $recovery->get( 'siteurl' ) );
 		}
 
 		if ( array_key_exists( 'home', $recovery->get_before() ) ) {
-			$restored = $restored && (bool) update_option( 'home', $recovery->get( 'home' ) );
+			$restored = $restored && $this->restore_option( 'home', $recovery->get( 'home' ) );
 		}
 
 		return $restored;
+	}
+
+	/**
+	 * Write an option and confirm the intended value is now stored.
+	 *
+	 * The boolean return of update_option() is intentionally ignored: an
+	 * unchanged write returns false but is not a rollback failure. The option
+	 * is re-read and compared to the intended value instead.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $key   Option key.
+	 * @param mixed  $value Intended restore value.
+	 * @return bool True when the stored value equals the intended value.
+	 */
+	private function restore_option( $key, $value ) {
+		update_option( $key, $value );
+
+		return $this->read_option( $key ) === $value;
 	}
 
 	/**

@@ -12,6 +12,7 @@ use WPDoctor\Fixes\FixResult;
 use WPDoctor\Fixes\FixRunner;
 use WPDoctor\Fixes\RiskLevel;
 use WPDoctor\Fixes\SiteUrlsAlignFix;
+use WPDoctor\Recovery\RecoveryPoint;
 
 /**
  * Class SiteUrlsAlignFixTest
@@ -22,8 +23,9 @@ class SiteUrlsAlignFixTest extends TestCase {
 	 * Reset the in-memory option store and multisite flag before each test.
 	 */
 	protected function setUp(): void {
-		$GLOBALS['_wp_doctor_test_options'] = array();
-		$GLOBALS['_wp_doctor_is_multisite'] = false;
+		$GLOBALS['_wp_doctor_test_options']                = array();
+		$GLOBALS['_wp_doctor_is_multisite']                = false;
+		$GLOBALS['_wp_doctor_test_update_option_callback'] = null;
 	}
 
 	/**
@@ -221,6 +223,69 @@ class SiteUrlsAlignFixTest extends TestCase {
 		$this->assertTrue( $fix->rollback( $recovery ) );
 		$this->assertSame( 'https://b.example', $GLOBALS['_wp_doctor_test_options']['home'] );
 		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['siteurl'] );
+	}
+
+	/**
+	 * rollback() succeeds when the options already hold the intended values.
+	 *
+	 * update_option() reports false for an unchanged write, which must not be
+	 * treated as a rollback failure.
+	 */
+	public function test_rollback_succeeds_when_value_already_matches() {
+		$this->seed( 'https://a.example', 'https://b.example' );
+
+		$fix      = new SiteUrlsAlignFix();
+		$recovery = $fix->capture();
+
+		$this->assertTrue( $fix->rollback( $recovery ) );
+		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['siteurl'] );
+		$this->assertSame( 'https://b.example', $GLOBALS['_wp_doctor_test_options']['home'] );
+	}
+
+	/**
+	 * rollback() reports failure when the intended value cannot be established.
+	 */
+	public function test_rollback_fails_when_value_cannot_be_established() {
+		$this->seed( 'https://a.example', 'https://b.example' );
+
+		$fix      = new SiteUrlsAlignFix();
+		$recovery = $fix->capture();
+
+		// Simulate a write that cannot be performed while the stored values
+		// differ from the captured before-state.
+		$GLOBALS['_wp_doctor_test_options']['siteurl']      = 'https://corrupted.example';
+		$GLOBALS['_wp_doctor_test_options']['home']         = 'https://corrupted.example';
+		$GLOBALS['_wp_doctor_test_update_option_callback'] = function ( $key, $value ) {
+			return false;
+		};
+
+		$this->assertFalse( $fix->rollback( $recovery ) );
+	}
+
+	/**
+	 * Automatic rollback after a failed verification succeeds even when one
+	 * option is already at its captured value.
+	 */
+	public function test_runner_automatic_rollback_succeeds_when_option_unchanged() {
+		$this->seed( 'https://a.example', 'https://b.example' );
+
+		$fix = new class() extends SiteUrlsAlignFix {
+			public function apply( RecoveryPoint $recovery, $direction = null ) {
+				update_option( 'home', 'https://corrupted.example' );
+
+				return true;
+			}
+
+			public function verify() {
+				return false;
+			}
+		};
+
+		$result = ( new FixRunner() )->run_one( $fix, SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true );
+
+		$this->assertSame( FixResult::ROLLED_BACK, $result->get_status() );
+		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['siteurl'] );
+		$this->assertSame( 'https://b.example', $GLOBALS['_wp_doctor_test_options']['home'] );
 	}
 
 	/**
