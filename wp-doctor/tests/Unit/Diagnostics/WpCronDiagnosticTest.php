@@ -186,7 +186,7 @@ class WpCronDiagnosticTest extends TestCase {
 			$registry->get_all()
 		);
 
-		$this->assertSame( 30, $registry->count() );
+		$this->assertSame( 31, $registry->count() );
 		$this->assertSame( count( $ids ), count( array_unique( $ids ) ) );
 		$this->assertContains( 'core.wp_cron', $ids );
 		$this->assertContains( 'core.wordpress_version', $ids );

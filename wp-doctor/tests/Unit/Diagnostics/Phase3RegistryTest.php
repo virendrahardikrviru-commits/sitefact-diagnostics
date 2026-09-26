@@ -41,15 +41,16 @@ class Phase3RegistryTest extends TestCase {
 	}
 
 	/**
-	 * Exactly 30 diagnostics are registered.
+	 * Exactly 31 diagnostics are registered.
 	 */
-	public function test_all_thirty_registered() {
+	public function test_all_thirty_one_registered() {
 		$registry = $this->build_registry();
 
 		$expected = array(
 			'core.wordpress_version',
 			'core.php_version',
 			'configuration.debug',
+			'configuration.upload_limits',
 			'core.update_availability',
 			'core.wp_cron',
 			'configuration.site_urls',
@@ -88,7 +89,7 @@ class Phase3RegistryTest extends TestCase {
 			$registry->get_all()
 		);
 
-		$this->assertSame( 30, $registry->count() );
+		$this->assertSame( 31, $registry->count() );
 		$this->assertSame( $expected, $ids );
 	}
 
