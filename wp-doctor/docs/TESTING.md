@@ -23,8 +23,18 @@ vendor/bin/phpunit          # or: php vendor/bin/phpunit --testdox
 **Configuration:**
 
 - `composer.json` — declares `phpunit/phpunit` as a dev dependency
-- `phpunit.xml` — points the bootstrap to `tests/bootstrap.php` and discovers tests in `tests/Unit`
+- `phpunit.xml` — committed PHPUnit configuration; points the bootstrap to `tests/bootstrap.php` and discovers `*Test.php` under `tests/Unit`
 - `tests/bootstrap.php` — provides a minimal in-memory stand-in for the WordPress Options API (`get_option`, `update_option`, `add_option`, `delete_option`) so configuration and lifecycle classes can be unit tested without a full WordPress installation
+
+Run the suite from the plugin directory (`wp-doctor/`):
+
+```bash
+composer install
+vendor/bin/phpunit --configuration phpunit.xml
+```
+
+Continuous integration runs the same command against PHP 7.4–8.3; see
+[Continuous Integration](#continuous-integration) below.
 
 **Phase 1 unit tests cover:**
 
@@ -257,7 +267,7 @@ Unit tests verify individual classes in isolation.
 
 ### Setup
 
-The plugin will eventually use PHPUnit for unit testing.
+The plugin uses PHPUnit for unit testing (a development dependency).
 
 **Configuration:** `phpunit.xml`
 
@@ -606,14 +616,13 @@ public function test_issue_123_bug_does_not_regress() {
 
 ## Continuous Integration
 
-Tests should run automatically on:
+The authoritative workflow is the committed `.github/workflows/ci.yml`. It runs
+on every push and pull request, across PHP 7.4–8.3, with `working-directory:
+wp-doctor`, and executes a PHP lint pass, `composer install`, and
+`vendor/bin/phpunit --configuration phpunit.xml`. The sketch below mirrors its
+shape.
 
-- Push to `main` branch
-- Pull requests
-- Scheduled nightly builds
-- Release builds
-
-### GitHub Actions Example
+### CI workflow (sketch)
 
 ```yaml
 name: Tests
@@ -626,10 +635,10 @@ jobs:
     
     strategy:
       matrix:
-        php-version: ['7.4', '8.0', '8.1', '8.2']
+        php-version: ['7.4', '8.0', '8.1', '8.2', '8.3']
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -640,8 +649,37 @@ jobs:
         run: composer install
       
       - name: Run tests
-        run: phpunit
+        run: vendor/bin/phpunit --configuration phpunit.xml
 ```
+
+## Production Packaging
+
+The canonical build script is `tools/build-package.php`; `tools/build-package.ps1`
+is a convenience wrapper. Run either from the repository root.
+
+```bash
+# Build the default artifact: release/sitefact-diagnostics-<version>.zip
+php tools/build-package.php
+
+# Print the production file manifest without building
+php tools/build-package.php --list
+
+# Write to a specific path (or overwrite a non-frozen artifact with --force)
+php tools/build-package.php --output=release/sitefact-diagnostics-1.2.0.zip
+```
+
+```powershell
+pwsh tools/build-package.ps1
+pwsh tools/build-package.ps1 -List
+pwsh tools/build-package.ps1 -Output .\release\sitefact-diagnostics-1.2.0.zip
+```
+
+The script builds from an explicit production allowlist (never the whole
+repository), uses forward-slash ZIP entry names, verifies version consistency
+across `wp-doctor.php` (header and `WP_DOCTOR_VERSION`) and `readme.txt`
+(Stable tag), refuses to overwrite an existing artifact unless `--force` is
+given, and reports the SHA-256. Never use `--force` against a frozen release
+artifact.
 
 ## Manual Testing
 

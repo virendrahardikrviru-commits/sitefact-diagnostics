@@ -30,7 +30,6 @@ wp-doctor.log
 
 # Testing
 .phpunit.result.cache
-phpunit.xml
 
 # OS
 Thumbs.db
