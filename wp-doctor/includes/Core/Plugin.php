@@ -19,6 +19,7 @@ use WPDoctor\Diagnostics\AutomaticUpdatesDisabledDiagnostic;
 use WPDoctor\Diagnostics\AutoUpdateCoreDiagnostic;
 use WPDoctor\Diagnostics\BlogPublicDiagnostic;
 use WPDoctor\Diagnostics\CoreUpdateAvailabilityDiagnostic;
+use WPDoctor\Diagnostics\WpCronDiagnostic;
 use WPDoctor\Diagnostics\DatabaseCharsetCollationDiagnostic;
 use WPDoctor\Diagnostics\DatabaseSizeDiagnostic;
 use WPDoctor\Diagnostics\DatabaseStorageEngineDiagnostic;
@@ -133,6 +134,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/PhpVersionDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DebugConfigurationDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/CoreUpdateAvailabilityDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/WpCronDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/SiteUrlsDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/UserRegistrationDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DefaultRoleDiagnostic.php';
@@ -223,6 +225,7 @@ final class Plugin {
 		$registry->register( new PhpVersionDiagnostic() );
 		$registry->register( new DebugConfigurationDiagnostic() );
 		$registry->register( new CoreUpdateAvailabilityDiagnostic( $environment ) );
+		$registry->register( new WpCronDiagnostic() );
 		$registry->register( new SiteUrlsDiagnostic() );
 		$registry->register( new UserRegistrationDiagnostic() );
 		$registry->register( new DefaultRoleDiagnostic() );
