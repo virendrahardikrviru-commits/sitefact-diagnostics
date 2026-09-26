@@ -257,4 +257,109 @@ class AdminFixTest extends TestCase {
 		$this->assertStringContainsString( '&lt;script&gt;', $html );
 		$this->assertStringContainsString( 'wp_doctor_fix', $html );
 	}
+
+	/**
+	 * Render the fix UI for a mismatched site/home URL.
+	 *
+	 * @param string $siteurl The trusted siteurl option value.
+	 * @param string $home    The trusted home option value.
+	 * @return string
+	 */
+	private function render_fix_controls_html( $siteurl, $home ) {
+		$GLOBALS['_wp_doctor_test_options']['siteurl'] = $siteurl;
+		$GLOBALS['_wp_doctor_test_options']['home']    = $home;
+
+		$registry = new DiagnosticRegistry();
+		$registry->register(
+			new class() implements DiagnosticInterface {
+				public function get_id() {
+					return 'configuration.site_urls';
+				}
+
+				public function get_title() {
+					return 'Site & Home URLs';
+				}
+
+				public function get_category() {
+					return Category::CONFIGURATION;
+				}
+
+				public function get_description() {
+					return 'Desc';
+				}
+
+				public function execute() {
+					return new DiagnosticResult(
+						array(
+							'id'       => 'configuration.site_urls',
+							'title'    => 'Site & Home URLs',
+							'category' => Category::CONFIGURATION,
+							'severity' => Severity::WARNING,
+						)
+					);
+				}
+			}
+		);
+
+		$fix_registry = new FixRegistry();
+		$fix_registry->register( new SiteUrlsAlignFix() );
+
+		$admin = new Admin( new Environment(), new DiagnosticRunner(), $registry, new FixRunner(), $fix_registry );
+
+		$GLOBALS['_wp_doctor_can_manage_options'] = true;
+
+		ob_start();
+		$admin->render_page();
+
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * The fix UI shows the trusted before/after relationship for each direction.
+	 */
+	public function test_fix_ui_shows_trusted_before_and_after() {
+		$html    = $this->render_fix_controls_html( 'https://a.example', 'https://b.example' );
+		$compact = preg_replace( '/\s+/', ' ', $html );
+
+		// use_siteurl: home (before) -> siteurl (after).
+		$this->assertStringContainsString(
+			'<strong>Before:</strong> https://b.example <span class="wp-doctor-fix-change-arrow" aria-hidden="true">&rarr;</span> <strong>After:</strong> https://a.example',
+			$compact
+		);
+
+		// use_home: siteurl (before) -> home (after).
+		$this->assertStringContainsString(
+			'<strong>Before:</strong> https://a.example <span class="wp-doctor-fix-change-arrow" aria-hidden="true">&rarr;</span> <strong>After:</strong> https://b.example',
+			$compact
+		);
+	}
+
+	/**
+	 * The confirmation token fields and nonce remain present.
+	 */
+	public function test_fix_ui_keeps_token_and_nonce_fields() {
+		$html = $this->render_fix_controls_html( 'https://a.example', 'https://b.example' );
+
+		$this->assertStringContainsString( 'confirmation_token[use_siteurl]', $html );
+		$this->assertStringContainsString( 'confirmation_token[use_home]', $html );
+		$this->assertStringContainsString( '_wpnonce', $html );
+	}
+
+	/**
+	 * Browser-supplied values cannot alter the displayed trusted before/after.
+	 */
+	public function test_browser_supplied_values_cannot_alter_displayed_values() {
+		$_POST['siteurl']   = 'https://evil.example';
+		$_POST['home']      = 'https://evil.example';
+		$_POST['direction'] = 'https://evil.example';
+
+		$html    = $this->render_fix_controls_html( 'https://a.example', 'https://b.example' );
+		$compact = preg_replace( '/\s+/', ' ', $html );
+
+		$this->assertStringNotContainsString( 'evil.example', $compact );
+		$this->assertStringContainsString(
+			'<strong>Before:</strong> https://b.example <span class="wp-doctor-fix-change-arrow" aria-hidden="true">&rarr;</span> <strong>After:</strong> https://a.example',
+			$compact
+		);
+	}
 }

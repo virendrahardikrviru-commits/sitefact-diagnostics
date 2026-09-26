@@ -182,20 +182,24 @@ class SiteUrlsAlignFix implements FixInterface {
 					'applicable' => true,
 					'options'    => array(
 						array(
-							'token' => self::DIRECTION_USE_SITEURL,
-							'label' => sprintf(
+							'token'  => self::DIRECTION_USE_SITEURL,
+							'label'  => sprintf(
 								/* translators: %s: the current site URL value. */
 								__( 'Set Home URL to %s', 'sitefact-diagnostics' ),
 								$siteurl
 							),
+							'before' => $home,
+							'after'  => $siteurl,
 						),
 						array(
-							'token' => self::DIRECTION_USE_HOME,
-							'label' => sprintf(
+							'token'  => self::DIRECTION_USE_HOME,
+							'label'  => sprintf(
 								/* translators: %s: the current home URL value. */
 								__( 'Set Site URL to %s', 'sitefact-diagnostics' ),
 								$home
 							),
+							'before' => $siteurl,
+							'after'  => $home,
 						),
 					),
 				)

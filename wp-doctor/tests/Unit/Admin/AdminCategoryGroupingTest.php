@@ -190,4 +190,22 @@ class AdminCategoryGroupingTest extends TestCase {
 		$this->assertStringContainsString( 'false', $html );
 		$this->assertStringContainsString( '—', $html );
 	}
+
+	/**
+	 * "All Diagnostics" is a collapsed native disclosure by default, with its
+	 * existing content still present.
+	 */
+	public function test_all_diagnostics_is_collapsed_by_default() {
+		$registry = new DiagnosticRegistry();
+		$registry->register( $this->make_diagnostic( 'core.foo', Category::CORE, 'Core Foo', array( 'payload' => 'value' ) ) );
+
+		$html = $this->render( $registry );
+
+		$this->assertStringContainsString( '<details class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped">', $html );
+		$this->assertStringNotContainsString( '<details class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped" open', $html );
+		$this->assertStringContainsString( 'All Diagnostics', $html );
+		$this->assertStringContainsString( '<h3 class="wp-doctor-category">Core</h3>', $html );
+		$this->assertStringContainsString( 'Core Foo', $html );
+		$this->assertStringContainsString( 'payload', $html );
+	}
 }

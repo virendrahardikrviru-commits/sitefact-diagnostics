@@ -367,10 +367,19 @@ final class FixPreview {
 				continue;
 			}
 
-			$normalized[] = array(
+			$normalized_option = array(
 				'token' => $option['token'],
 				'label' => $option['label'],
 			);
+
+			// Optional, trusted before/after values for the confirmation UI.
+			foreach ( array( 'before', 'after' ) as $field ) {
+				if ( array_key_exists( $field, $option ) && ( is_scalar( $option[ $field ] ) || null === $option[ $field ] ) ) {
+					$normalized_option[ $field ] = $option[ $field ];
+				}
+			}
+
+			$normalized[] = $normalized_option;
 		}
 
 		return $normalized;

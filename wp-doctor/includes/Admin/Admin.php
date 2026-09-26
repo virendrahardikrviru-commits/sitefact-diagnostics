@@ -305,8 +305,8 @@ class Admin {
 				<?php endif; ?>
 			</section>
 
-			<section class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped" aria-labelledby="wp-doctor-all-heading">
-				<h2 id="wp-doctor-all-heading"><?php esc_html_e( 'All Diagnostics', 'sitefact-diagnostics' ); ?></h2>
+			<details class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped">
+				<summary id="wp-doctor-all-heading" class="wp-doctor-disclosure-summary"><?php esc_html_e( 'All Diagnostics', 'sitefact-diagnostics' ); ?></summary>
 				<p><?php esc_html_e( 'Complete results grouped by category, including evidence.', 'sitefact-diagnostics' ); ?></p>
 				<?php foreach ( Category::all() as $category ) : ?>
 					<?php if ( empty( $grouped[ $category ] ) ) { continue; } ?>
@@ -328,7 +328,7 @@ class Admin {
 						?>
 					<?php endforeach; ?>
 				<?php endforeach; ?>
-			</section>
+			</details>
 		</div>
 		<?php
 	}
@@ -712,6 +712,15 @@ class Admin {
 							<?php echo esc_html( $option['label'] ); ?>
 						</label>
 						<input type="hidden" name="confirmation_token[<?php echo esc_attr( $option['token'] ); ?>]" value="<?php echo esc_attr( (string) $bound_token ); ?>" />
+						<?php if ( array_key_exists( 'before', $option ) && array_key_exists( 'after', $option ) ) : ?>
+							<p class="wp-doctor-fix-change">
+								<strong><?php esc_html_e( 'Before:', 'sitefact-diagnostics' ); ?></strong>
+								<?php echo esc_html( (string) $option['before'] ); ?>
+								<span class="wp-doctor-fix-change-arrow" aria-hidden="true">&rarr;</span>
+								<strong><?php esc_html_e( 'After:', 'sitefact-diagnostics' ); ?></strong>
+								<?php echo esc_html( (string) $option['after'] ); ?>
+							</p>
+						<?php endif; ?>
 						<br />
 					<?php endforeach; ?>
 					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'sitefact-diagnostics' ); ?></button></p>

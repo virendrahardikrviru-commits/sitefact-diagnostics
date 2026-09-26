@@ -232,3 +232,19 @@
 		flex-direction: column;
 	}
 }
+
+.wp-doctor-disclosure-summary {
+	cursor: pointer;
+	font-size: 1.3em;
+	font-weight: 600;
+	margin: 0 0 0.5em;
+}
+
+.wp-doctor-fix-change {
+	margin: 4px 0 8px;
+	color: #3c434a;
+}
+
+.wp-doctor-fix-change-arrow {
+	margin: 0 0.4em;
+}
