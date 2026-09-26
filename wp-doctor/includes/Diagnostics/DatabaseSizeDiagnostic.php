@@ -15,6 +15,8 @@
 
 namespace WPDoctor\Diagnostics;
 
+use WPDoctor\Core\DatabaseMetadata;
+
 /**
  * Class DatabaseSizeDiagnostic
  *
@@ -23,30 +25,21 @@ namespace WPDoctor\Diagnostics;
 class DatabaseSizeDiagnostic implements DiagnosticInterface {
 
 	/**
-	 * An explicit database object override for tests.
+	 * The shared read-only database metadata provider.
 	 *
-	 * @var object|null
+	 * @var DatabaseMetadata|null
 	 */
-	private $wpdb;
-
-	/**
-	 * An explicit database/schema name override for tests.
-	 *
-	 * @var string|null
-	 */
-	private $db_name;
+	private $metadata;
 
 	/**
 	 * Constructor.
 	 *
 	 * @since 0.7.0
 	 *
-	 * @param object|null $wpdb    Optional. Database object override.
-	 * @param string|null $db_name Optional. Database/schema name override.
+	 * @param DatabaseMetadata|null $metadata Optional. Shared metadata provider.
 	 */
-	public function __construct( $wpdb = null, $db_name = null ) {
-		$this->wpdb    = $wpdb;
-		$this->db_name = $db_name;
+	public function __construct( DatabaseMetadata $metadata = null ) {
+		$this->metadata = $metadata;
 	}
 
 	/**
@@ -101,14 +94,14 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 	 * @return DiagnosticResult
 	 */
 	public function execute() {
-		$row = $this->read_row();
+		$totals = $this->metadata()->get_totals();
 
-		if ( null === $row ) {
+		if ( null === $totals ) {
 			return $this->build_result( null, null, __( 'The database size could not be determined.', 'sitefact-diagnostics' ) );
 		}
 
-		$size  = $this->extract_numeric( $row, 'size_bytes' );
-		$count = $this->extract_numeric( $row, 'table_count' );
+		$size  = $totals['size_bytes'];
+		$count = $totals['table_count'];
 
 		if ( null === $size || null === $count ) {
 			return $this->build_result( $size, $count, __( 'The database size could not be fully determined.', 'sitefact-diagnostics' ) );
@@ -125,97 +118,15 @@ class DatabaseSizeDiagnostic implements DiagnosticInterface {
 	}
 
 	/**
-	 * Resolve the database object.
+	 * Resolve the shared metadata provider, constructing a default one when none
+	 * was injected.
 	 *
-	 * @since 0.7.0
+	 * @since 1.2.0
 	 *
-	 * @return object|null
+	 * @return DatabaseMetadata
 	 */
-	private function resolve_wpdb() {
-		if ( null !== $this->wpdb ) {
-			return $this->wpdb;
-		}
-
-		global $wpdb;
-
-		return is_object( $wpdb ) ? $wpdb : null;
-	}
-
-	/**
-	 * Resolve and validate the current database/schema name.
-	 *
-	 * @since 0.7.0
-	 *
-	 * @return string|null
-	 */
-	private function resolve_db_name() {
-		if ( null !== $this->db_name ) {
-			$name = $this->db_name;
-		} elseif ( defined( 'DB_NAME' ) ) {
-			$name = DB_NAME;
-		} else {
-			return null;
-		}
-
-		if ( ! is_string( $name ) || '' === trim( $name ) ) {
-			return null;
-		}
-
-		if ( ! preg_match( '/^[A-Za-z0-9_]+$/', $name ) ) {
-			return null;
-		}
-
-		return $name;
-	}
-
-	/**
-	 * Run the single read-only aggregate query and return the result row.
-	 *
-	 * @since 0.7.0
-	 *
-	 * @return array|null
-	 */
-	private function read_row() {
-		$wpdb = $this->resolve_wpdb();
-
-		if ( null === $wpdb || ! method_exists( $wpdb, 'get_row' ) ) {
-			return null;
-		}
-
-		$db_name = $this->resolve_db_name();
-
-		if ( null === $db_name ) {
-			return null;
-		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Read-only information_schema aggregate query required to report current database size and table count; caching would make the diagnostic stale.
-		$row = $wpdb->get_row(
-			$wpdb->prepare(
-                        "SELECT COALESCE(SUM(`data_length` + `index_length`), 0) AS `size_bytes`, COUNT(*) AS `table_count`
-                        FROM `information_schema`.`TABLES`
-                        WHERE `table_schema` = %s",
-                        $db_name
-                ),
-			'ARRAY_A'
-		);
-
-		return is_array( $row ) ? $row : null;
-	}
-
-	/**
-	 * Extract a numeric field from a result row, or null when absent/malformed.
-	 *
-	 * @since 0.7.0
-	 *
-	 * @param array  $row The query result row.
-	 * @param string $key The field key.
-	 * @return int|null
-	 */
-	private function extract_numeric( $row, $key ) {
-		if ( isset( $row[ $key ] ) && is_numeric( $row[ $key ] ) ) {
-			return (int) $row[ $key ];
-		}
-
-		return null;
+	private function metadata() {
+		return ( null !== $this->metadata ) ? $this->metadata : new DatabaseMetadata();
 	}
 
 	/**

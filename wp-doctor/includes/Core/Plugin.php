@@ -115,6 +115,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Core/Logger.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/Environment.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/LogFileReader.php';
+		require_once WP_DOCTOR_DIR . 'includes/Core/DatabaseMetadata.php';
 		require_once WP_DOCTOR_DIR . 'includes/Admin/Admin.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Category.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Severity.php';
@@ -215,7 +216,8 @@ final class Plugin {
 	 * @return void
 	 */
 	private function register_diagnostics( DiagnosticRegistry $registry, Environment $environment ) {
-		$log_reader = new LogFileReader();
+		$log_reader  = new LogFileReader();
+		$db_metadata = new DatabaseMetadata();
 
 		$registry->register( new WordPressVersionDiagnostic( $environment ) );
 		$registry->register( new PhpVersionDiagnostic() );
@@ -235,8 +237,8 @@ final class Plugin {
 		$registry->register( new BlogPublicDiagnostic() );
 		$registry->register( new DatabaseVersionDiagnostic() );
 		$registry->register( new DatabaseCharsetCollationDiagnostic() );
-		$registry->register( new DatabaseSizeDiagnostic() );
-		$registry->register( new DatabaseStorageEngineDiagnostic() );
+		$registry->register( new DatabaseSizeDiagnostic( $db_metadata ) );
+		$registry->register( new DatabaseStorageEngineDiagnostic( $db_metadata ) );
 		$registry->register( new PluginsUpdateAvailableDiagnostic() );
 		$registry->register( new ActiveThemeDiagnostic() );
 		$registry->register( new ThemesUpdateAvailableDiagnostic() );

@@ -509,6 +509,7 @@ require_once dirname( __DIR__ ) . '/includes/Core/Config.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Logger.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Environment.php';
 require_once dirname( __DIR__ ) . '/includes/Core/LogFileReader.php';
+require_once dirname( __DIR__ ) . '/includes/Core/DatabaseMetadata.php';
 require_once dirname( __DIR__ ) . '/includes/Core/DiagnosticSummary.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Activator.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Deactivator.php';

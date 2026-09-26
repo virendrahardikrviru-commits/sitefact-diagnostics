@@ -8,6 +8,7 @@
 namespace WPDoctor\Tests\Unit\Diagnostics;
 
 use PHPUnit\Framework\TestCase;
+use WPDoctor\Core\DatabaseMetadata;
 use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\DatabaseSizeDiagnostic;
 use WPDoctor\Diagnostics\Severity;
@@ -18,41 +19,55 @@ use WPDoctor\Diagnostics\Severity;
 class DatabaseSizeDiagnosticTest extends TestCase {
 
 	/**
-	 * Build a fake $wpdb object that records the query and returns a result row.
+	 * Build a fake $wpdb object that records queries and returns result rows.
 	 *
-	 * @param mixed $result The result row to return.
+	 * @param mixed $result The result rows to return.
 	 * @return object
 	 */
 	private function make_wpdb( $result ) {
 		return new class( $result ) {
 			public $last_query = '';
+			public $query_count = 0;
 			private $result;
 
 			public function __construct( $result ) {
 				$this->result = $result;
 			}
-                        public function prepare( $query, ...$args ) {
-                                if ( empty( $args ) ) {
-                                        return $query;
-                                }
 
-                                return vsprintf(
-                                        str_replace( '%s', "'%s'", $query ),
-                                        array_map(
-                                                static function ( $arg ) {
-                                                        return addslashes( (string) $arg );
-                                                },
-                                                $args
-                                        )
-                                );
-                        }
+			public function prepare( $query, ...$args ) {
+				if ( empty( $args ) ) {
+					return $query;
+				}
 
-			public function get_row( $query, $output = 'ARRAY_A' ) {
+				return vsprintf(
+					str_replace( '%s', "'%s'", $query ),
+					array_map(
+						static function ( $arg ) {
+							return addslashes( (string) $arg );
+						},
+						$args
+					)
+				);
+			}
+
+			public function get_results( $query, $output = 'ARRAY_A' ) {
 				$this->last_query = $query;
+				$this->query_count++;
 
 				return $this->result;
 			}
 		};
+	}
+
+	/**
+	 * Build a diagnostic backed by a shared metadata provider.
+	 *
+	 * @param object      $wpdb    The fake database object.
+	 * @param string|null $db_name The schema name.
+	 * @return DatabaseSizeDiagnostic
+	 */
+	private function diagnostic( $wpdb, $db_name ) {
+		return new DatabaseSizeDiagnostic( new DatabaseMetadata( $wpdb, $db_name ) );
 	}
 
 	/**
@@ -71,8 +86,8 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * A populated database reports INFO with aggregate facts.
 	 */
 	public function test_populated_database_is_info() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '1048576', 'table_count' => '12' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '12', 'size_bytes' => '1048576' ) ) );
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 		$this->assertSame( 1048576, $result->get_evidence()->get( 'size_bytes' ) );
@@ -81,11 +96,27 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	}
 
 	/**
+	 * Size and table count are summed across engine groups.
+	 */
+	public function test_totals_sum_across_engine_groups() {
+		$wpdb = $this->make_wpdb(
+			array(
+				array( 'engine' => 'InnoDB', 'cnt' => '8', 'size_bytes' => '1000' ),
+				array( 'engine' => 'MyISAM', 'cnt' => '4', 'size_bytes' => '24' ),
+			)
+		);
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
+
+		$this->assertSame( 1024, $result->get_evidence()->get( 'size_bytes' ) );
+		$this->assertSame( 12, $result->get_evidence()->get( 'table_count' ) );
+	}
+
+	/**
 	 * A zero-size empty database still reports INFO.
 	 */
 	public function test_zero_result_is_info() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '0', 'table_count' => '0' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb   = $this->make_wpdb( array() );
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 		$this->assertSame( 0, $result->get_evidence()->get( 'size_bytes' ) );
@@ -96,8 +127,8 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * An undefined DB_NAME reports INFO with null evidence.
 	 */
 	public function test_unavailable_db_name_is_info() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '1', 'table_count' => '1' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, null ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '1', 'size_bytes' => '1' ) ) );
+		$result = $this->diagnostic( $wpdb, null )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 		$this->assertNull( $result->get_evidence()->get( 'size_bytes' ) );
@@ -108,8 +139,8 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * An invalid DB_NAME is rejected safely.
 	 */
 	public function test_invalid_db_name_is_info() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '1', 'table_count' => '1' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'bad;name DROP' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '1', 'size_bytes' => '1' ) ) );
+		$result = $this->diagnostic( $wpdb, 'bad;name DROP' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 		$this->assertNull( $result->get_evidence()->get( 'size_bytes' ) );
@@ -120,7 +151,7 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 */
 	public function test_null_query_result_is_info() {
 		$wpdb   = $this->make_wpdb( null );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 	}
@@ -129,8 +160,8 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * A malformed/non-numeric size result degrades safely.
 	 */
 	public function test_malformed_size_is_info() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => 'abc', 'table_count' => '12' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '12', 'size_bytes' => 'abc' ) ) );
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 		$this->assertNull( $result->get_evidence()->get( 'size_bytes' ) );
@@ -140,8 +171,8 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * A malformed/non-numeric table count degrades safely.
 	 */
 	public function test_malformed_count_is_info() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '1048576', 'table_count' => 'xyz' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => 'xyz', 'size_bytes' => '1048576' ) ) );
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 		$this->assertNull( $result->get_evidence()->get( 'table_count' ) );
@@ -151,10 +182,10 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * The result is deterministic for fixed input.
 	 */
 	public function test_deterministic_result() {
-		$row = array( 'size_bytes' => '2048', 'table_count' => '5' );
+		$rows = array( array( 'engine' => 'InnoDB', 'cnt' => '5', 'size_bytes' => '2048' ) );
 
-		$first  = ( new DatabaseSizeDiagnostic( $this->make_wpdb( $row ), 'wpdb' ) )->execute()->to_array();
-		$second = ( new DatabaseSizeDiagnostic( $this->make_wpdb( $row ), 'wpdb' ) )->execute()->to_array();
+		$first  = $this->diagnostic( $this->make_wpdb( $rows ), 'wpdb' )->execute()->to_array();
+		$second = $this->diagnostic( $this->make_wpdb( $rows ), 'wpdb' )->execute()->to_array();
 
 		$this->assertSame( $first, $second );
 	}
@@ -163,8 +194,8 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	 * Evidence contains only the three aggregate fields.
 	 */
 	public function test_evidence_is_aggregate_only() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '1048576', 'table_count' => '12' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '12', 'size_bytes' => '1048576' ) ) );
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame(
 			array( 'size_bytes', 'size_human', 'table_count' ),
@@ -173,28 +204,32 @@ class DatabaseSizeDiagnosticTest extends TestCase {
 	}
 
 	/**
-	 * Evidence never leaks table names, SQL, or the schema name.
+	 * Evidence never leaks table names, engine names, SQL, or the schema name.
 	 */
 	public function test_no_names_or_sql_in_evidence() {
-		$wpdb   = $this->make_wpdb( array( 'size_bytes' => '1048576', 'table_count' => '12' ) );
-		$result = ( new DatabaseSizeDiagnostic( $wpdb, 'wp_secret_db' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '12', 'size_bytes' => '1048576' ) ) );
+		$result = $this->diagnostic( $wpdb, 'wp_secret_db' )->execute();
 
 		$encoded = wp_json_encode( $result->get_evidence()->to_array() );
 
 		$this->assertStringNotContainsString( 'wp_secret_db', $encoded );
 		$this->assertStringNotContainsString( 'wp_posts', $encoded );
+		$this->assertStringNotContainsString( 'InnoDB', $encoded );
 		$this->assertStringNotContainsString( 'SELECT', $encoded );
 	}
 
 	/**
-	 * The query is a single read-only aggregate SELECT against information_schema.
+	 * The shared metadata query is a read-only aggregate SELECT against
+	 * information_schema grouped by engine.
 	 */
 	public function test_query_is_aggregate_select() {
-		$wpdb = $this->make_wpdb( array( 'size_bytes' => '1', 'table_count' => '1' ) );
-		( new DatabaseSizeDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '1', 'size_bytes' => '1' ) ) );
+		$this->diagnostic( $wpdb, 'wpdb' )->execute();
 
-		$this->assertStringStartsWith( 'SELECT COALESCE(SUM(', $wpdb->last_query );
+		$this->assertStringStartsWith( 'SELECT `engine`', $wpdb->last_query );
 		$this->assertStringContainsString( 'information_schema', $wpdb->last_query );
+		$this->assertStringContainsString( 'SUM(`data_length`', $wpdb->last_query );
 		$this->assertStringContainsString( "table_schema` = 'wpdb'", $wpdb->last_query );
+		$this->assertStringContainsString( 'GROUP BY `engine`', $wpdb->last_query );
 	}
 }

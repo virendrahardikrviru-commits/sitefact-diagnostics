@@ -16,6 +16,8 @@
 
 namespace WPDoctor\Diagnostics;
 
+use WPDoctor\Core\DatabaseMetadata;
+
 /**
  * Class DatabaseStorageEngineDiagnostic
  *
@@ -24,30 +26,21 @@ namespace WPDoctor\Diagnostics;
 class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 
 	/**
-	 * An explicit database object override for tests.
+	 * The shared read-only database metadata provider.
 	 *
-	 * @var object|null
+	 * @var DatabaseMetadata|null
 	 */
-	private $wpdb;
-
-	/**
-	 * An explicit database/schema name override for tests.
-	 *
-	 * @var string|null
-	 */
-	private $db_name;
+	private $metadata;
 
 	/**
 	 * Constructor.
 	 *
 	 * @since 0.7.0
 	 *
-	 * @param object|null $wpdb    Optional. Database object override.
-	 * @param string|null $db_name Optional. Database/schema name override.
+	 * @param DatabaseMetadata|null $metadata Optional. Shared metadata provider.
 	 */
-	public function __construct( $wpdb = null, $db_name = null ) {
-		$this->wpdb    = $wpdb;
-		$this->db_name = $db_name;
+	public function __construct( DatabaseMetadata $metadata = null ) {
+		$this->metadata = $metadata;
 	}
 
 	/**
@@ -102,9 +95,9 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 * @return DiagnosticResult
 	 */
 	public function execute() {
-		$rows = $this->read_rows();
+		$counts = $this->metadata()->get_engine_counts();
 
-		if ( null === $rows ) {
+		if ( null === $counts ) {
 			return $this->build_result(
 				Severity::INFO,
 				0,
@@ -113,8 +106,6 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 				__( 'The database storage engines could not be determined.', 'sitefact-diagnostics' )
 			);
 		}
-
-		$counts = $this->extract_engine_counts( $rows );
 
 		$innodb = $counts['innodb'];
 		$myisam = $counts['myisam'];
@@ -144,117 +135,15 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	}
 
 	/**
-	 * Resolve the database object.
+	 * Resolve the shared metadata provider, constructing a default one when none
+	 * was injected.
 	 *
-	 * @since 0.7.0
+	 * @since 1.2.0
 	 *
-	 * @return object|null
+	 * @return DatabaseMetadata
 	 */
-	private function resolve_wpdb() {
-		if ( null !== $this->wpdb ) {
-			return $this->wpdb;
-		}
-
-		global $wpdb;
-
-		return is_object( $wpdb ) ? $wpdb : null;
-	}
-
-	/**
-	 * Resolve and validate the current database/schema name.
-	 *
-	 * @since 0.7.0
-	 *
-	 * @return string|null
-	 */
-	private function resolve_db_name() {
-		if ( null !== $this->db_name ) {
-			$name = $this->db_name;
-		} elseif ( defined( 'DB_NAME' ) ) {
-			$name = DB_NAME;
-		} else {
-			return null;
-		}
-
-		if ( ! is_string( $name ) || '' === trim( $name ) ) {
-			return null;
-		}
-
-		if ( ! preg_match( '/^[A-Za-z0-9_]+$/', $name ) ) {
-			return null;
-		}
-
-		return $name;
-	}
-
-	/**
-	 * Run the single read-only GROUP BY query and return the result rows.
-	 *
-	 * @since 0.7.0
-	 *
-	 * @return array|null
-	 */
-	private function read_rows() {
-		$wpdb = $this->resolve_wpdb();
-
-		if ( null === $wpdb || ! method_exists( $wpdb, 'get_results' ) ) {
-			return null;
-		}
-
-		$db_name = $this->resolve_db_name();
-
-		if ( null === $db_name ) {
-			return null;
-		}
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Read-only information_schema query required to report the current storage-engine distribution; caching would make the diagnostic stale.
-		$rows = $wpdb->get_results(
-			$wpdb->prepare(
-                        "SELECT `engine`, COUNT(*) AS `cnt`
-                        FROM `information_schema`.`TABLES`
-                        WHERE `table_schema` = %s
-                        GROUP BY `engine`",
-                        $db_name
-                ),
-			'ARRAY_A'
-		);
-
-		return is_array( $rows ) ? $rows : null;
-	}
-
-	/**
-	 * Aggregate result rows into InnoDB/MyISAM/other counts.
-	 *
-	 * @since 0.7.0
-	 *
-	 * @param array $rows The query result rows.
-	 * @return array
-	 */
-	private function extract_engine_counts( array $rows ) {
-		$counts = array(
-			'innodb' => 0,
-			'myisam' => 0,
-			'other'  => 0,
-		);
-
-		foreach ( $rows as $row ) {
-			if ( ! is_array( $row ) ) {
-				continue;
-			}
-
-			$engine = isset( $row['engine'] ) ? strtolower( trim( (string) $row['engine'] ) ) : '';
-			$count  = ( isset( $row['cnt'] ) && is_numeric( $row['cnt'] ) ) ? (int) $row['cnt'] : 0;
-
-			if ( 'innodb' === $engine ) {
-				$counts['innodb'] += $count;
-			} elseif ( 'myisam' === $engine ) {
-				$counts['myisam'] += $count;
-			} else {
-				$counts['other'] += $count;
-			}
-		}
-
-		return $counts;
+	private function metadata() {
+		return ( null !== $this->metadata ) ? $this->metadata : new DatabaseMetadata();
 	}
 
 	/**

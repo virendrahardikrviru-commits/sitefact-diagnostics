@@ -8,6 +8,7 @@
 namespace WPDoctor\Tests\Unit\Diagnostics;
 
 use PHPUnit\Framework\TestCase;
+use WPDoctor\Core\DatabaseMetadata;
 use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\DatabaseStorageEngineDiagnostic;
 use WPDoctor\Diagnostics\Severity;
@@ -18,7 +19,7 @@ use WPDoctor\Diagnostics\Severity;
 class DatabaseStorageEngineDiagnosticTest extends TestCase {
 
 	/**
-	 * Build a fake $wpdb object that records the query and returns result rows.
+	 * Build a fake $wpdb object that records queries and returns result rows.
 	 *
 	 * @param mixed $result The result rows to return.
 	 * @return object
@@ -26,6 +27,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	private function make_wpdb( $result ) {
 		return new class( $result ) {
 			public $last_query = '';
+			public $query_count = 0;
 			private $result;
 
 			public function __construct( $result ) {
@@ -33,27 +35,39 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 			}
 
 			public function prepare( $query, ...$args ) {
-        if ( empty( $args ) ) {
-                return $query;
-        }
+				if ( empty( $args ) ) {
+					return $query;
+				}
 
-        return vsprintf(
-                str_replace( '%s', "'%s'", $query ),
-                array_map(
-                        static function ( $arg ) {
-                                return addslashes( (string) $arg );
-                        },
-                        $args
-                )
-        );
-}
+				return vsprintf(
+					str_replace( '%s', "'%s'", $query ),
+					array_map(
+						static function ( $arg ) {
+							return addslashes( (string) $arg );
+						},
+						$args
+					)
+				);
+			}
 
 			public function get_results( $query, $output = 'ARRAY_A' ) {
 				$this->last_query = $query;
+				$this->query_count++;
 
 				return $this->result;
 			}
 		};
+	}
+
+	/**
+	 * Build a diagnostic backed by a shared metadata provider.
+	 *
+	 * @param object      $wpdb    The fake database object.
+	 * @param string|null $db_name The schema name.
+	 * @return DatabaseStorageEngineDiagnostic
+	 */
+	private function diagnostic( $wpdb, $db_name ) {
+		return new DatabaseStorageEngineDiagnostic( new DatabaseMetadata( $wpdb, $db_name ) );
 	}
 
 	/**
@@ -72,8 +86,8 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 * An InnoDB-only database reports SUCCESS.
 	 */
 	public function test_innodb_only_is_success() {
-		$wpdb = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '10' ) ) );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '10' ) ) );
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::SUCCESS, $result->get_severity() );
 		$this->assertSame( 10, $result->get_evidence()->get( 'innodb_count' ) );
@@ -90,7 +104,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 				array( 'engine' => 'MyISAM', 'cnt' => '3' ),
 			)
 		);
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::WARNING, $result->get_severity() );
 		$this->assertSame( 3, $result->get_evidence()->get( 'myisam_count' ) );
@@ -108,7 +122,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 				array( 'engine' => '', 'cnt' => '1' ),
 			)
 		);
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( 5, $result->get_evidence()->get( 'innodb_count' ) );
 		$this->assertSame( 1, $result->get_evidence()->get( 'myisam_count' ) );
@@ -120,7 +134,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 */
 	public function test_zero_myisam_is_success() {
 		$wpdb   = $this->make_wpdb( array() );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::SUCCESS, $result->get_severity() );
 		$this->assertSame( 0, $result->get_evidence()->get( 'myisam_count' ) );
@@ -131,7 +145,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 */
 	public function test_unavailable_db_name_is_info() {
 		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '1' ) ) );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, null ) )->execute();
+		$result = $this->diagnostic( $wpdb, null )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 	}
@@ -141,7 +155,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 */
 	public function test_invalid_db_name_is_info() {
 		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '1' ) ) );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'bad name' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'bad name' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 	}
@@ -151,7 +165,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 */
 	public function test_null_query_result_is_info() {
 		$wpdb   = $this->make_wpdb( null );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::INFO, $result->get_severity() );
 	}
@@ -166,7 +180,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 				array( 'engine' => 'MyISAM', 'cnt' => 'abc' ),
 			)
 		);
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame( Severity::SUCCESS, $result->get_severity() );
 		$this->assertSame( 0, $result->get_evidence()->get( 'myisam_count' ) );
@@ -180,8 +194,8 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	public function test_deterministic_result() {
 		$rows = array( array( 'engine' => 'InnoDB', 'cnt' => '7' ), array( 'engine' => 'MyISAM', 'cnt' => '2' ) );
 
-		$first  = ( new DatabaseStorageEngineDiagnostic( $this->make_wpdb( $rows ), 'wpdb' ) )->execute()->to_array();
-		$second = ( new DatabaseStorageEngineDiagnostic( $this->make_wpdb( $rows ), 'wpdb' ) )->execute()->to_array();
+		$first  = $this->diagnostic( $this->make_wpdb( $rows ), 'wpdb' )->execute()->to_array();
+		$second = $this->diagnostic( $this->make_wpdb( $rows ), 'wpdb' )->execute()->to_array();
 
 		$this->assertSame( $first, $second );
 	}
@@ -191,7 +205,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 */
 	public function test_evidence_is_aggregate_only() {
 		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '10' ) ) );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wpdb' )->execute();
 
 		$this->assertSame(
 			array( 'innodb_count', 'myisam_count', 'other_count' ),
@@ -204,7 +218,7 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	 */
 	public function test_no_names_or_sql_in_evidence() {
 		$wpdb   = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '10' ) ) );
-		$result = ( new DatabaseStorageEngineDiagnostic( $wpdb, 'wp_secret_db' ) )->execute();
+		$result = $this->diagnostic( $wpdb, 'wp_secret_db' )->execute();
 
 		$encoded = wp_json_encode( $result->get_evidence()->to_array() );
 
@@ -215,14 +229,15 @@ class DatabaseStorageEngineDiagnosticTest extends TestCase {
 	}
 
 	/**
-	 * The query is a single read-only GROUP BY aggregate SELECT.
+	 * The shared metadata query is a read-only GROUP BY aggregate SELECT.
 	 */
 	public function test_query_is_group_by_select() {
 		$wpdb = $this->make_wpdb( array( array( 'engine' => 'InnoDB', 'cnt' => '1' ) ) );
-		( new DatabaseStorageEngineDiagnostic( $wpdb, 'wpdb' ) )->execute();
+		$this->diagnostic( $wpdb, 'wpdb' )->execute();
 
-		$this->assertStringStartsWith( 'SELECT `engine`, COUNT(*)', $wpdb->last_query );
+		$this->assertStringStartsWith( 'SELECT `engine`', $wpdb->last_query );
 		$this->assertStringContainsString( 'information_schema', $wpdb->last_query );
+		$this->assertStringContainsString( "table_schema` = 'wpdb'", $wpdb->last_query );
 		$this->assertStringContainsString( 'GROUP BY `engine`', $wpdb->last_query );
 	}
 }
