@@ -545,6 +545,7 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoloadedOptionsDiagno
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutoUpdateCoreDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/BlogPublicDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseVersionDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseUpgradeDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseCharsetCollationDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseSizeDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DatabaseStorageEngineDiagnostic.php';
