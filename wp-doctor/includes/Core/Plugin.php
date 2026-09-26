@@ -34,6 +34,7 @@ use WPDoctor\Diagnostics\DiagnosticRunner;
 use WPDoctor\Diagnostics\ErrorFatalCountDiagnostic;
 use WPDoctor\Diagnostics\ErrorWarningCountDiagnostic;
 use WPDoctor\Diagnostics\FileEditDiagnostic;
+use WPDoctor\Diagnostics\XmlRpcDiagnostic;
 use WPDoctor\Diagnostics\HttpsDiagnostic;
 use WPDoctor\Diagnostics\MemoryLimitDiagnostic;
 use WPDoctor\Diagnostics\ObjectCacheDiagnostic;
@@ -142,6 +143,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/DefaultRoleDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/HttpsDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/FileEditDiagnostic.php';
+		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/XmlRpcDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AdministratorCountDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/MemoryLimitDiagnostic.php';
@@ -235,6 +237,7 @@ final class Plugin {
 		$registry->register( new DefaultRoleDiagnostic() );
 		$registry->register( new HttpsDiagnostic() );
 		$registry->register( new FileEditDiagnostic() );
+		$registry->register( new XmlRpcDiagnostic() );
 		$registry->register( new AdministratorCountDiagnostic() );
 		$registry->register( new AutomaticUpdatesDisabledDiagnostic() );
 		$registry->register( new MemoryLimitDiagnostic() );

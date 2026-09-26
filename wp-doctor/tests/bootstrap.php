@@ -505,6 +505,124 @@ if ( ! function_exists( 'esc_url' ) ) {
 }
 
 // Load the classes under test.
+// Minimal WordPress filter stand-ins so diagnostics that read filtered feature
+// signals (for example the `xmlrpc_enabled` filter) can be exercised without
+// WordPress. Tests that add filters must remove them (or reset the global).
+if ( ! function_exists( 'add_filter' ) ) {
+	$GLOBALS['_wp_doctor_test_filters'] = array();
+
+	/**
+	 * Register a filter callback.
+	 *
+	 * @param string   $hook     Filter hook name.
+	 * @param callable $callback Callback.
+	 * @param int      $priority Optional. Priority.
+	 * @return bool
+	 */
+	function add_filter( $hook, $callback, $priority = 10 ) {
+		$GLOBALS['_wp_doctor_test_filters'][ $hook ][ $priority ][] = $callback;
+
+		return true;
+	}
+
+	/**
+	 * Remove a previously registered filter callback.
+	 *
+	 * @param string   $hook     Filter hook name.
+	 * @param callable $callback Callback.
+	 * @param int      $priority Optional. Priority.
+	 * @return bool
+	 */
+	function remove_filter( $hook, $callback, $priority = 10 ) {
+		if ( empty( $GLOBALS['_wp_doctor_test_filters'][ $hook ][ $priority ] ) ) {
+			return false;
+		}
+
+		foreach ( $GLOBALS['_wp_doctor_test_filters'][ $hook ][ $priority ] as $index => $existing ) {
+			if ( $existing === $callback ) {
+				unset( $GLOBALS['_wp_doctor_test_filters'][ $hook ][ $priority ][ $index ] );
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Apply registered filter callbacks to a value.
+	 *
+	 * @param string $hook  Filter hook name.
+	 * @param mixed  $value Value to filter.
+	 * @return mixed
+	 */
+	function apply_filters( $hook, $value ) {
+		if ( empty( $GLOBALS['_wp_doctor_test_filters'][ $hook ] ) ) {
+			return $value;
+		}
+
+		$callbacks = $GLOBALS['_wp_doctor_test_filters'][ $hook ];
+		ksort( $callbacks );
+
+		foreach ( $callbacks as $priority_callbacks ) {
+			foreach ( $priority_callbacks as $callback ) {
+				if ( is_callable( $callback ) ) {
+					$value = call_user_func( $callback, $value );
+				}
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Determine whether a filter has callbacks.
+	 *
+	 * @param string $hook Filter hook name.
+	 * @return bool
+	 */
+	function has_filter( $hook ) {
+		return ! empty( $GLOBALS['_wp_doctor_test_filters'][ $hook ] );
+	}
+}
+
+// Guarded network stand-ins that throw: the unit suite asserts that no
+// diagnostic performs an outbound HTTP request.
+if ( ! function_exists( 'wp_remote_get' ) ) {
+	/**
+	 * Fail if any code attempts an outbound GET.
+	 *
+	 * @param string $url  URL.
+	 * @param array  $args Optional. Request args.
+	 * @return mixed
+	 */
+	function wp_remote_get( $url, $args = array() ) {
+		throw new \RuntimeException( 'Unexpected outbound HTTP request: wp_remote_get' );
+	}
+
+	/**
+	 * Fail if any code attempts an outbound POST.
+	 *
+	 * @param string $url  URL.
+	 * @param array  $args Optional. Request args.
+	 * @return mixed
+	 */
+	function wp_remote_post( $url, $args = array() ) {
+		throw new \RuntimeException( 'Unexpected outbound HTTP request: wp_remote_post' );
+	}
+
+	/**
+	 * Fail if any code attempts an outbound request.
+	 *
+	 * @param string $url  URL.
+	 * @param array  $args Optional. Request args.
+	 * @return mixed
+	 */
+	function wp_remote_request( $url, $args = array() ) {
+		throw new \RuntimeException( 'Unexpected outbound HTTP request: wp_remote_request' );
+	}
+}
+
 require_once dirname( __DIR__ ) . '/includes/Core/Config.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Logger.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Environment.php';
@@ -537,6 +655,7 @@ require_once dirname( __DIR__ ) . '/includes/Diagnostics/UserRegistrationDiagnos
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/DefaultRoleDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/HttpsDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/FileEditDiagnostic.php';
+require_once dirname( __DIR__ ) . '/includes/Diagnostics/XmlRpcDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AdministratorCountDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/AutomaticUpdatesDisabledDiagnostic.php';
 require_once dirname( __DIR__ ) . '/includes/Diagnostics/MemoryLimitDiagnostic.php';

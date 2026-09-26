@@ -224,7 +224,7 @@ class DatabaseUpgradeDiagnosticTest extends TestCase {
 			$registry->get_all()
 		);
 
-		$this->assertSame( 31, $registry->count() );
+		$this->assertSame( 32, $registry->count() );
 		$this->assertSame( count( $ids ), count( array_unique( $ids ) ) );
 		$this->assertSame( 1, count( array_keys( $ids, 'database.upgrade_pending', true ) ) );
 		$this->assertContains( 'database.version', $ids );

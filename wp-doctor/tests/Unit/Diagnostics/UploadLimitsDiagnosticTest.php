@@ -232,7 +232,7 @@ class UploadLimitsDiagnosticTest extends TestCase {
 			$registry->get_all()
 		);
 
-		$this->assertSame( 31, $registry->count() );
+		$this->assertSame( 32, $registry->count() );
 		$this->assertSame( count( $ids ), count( array_unique( $ids ) ) );
 		$this->assertSame( 1, count( array_keys( $ids, 'configuration.upload_limits', true ) ) );
 		$this->assertContains( 'configuration.blog_public', $ids );
