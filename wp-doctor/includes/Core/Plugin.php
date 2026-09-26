@@ -203,6 +203,11 @@ final class Plugin {
 	 * runner both sort by diagnostic ID. Explicit registration (rather than
 	 * reflection or auto-discovery) keeps the diagnostic set auditable.
 	 *
+	 * A single read-only LogFileReader is created here and shared by every
+	 * diagnostic that inspects the debug log, so the bounded log tail is read
+	 * once per scan instead of once per diagnostic. The reader caches its
+	 * aggregate summary, so shared use does not change any diagnostic result.
+	 *
 	 * @since 0.3.0
 	 *
 	 * @param DiagnosticRegistry $registry    The registry to populate.
@@ -210,6 +215,8 @@ final class Plugin {
 	 * @return void
 	 */
 	private function register_diagnostics( DiagnosticRegistry $registry, Environment $environment ) {
+		$log_reader = new LogFileReader();
+
 		$registry->register( new WordPressVersionDiagnostic( $environment ) );
 		$registry->register( new PhpVersionDiagnostic() );
 		$registry->register( new DebugConfigurationDiagnostic() );
@@ -233,9 +240,9 @@ final class Plugin {
 		$registry->register( new PluginsUpdateAvailableDiagnostic() );
 		$registry->register( new ActiveThemeDiagnostic() );
 		$registry->register( new ThemesUpdateAvailableDiagnostic() );
-		$registry->register( new DebugLogDiagnostic() );
-		$registry->register( new ErrorFatalCountDiagnostic() );
-		$registry->register( new ErrorWarningCountDiagnostic() );
+		$registry->register( new DebugLogDiagnostic( $log_reader ) );
+		$registry->register( new ErrorFatalCountDiagnostic( $log_reader ) );
+		$registry->register( new ErrorWarningCountDiagnostic( $log_reader ) );
 		$registry->register( new OpCacheDiagnostic() );
 		$registry->register( new PageCacheDiagnostic() );
 	}
