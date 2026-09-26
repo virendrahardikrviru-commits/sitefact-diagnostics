@@ -23,6 +23,7 @@
 
 namespace WPDoctor\Fixes;
 
+use WPDoctor\Core\SiteUrl;
 use WPDoctor\Recovery\RecoveryPoint;
 
 /**
@@ -162,7 +163,7 @@ class SiteUrlsAlignFix implements FixInterface {
 			);
 		}
 
-		if ( $siteurl === $home ) {
+		if ( SiteUrl::is_aligned( $siteurl, $home ) ) {
 			return new FixPreview(
 				array_merge(
 					$base,
@@ -248,7 +249,7 @@ class SiteUrlsAlignFix implements FixInterface {
 				return false;
 			}
 
-			if ( $siteurl === $home ) {
+			if ( SiteUrl::is_aligned( $siteurl, $home ) ) {
 				return true;
 			}
 
@@ -260,7 +261,7 @@ class SiteUrlsAlignFix implements FixInterface {
 				return false;
 			}
 
-			if ( $siteurl === $home ) {
+			if ( SiteUrl::is_aligned( $siteurl, $home ) ) {
 				return true;
 			}
 
@@ -285,7 +286,7 @@ class SiteUrlsAlignFix implements FixInterface {
 			return false;
 		}
 
-		return $siteurl === $home;
+		return SiteUrl::is_aligned( $siteurl, $home );
 	}
 
 	/**

@@ -2,18 +2,22 @@
 /**
  * Site URL and Home URL consistency diagnostic for WP Doctor.
  *
- * Compares the WordPress `siteurl` and `home` options at the scheme + host
- * level and reports whether they match. A mismatch can cause redirect loops,
- * mixed-content warnings, and login problems.
+ * Compares the WordPress `siteurl` and `home` options using the shared,
+ * deterministic URL normalization (credentials stripped, scheme and host
+ * lowercased, trailing slash ignored) and reports whether they are aligned.
+ * This is the same comparison used by the alignment fix, so the diagnostic and
+ * the fix can never disagree about alignment. A mismatch can cause redirect
+ * loops, mixed-content warnings, and login problems.
  *
- * The diagnostic never exposes credentials, paths, or other sensitive URL
- * components; only the normalized scheme + host (+ port) are compared and
- * reported.
+ * Evidence exposes only the normalized scheme + host (+ port); credentials and
+ * paths are never reported.
  *
  * @package WPDoctor\Diagnostics
  */
 
 namespace WPDoctor\Diagnostics;
+
+use WPDoctor\Core\SiteUrl;
 
 /**
  * Class SiteUrlsDiagnostic
@@ -110,8 +114,11 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 * @return DiagnosticResult
 	 */
 	public function execute() {
-		$site_host = $this->normalize_host( $this->read_option( 'siteurl', $this->siteurl ) );
-		$home_host = $this->normalize_host( $this->read_option( 'home', $this->home ) );
+		$siteurl = $this->read_option( 'siteurl', $this->siteurl );
+		$home    = $this->read_option( 'home', $this->home );
+
+		$site_host = SiteUrl::normalized_host( $siteurl );
+		$home_host = SiteUrl::normalized_host( $home );
 
 		if ( null === $site_host || null === $home_host ) {
 			return $this->build_result(
@@ -123,7 +130,9 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 			);
 		}
 
-		$match = ( strtolower( $site_host ) === strtolower( $home_host ) );
+		// Alignment uses the same full normalized comparison as the fix so the
+		// two never disagree about whether the URLs are aligned.
+		$match = SiteUrl::is_aligned( $siteurl, $home );
 
 		if ( $match ) {
 			return $this->build_result(
@@ -173,45 +182,6 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Normalize a URL to its lowercase scheme + host (+ port), or null.
-	 *
-	 * Strips userinfo, path, query, and fragment so that only the authority
-	 * components that identify the site are compared and reported.
-	 *
-	 * @since 0.3.0
-	 *
-	 * @param mixed $url The URL to normalize.
-	 * @return string|null Normalized "scheme://host[:port]", or null.
-	 */
-	private function normalize_host( $url ) {
-		if ( ! is_string( $url ) || '' === trim( $url ) ) {
-			return null;
-		}
-
-		if ( ! function_exists( 'wp_parse_url' ) ) {
-			return null;
-		}
-
-		$parsed = wp_parse_url( trim( $url ) );
-
-		if ( ! is_array( $parsed ) || ! isset( $parsed['host'] ) || '' === (string) $parsed['host'] ) {
-			return null;
-		}
-
-		$scheme = isset( $parsed['scheme'] ) ? strtolower( $parsed['scheme'] ) : '';
-		$host   = strtolower( $parsed['host'] );
-		$port   = isset( $parsed['port'] ) ? (int) $parsed['port'] : null;
-
-		$authority = '' !== $scheme ? $scheme . '://' . $host : $host;
-
-		if ( null !== $port ) {
-			$authority .= ':' . $port;
-		}
-
-		return $authority;
 	}
 
 	/**

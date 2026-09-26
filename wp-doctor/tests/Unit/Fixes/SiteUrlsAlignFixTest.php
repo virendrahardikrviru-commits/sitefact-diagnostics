@@ -8,6 +8,8 @@
 namespace WPDoctor\Tests\Unit\Fixes;
 
 use PHPUnit\Framework\TestCase;
+use WPDoctor\Diagnostics\Severity;
+use WPDoctor\Diagnostics\SiteUrlsDiagnostic;
 use WPDoctor\Fixes\FixResult;
 use WPDoctor\Fixes\FixRunner;
 use WPDoctor\Fixes\RiskLevel;
@@ -326,5 +328,84 @@ class SiteUrlsAlignFixTest extends TestCase {
 		$result = ( new FixRunner() )->run_one( new SiteUrlsAlignFix(), SiteUrlsAlignFix::DIRECTION_USE_SITEURL, true );
 
 		$this->assertSame( FixResult::NO_CHANGE, $result->get_status() );
+	}
+
+	/**
+	 * A trailing slash is treated as already aligned.
+	 */
+	public function test_preview_trailing_slash_is_aligned() {
+		$this->seed( 'https://a.example/', 'https://a.example' );
+
+		$this->assertFalse( ( new SiteUrlsAlignFix() )->get_preview()->is_applicable() );
+	}
+
+	/**
+	 * A host case difference is treated as already aligned.
+	 */
+	public function test_preview_host_case_is_aligned() {
+		$this->seed( 'https://A.Example', 'https://a.example' );
+
+		$this->assertFalse( ( new SiteUrlsAlignFix() )->get_preview()->is_applicable() );
+	}
+
+	/**
+	 * A path difference is a genuine mismatch and remains applicable.
+	 */
+	public function test_preview_path_difference_is_applicable() {
+		$this->seed( 'https://a.example/blog', 'https://a.example' );
+
+		$this->assertTrue( ( new SiteUrlsAlignFix() )->get_preview()->is_applicable() );
+	}
+
+	/**
+	 * verify() uses the shared normalized alignment.
+	 */
+	public function test_verify_uses_normalized_alignment() {
+		$this->seed( 'https://a.example/', 'https://a.example' );
+
+		$this->assertTrue( ( new SiteUrlsAlignFix() )->verify() );
+	}
+
+	/**
+	 * apply() is a safe no-op when the URLs are already normalized-equal, even
+	 * though the raw strings differ.
+	 */
+	public function test_apply_noop_when_normalized_aligned() {
+		$this->seed( 'https://a.example/', 'https://a.example' );
+
+		$fix      = new SiteUrlsAlignFix();
+		$recovery = $fix->capture();
+
+		$this->assertTrue( $fix->apply( $recovery, SiteUrlsAlignFix::DIRECTION_USE_SITEURL ) );
+		$this->assertSame( 'https://a.example', $GLOBALS['_wp_doctor_test_options']['home'] );
+	}
+
+	/**
+	 * The diagnostic and the fix agree on alignment for equivalent and
+	 * different URL forms.
+	 */
+	public function test_diagnostic_and_fix_agree_on_alignment() {
+		$cases = array(
+			array( 'https://a.example', 'https://a.example', true ),
+			array( 'https://a.example/', 'https://a.example', true ),
+			array( 'https://A.Example', 'https://a.example', true ),
+			array( 'https://a.example', 'https://b.example', false ),
+			array( 'https://a.example', 'http://a.example', false ),
+			array( 'https://a.example/blog', 'https://a.example', false ),
+		);
+
+		foreach ( $cases as $case ) {
+			list( $siteurl, $home, $aligned ) = $case;
+
+			$this->seed( $siteurl, $home );
+
+			$diagnostic = ( new SiteUrlsDiagnostic( $siteurl, $home, false ) )->execute();
+			$preview    = ( new SiteUrlsAlignFix() )->get_preview();
+
+			$diagnostic_aligned = ( Severity::SUCCESS === $diagnostic->get_severity() );
+
+			$this->assertSame( $aligned, $diagnostic_aligned, $siteurl . ' vs ' . $home . ' (diagnostic)' );
+			$this->assertSame( ! $aligned, $preview->is_applicable(), $siteurl . ' vs ' . $home . ' (fix)' );
+		}
 	}
 }

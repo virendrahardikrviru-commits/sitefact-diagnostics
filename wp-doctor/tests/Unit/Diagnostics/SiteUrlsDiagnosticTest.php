@@ -101,4 +101,30 @@ class SiteUrlsDiagnosticTest extends TestCase {
 		$this->assertStringNotContainsString( 'user:pass', wp_json_encode( $evidence ) );
 		$this->assertStringNotContainsString( '/path', wp_json_encode( $evidence ) );
 	}
+
+	/**
+	 * Scheme/host case variations are not a mismatch.
+	 */
+	public function test_case_variation_is_a_match() {
+		$result = ( new SiteUrlsDiagnostic( 'HTTPS://Example.COM', 'https://example.com', false ) )->execute();
+
+		$this->assertSame( Severity::SUCCESS, $result->get_severity() );
+		$this->assertTrue( $result->get_evidence()->get( 'match' ) );
+	}
+
+	/**
+	 * A path difference is a genuine mismatch (full normalized comparison),
+	 * while evidence remains scheme + host only.
+	 */
+	public function test_path_difference_is_genuine_mismatch() {
+		$result = ( new SiteUrlsDiagnostic( 'https://example.com/blog', 'https://example.com', false ) )->execute();
+
+		$this->assertSame( Severity::WARNING, $result->get_severity() );
+		$this->assertFalse( $result->get_evidence()->get( 'match' ) );
+
+		$evidence = $result->get_evidence()->to_array();
+		$this->assertSame( 'https://example.com', $evidence['site_url_host'] );
+		$this->assertSame( 'https://example.com', $evidence['home_url_host'] );
+		$this->assertStringNotContainsString( '/blog', wp_json_encode( $evidence ) );
+	}
 }
