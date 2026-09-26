@@ -8,6 +8,7 @@
 namespace WPDoctor\Tests\Unit\Diagnostics;
 
 use PHPUnit\Framework\TestCase;
+use WPDoctor\Core\EnvironmentType;
 use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\HttpsDiagnostic;
 use WPDoctor\Diagnostics\Severity;
@@ -88,5 +89,50 @@ class HttpsDiagnosticTest extends TestCase {
 		$result = ( new HttpsDiagnostic( true, 'http://example.com', 'https://example.com' ) )->execute();
 
 		$this->assertSame( Severity::SUCCESS, $result->get_severity() );
+	}
+
+	/**
+	 * The HTTP warning remains visible in production.
+	 */
+	public function test_http_warning_remains_in_production() {
+		$environment = new EnvironmentType( EnvironmentType::PRODUCTION, 'explicit' );
+		$result      = ( new HttpsDiagnostic( false, 'http://example.com', 'http://example.com', null, $environment ) )->execute();
+
+		$this->assertSame( Severity::WARNING, $result->get_severity() );
+		$this->assertFalse( $result->get_evidence()->get( 'suppressed' ) );
+		$this->assertSame( 'production', $result->get_evidence()->get( 'environment' ) );
+	}
+
+	/**
+	 * The HTTP warning is downgraded in local/development where HTTP is expected.
+	 */
+	public function test_http_suppressed_in_local_and_development() {
+		foreach ( array( EnvironmentType::LOCAL, EnvironmentType::DEVELOPMENT ) as $type ) {
+			$environment = new EnvironmentType( $type, 'explicit' );
+			$result      = ( new HttpsDiagnostic( false, 'http://example.com', 'http://example.com', null, $environment ) )->execute();
+
+			$this->assertSame( Severity::INFO, $result->get_severity(), $type );
+			$this->assertTrue( $result->get_evidence()->get( 'suppressed' ), $type );
+			$this->assertSame( 'warning', $result->get_evidence()->get( 'original_severity' ), $type );
+			$this->assertSame( 'http', $result->get_evidence()->get( 'home_scheme' ), $type );
+			$this->assertNotNull( $result->get_evidence()->get( 'suppression_reason' ), $type );
+		}
+	}
+
+	/**
+	 * Staging and unknown environments never suppress the HTTP warning.
+	 */
+	public function test_http_not_suppressed_in_staging_or_unknown() {
+		$environments = array(
+			new EnvironmentType( EnvironmentType::STAGING, 'explicit' ),
+			new EnvironmentType( EnvironmentType::UNKNOWN, 'unknown' ),
+		);
+
+		foreach ( $environments as $environment ) {
+			$result = ( new HttpsDiagnostic( false, 'http://example.com', 'http://example.com', null, $environment ) )->execute();
+
+			$this->assertSame( Severity::WARNING, $result->get_severity() );
+			$this->assertFalse( $result->get_evidence()->get( 'suppressed' ) );
+		}
 	}
 }

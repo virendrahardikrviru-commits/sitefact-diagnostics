@@ -8,6 +8,7 @@
 namespace WPDoctor\Tests\Unit\Diagnostics;
 
 use PHPUnit\Framework\TestCase;
+use WPDoctor\Core\EnvironmentType;
 use WPDoctor\Diagnostics\BlogPublicDiagnostic;
 use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\Severity;
@@ -90,12 +91,15 @@ class BlogPublicDiagnosticTest extends TestCase {
 	}
 
 	/**
-	 * Evidence contains exactly the one expected key.
+	 * Evidence contains the observation plus environment/suppression facts.
 	 */
 	public function test_exact_evidence_keys() {
 		$result = ( new BlogPublicDiagnostic( '1' ) )->execute();
 
-		$this->assertSame( array( 'blog_public' ), array_keys( $result->get_evidence()->to_array() ) );
+		$this->assertSame(
+			array( 'blog_public', 'environment', 'suppressed', 'original_severity', 'suppression_reason' ),
+			array_keys( $result->get_evidence()->to_array() )
+		);
 	}
 
 	/**
@@ -156,5 +160,46 @@ class BlogPublicDiagnosticTest extends TestCase {
 
 			$this->assertNotSame( Severity::ERROR, $result->get_severity() );
 		}
+	}
+
+	/**
+	 * A discouraged warning remains visible in production.
+	 */
+	public function test_discouraged_warning_remains_in_production() {
+		$environment = new EnvironmentType( EnvironmentType::PRODUCTION, 'explicit' );
+		$result      = ( new BlogPublicDiagnostic( '0', $environment ) )->execute();
+
+		$this->assertSame( Severity::WARNING, $result->get_severity() );
+		$this->assertFalse( $result->get_evidence()->get( 'suppressed' ) );
+		$this->assertSame( 'production', $result->get_evidence()->get( 'environment' ) );
+	}
+
+	/**
+	 * The expected condition is downgraded in an approved non-production type.
+	 */
+	public function test_discouraged_warning_suppressed_in_non_production() {
+		foreach ( array( EnvironmentType::STAGING, EnvironmentType::DEVELOPMENT, EnvironmentType::LOCAL ) as $type ) {
+			$environment = new EnvironmentType( $type, 'explicit' );
+			$result      = ( new BlogPublicDiagnostic( '0', $environment ) )->execute();
+
+			$this->assertSame( Severity::INFO, $result->get_severity(), $type );
+			$this->assertTrue( $result->get_evidence()->get( 'suppressed' ), $type );
+			$this->assertSame( 'warning', $result->get_evidence()->get( 'original_severity' ), $type );
+			$this->assertSame( $type, $result->get_evidence()->get( 'environment' ), $type );
+			$this->assertNotNull( $result->get_evidence()->get( 'suppression_reason' ), $type );
+			$this->assertFalse( $result->get_evidence()->get( 'blog_public' ), $type );
+		}
+	}
+
+	/**
+	 * An unknown environment never suppresses (fail-safe).
+	 */
+	public function test_unknown_environment_does_not_suppress() {
+		$environment = new EnvironmentType( EnvironmentType::UNKNOWN, 'unknown' );
+		$result      = ( new BlogPublicDiagnostic( '0', $environment ) )->execute();
+
+		$this->assertSame( Severity::WARNING, $result->get_severity() );
+		$this->assertFalse( $result->get_evidence()->get( 'suppressed' ) );
+		$this->assertSame( 'unknown', $result->get_evidence()->get( 'environment' ) );
 	}
 }

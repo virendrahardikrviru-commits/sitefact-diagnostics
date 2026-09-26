@@ -13,6 +13,8 @@
 
 namespace WPDoctor\Diagnostics;
 
+use WPDoctor\Core\EnvironmentType;
+
 /**
  * Class BlogPublicDiagnostic
  *
@@ -35,14 +37,23 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	private $value;
 
 	/**
+	 * The environment type override for tests.
+	 *
+	 * @var EnvironmentType|null
+	 */
+	private $environment;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.11.0
 	 *
-	 * @param mixed $value Optional. Value override for tests.
+	 * @param mixed                $value       Optional. Value override for tests.
+	 * @param EnvironmentType|null $environment Optional. Environment override.
 	 */
-	public function __construct( $value = self::NOT_SET ) {
-		$this->value = $value;
+	public function __construct( $value = self::NOT_SET, EnvironmentType $environment = null ) {
+		$this->value       = $value;
+		$this->environment = $environment;
 	}
 
 	/**
@@ -176,6 +187,22 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 * @return DiagnosticResult
 	 */
 	private function build_result( $severity, $public, $summary ) {
+		$environment       = $this->environment();
+		$original_severity = $severity;
+		$suppressed        = false;
+		$suppression_reason = null;
+
+		// A discouraged search-engine setting is expected outside production.
+		if ( Severity::WARNING === $severity && $environment->is_non_production() ) {
+			$severity           = Severity::INFO;
+			$suppressed         = true;
+			$suppression_reason = sprintf(
+				/* translators: %s: environment type. */
+				__( 'Search-engine visibility is expected to be discouraged in a %s environment.', 'sitefact-diagnostics' ),
+				$environment->get_type()
+			);
+		}
+
 		return new DiagnosticResult(
 			array(
 				'id'             => $this->get_id(),
@@ -186,11 +213,26 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 				'observed'       => null === $public ? null : ( $public ? 'public' : 'discouraged' ),
 				'expected'       => 'true',
 				'evidence'       => array(
-					'blog_public' => $public,
+					'blog_public'        => $public,
+					'environment'        => $environment->get_type(),
+					'suppressed'         => $suppressed,
+					'original_severity'  => $original_severity,
+					'suppression_reason' => $suppression_reason,
 				),
 				'recommendation' => $this->recommendation( $public ),
 			)
 		);
+	}
+
+	/**
+	 * Resolve the environment type, detecting it when none was injected.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return EnvironmentType
+	 */
+	private function environment() {
+		return ( null !== $this->environment ) ? $this->environment : EnvironmentType::detect();
 	}
 
 	/**

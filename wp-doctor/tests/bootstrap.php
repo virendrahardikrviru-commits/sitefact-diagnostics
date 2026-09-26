@@ -269,6 +269,20 @@ if ( ! function_exists( 'home_url' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_get_environment_type' ) ) {
+	/**
+	 * Stand-in for wp_get_environment_type() returning a configured global.
+	 *
+	 * Defaults to 'production' (the WordPress default) so diagnostics that
+	 * detect the environment are non-suppressing unless a test overrides it.
+	 *
+	 * @return string
+	 */
+	function wp_get_environment_type() {
+		return isset( $GLOBALS['_wp_doctor_environment_type'] ) ? $GLOBALS['_wp_doctor_environment_type'] : 'production';
+	}
+}
+
 if ( ! function_exists( 'site_url' ) ) {
 	/**
 	 * Stand-in for site_url() returning a configured global value.
@@ -629,6 +643,7 @@ require_once dirname( __DIR__ ) . '/includes/Core/Environment.php';
 require_once dirname( __DIR__ ) . '/includes/Core/LogFileReader.php';
 require_once dirname( __DIR__ ) . '/includes/Core/DatabaseMetadata.php';
 require_once dirname( __DIR__ ) . '/includes/Core/SiteUrl.php';
+require_once dirname( __DIR__ ) . '/includes/Core/EnvironmentType.php';
 require_once dirname( __DIR__ ) . '/includes/Core/DiagnosticSummary.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Activator.php';
 require_once dirname( __DIR__ ) . '/includes/Core/Deactivator.php';

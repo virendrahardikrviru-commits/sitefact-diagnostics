@@ -12,6 +12,8 @@
 
 namespace WPDoctor\Diagnostics;
 
+use WPDoctor\Core\EnvironmentType;
+
 /**
  * Class DebugConfigurationDiagnostic
  *
@@ -27,14 +29,23 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	private $flags;
 
 	/**
+	 * The environment type override for tests.
+	 *
+	 * @var EnvironmentType|null
+	 */
+	private $environment;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.2.0
 	 *
-	 * @param array $flags Optional. Override flags for tests.
+	 * @param array                $flags       Optional. Override flags for tests.
+	 * @param EnvironmentType|null $environment Optional. Environment override.
 	 */
-	public function __construct( array $flags = array() ) {
-		$this->flags = $flags;
+	public function __construct( array $flags = array(), EnvironmentType $environment = null ) {
+		$this->flags       = $flags;
+		$this->environment = $environment;
 	}
 
 	/**
@@ -94,6 +105,12 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 		$wp_debug_display = $this->flag( 'WP_DEBUG_DISPLAY' );
 		$script_debug     = $this->flag( 'SCRIPT_DEBUG' );
 
+		$environment = $this->environment();
+
+		// Debug configuration is reported as a fact (INFO), so it is never an
+		// actionable finding to suppress; environment awareness is recorded so
+		// a later UI phase can annotate it (for example, "expected in
+		// development"). No severity is downgraded because none is actionable.
 		return new DiagnosticResult(
 			array(
 				'id'             => $this->get_id(),
@@ -104,14 +121,29 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 				'observed'       => $this->format_flag( $wp_debug ),
 				'expected'       => null,
 				'evidence'       => array(
-					'wp_debug'         => $this->format_flag( $wp_debug ),
-					'wp_debug_log'     => $this->format_flag( $wp_debug_log ),
-					'wp_debug_display' => $this->format_flag( $wp_debug_display ),
-					'script_debug'     => $this->format_flag( $script_debug ),
+					'wp_debug'           => $this->format_flag( $wp_debug ),
+					'wp_debug_log'       => $this->format_flag( $wp_debug_log ),
+					'wp_debug_display'   => $this->format_flag( $wp_debug_display ),
+					'script_debug'       => $this->format_flag( $script_debug ),
+					'environment'        => $environment->get_type(),
+					'suppressed'         => false,
+					'original_severity'  => Severity::INFO,
+					'suppression_reason' => null,
 				),
 				'recommendation' => __( 'Debug mode is useful during development. On a production site, keep debug display off so error details are not shown to visitors, and prefer writing errors to a log file.', 'sitefact-diagnostics' ),
 			)
 		);
+	}
+
+	/**
+	 * Resolve the environment type, detecting it when none was injected.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return EnvironmentType
+	 */
+	private function environment() {
+		return ( null !== $this->environment ) ? $this->environment : EnvironmentType::detect();
 	}
 
 	/**

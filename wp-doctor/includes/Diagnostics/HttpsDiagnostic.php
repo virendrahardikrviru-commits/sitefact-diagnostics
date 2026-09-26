@@ -16,6 +16,8 @@
 
 namespace WPDoctor\Diagnostics;
 
+use WPDoctor\Core\EnvironmentType;
+
 /**
  * Class HttpsDiagnostic
  *
@@ -52,20 +54,29 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	private $force_ssl_admin;
 
 	/**
+	 * The environment type override for tests.
+	 *
+	 * @var EnvironmentType|null
+	 */
+	private $environment;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.3.0
 	 *
-	 * @param bool|null   $is_ssl          Optional. is_ssl override for tests.
-	 * @param string|null $home_url        Optional. Home URL override for tests.
-	 * @param string|null $site_url        Optional. Site URL override for tests.
-	 * @param bool|null   $force_ssl_admin Optional. FORCE_SSL_ADMIN override for tests.
+	 * @param bool|null            $is_ssl          Optional. is_ssl override for tests.
+	 * @param string|null          $home_url        Optional. Home URL override for tests.
+	 * @param string|null          $site_url        Optional. Site URL override for tests.
+	 * @param bool|null            $force_ssl_admin Optional. FORCE_SSL_ADMIN override for tests.
+	 * @param EnvironmentType|null $environment     Optional. Environment override.
 	 */
-	public function __construct( $is_ssl = null, $home_url = null, $site_url = null, $force_ssl_admin = null ) {
+	public function __construct( $is_ssl = null, $home_url = null, $site_url = null, $force_ssl_admin = null, EnvironmentType $environment = null ) {
 		$this->is_ssl          = $is_ssl;
 		$this->home_url        = $home_url;
 		$this->site_url        = $site_url;
 		$this->force_ssl_admin = $force_ssl_admin;
+		$this->environment     = $environment;
 	}
 
 	/**
@@ -273,6 +284,22 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 * @return DiagnosticResult
 	 */
 	private function build_result( $severity, $is_ssl, $home_scheme, $site_scheme, $force_ssl_admin, $summary ) {
+		$environment        = $this->environment();
+		$original_severity  = $severity;
+		$suppressed         = false;
+		$suppression_reason = null;
+
+		// HTTP rather than HTTPS is expected on local/development environments.
+		if ( Severity::WARNING === $severity && $environment->is_local_or_development() ) {
+			$severity           = Severity::INFO;
+			$suppressed         = true;
+			$suppression_reason = sprintf(
+				/* translators: %s: environment type. */
+				__( 'HTTP is expected in a %s environment.', 'sitefact-diagnostics' ),
+				$environment->get_type()
+			);
+		}
+
 		return new DiagnosticResult(
 			array(
 				'id'             => $this->get_id(),
@@ -283,14 +310,29 @@ class HttpsDiagnostic implements DiagnosticInterface {
 				'observed'       => $home_scheme,
 				'expected'       => 'https',
 				'evidence'       => array(
-					'is_ssl'          => $is_ssl,
-					'home_scheme'     => $home_scheme,
-					'site_scheme'     => $site_scheme,
-					'force_ssl_admin' => $force_ssl_admin,
+					'is_ssl'             => $is_ssl,
+					'home_scheme'        => $home_scheme,
+					'site_scheme'        => $site_scheme,
+					'force_ssl_admin'    => $force_ssl_admin,
+					'environment'        => $environment->get_type(),
+					'suppressed'         => $suppressed,
+					'original_severity'  => $original_severity,
+					'suppression_reason' => $suppression_reason,
 				),
 				'recommendation' => $this->recommendation( $severity ),
 			)
 		);
+	}
+
+	/**
+	 * Resolve the environment type, detecting it when none was injected.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return EnvironmentType
+	 */
+	private function environment() {
+		return ( null !== $this->environment ) ? $this->environment : EnvironmentType::detect();
 	}
 
 	/**

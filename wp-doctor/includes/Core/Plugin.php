@@ -121,6 +121,7 @@ final class Plugin {
 		require_once WP_DOCTOR_DIR . 'includes/Core/LogFileReader.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/DatabaseMetadata.php';
 		require_once WP_DOCTOR_DIR . 'includes/Core/SiteUrl.php';
+		require_once WP_DOCTOR_DIR . 'includes/Core/EnvironmentType.php';
 		require_once WP_DOCTOR_DIR . 'includes/Admin/Admin.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Category.php';
 		require_once WP_DOCTOR_DIR . 'includes/Diagnostics/Severity.php';

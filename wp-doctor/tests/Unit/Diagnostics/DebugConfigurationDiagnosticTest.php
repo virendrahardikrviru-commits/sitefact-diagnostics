@@ -8,6 +8,7 @@
 namespace WPDoctor\Tests\Unit\Diagnostics;
 
 use PHPUnit\Framework\TestCase;
+use WPDoctor\Core\EnvironmentType;
 use WPDoctor\Diagnostics\Category;
 use WPDoctor\Diagnostics\DebugConfigurationDiagnostic;
 use WPDoctor\Diagnostics\Severity;
@@ -108,5 +109,26 @@ class DebugConfigurationDiagnosticTest extends TestCase {
 		$result = ( new DebugConfigurationDiagnostic() )->execute();
 
 		$this->assertNotNull( $result->get_recommendation() );
+	}
+
+	/**
+	 * Debug findings are informational, carry environment evidence, and are
+	 * never given an actionable severity to suppress.
+	 */
+	public function test_debug_carries_environment_evidence_and_is_not_suppressed() {
+		$environment = new EnvironmentType( EnvironmentType::DEVELOPMENT, 'explicit' );
+		$result      = ( new DebugConfigurationDiagnostic(
+			array(
+				'WP_DEBUG'         => true,
+				'WP_DEBUG_DISPLAY' => true,
+			),
+			$environment
+		) )->execute();
+
+		$this->assertSame( Severity::INFO, $result->get_severity() );
+		$this->assertSame( 'development', $result->get_evidence()->get( 'environment' ) );
+		$this->assertFalse( $result->get_evidence()->get( 'suppressed' ) );
+		$this->assertSame( 'info', $result->get_evidence()->get( 'original_severity' ) );
+		$this->assertSame( 'enabled', $result->get_evidence()->get( 'wp_debug' ) );
 	}
 }
