@@ -204,31 +204,7 @@ final class Plugin {
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_assets' );
 		$this->loader->add_action( 'admin_post_wp_doctor_fix', $admin, 'handle_fix_post' );
 
-		// Translations are loaded on init, after WordPress has set up text domains.
-		$this->loader->add_action( 'init', $this, 'load_textdomain' );
-
 		$logger->debug( 'WP Doctor core initialized.' );
-	}
-
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * Uses the existing `sitefact-diagnostics` text domain and the plugin's
-	 * `languages/` directory. It is a no-op when the WordPress function is not
-	 * available (for example, in isolated unit tests).
-	 *
-	 * @since 1.2.0
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-		if ( ! function_exists( 'load_plugin_textdomain' ) ) {
-			return;
-		}
-
-		$directory = defined( 'WP_DOCTOR_BASENAME' ) ? dirname( WP_DOCTOR_BASENAME ) : 'sitefact-diagnostics';
-
-		load_plugin_textdomain( 'sitefact-diagnostics', false, $directory . '/languages' );
 	}
 
 	/**

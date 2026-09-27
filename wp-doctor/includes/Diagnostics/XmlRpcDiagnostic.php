@@ -157,6 +157,7 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 
 		if ( function_exists( 'apply_filters' ) ) {
 			return array(
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- "xmlrpc_enabled" is a WordPress core filter applied by wp_xmlrpc_server; prefixing or renaming it would break the documented XML-RPC enable/disable contract.
 				'enabled' => $this->normalize( apply_filters( 'xmlrpc_enabled', true ) ),
 				'source'  => 'filter:xmlrpc_enabled',
 			);

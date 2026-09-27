@@ -182,10 +182,9 @@ class DatabaseMetadata {
 			return null;
 		}
 
-		$query = "SELECT `engine`, COUNT(*) AS `cnt`, COALESCE(SUM(`data_length` + `index_length`), 0) AS `size_bytes` FROM `information_schema`.`TABLES` WHERE `table_schema` = %s GROUP BY `engine`";
-
+		// The query string is passed directly to $wpdb->prepare() so the prepared statement is directly visible to static analysis; the schema name is bound through a %s placeholder.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Read-only information_schema aggregate required to report current database size and storage-engine distribution; caching beyond the scan would make the diagnostic stale.
-		$rows = $wpdb->get_results( $wpdb->prepare( $query, $db_name ), 'ARRAY_A' );
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT `engine`, COUNT(*) AS `cnt`, COALESCE(SUM(`data_length` + `index_length`), 0) AS `size_bytes` FROM `information_schema`.`TABLES` WHERE `table_schema` = %s GROUP BY `engine`', $db_name ), 'ARRAY_A' );
 
 		$this->rows = is_array( $rows ) ? $rows : null;
 
