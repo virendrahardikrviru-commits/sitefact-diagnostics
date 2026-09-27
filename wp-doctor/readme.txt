@@ -59,24 +59,7 @@ See docs/SECURITY.md for details.
 * Environment-aware suppression for approved environment-sensitive diagnostics; unknown environments never suppress and security-posture/ERROR results are never suppressed.
 * Admin UX: "All Diagnostics" is a collapsed native disclosure and the fix confirmation shows trusted Before -> After values.
 * Tooling: committed PHPUnit configuration, GitHub Actions CI, and reproducible forward-slash packaging scripts.
-* Added the sitefact-diagnostics translation template (POT) for translations.
-
-= 1.1.4 =
-* Prepared the WordPress.org release package and finalized release metadata.
-
-= 1.1.2 =
-* Updated plugin version metadata to 1.1.2.
-* Updated WordPress.org readme metadata and release documentation.
-
-= 1.1.0 =
-* Rebranded public identity to SiteFact Diagnostics (text domain: sitefact-diagnostics).
-* No functional changes.
-
-= 1.0.0 =
-* Initial production release.
-* Added 28 deterministic, read-only diagnostics.
-* Added a factual diagnostic summary.
-* Added a reversible site/home URL alignment fix.
+* Added the ListingCore Diagnostics translation template (POT) for translations.
 
 == License ==
 
