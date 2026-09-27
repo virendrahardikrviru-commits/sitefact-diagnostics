@@ -87,7 +87,7 @@ const FORBIDDEN_FILE_NAMES = array(
 /**
  * Expected number of production files. Change deliberately, never by accident.
  */
-const EXPECTED_FILE_COUNT = 94;
+const EXPECTED_FILE_COUNT = 102;
 
 /**
  * Fixed modification time applied to entries for a more deterministic archive.
