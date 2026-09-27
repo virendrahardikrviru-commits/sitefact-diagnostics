@@ -1,7 +1,7 @@
 === SiteFact Diagnostics ===
 Contributors: virendrasingh06
 Requires at least: 6.0
-Tested up to: 7.1
+Tested up to: 7.1.2
 Requires PHP: 7.4
 Stable tag: 1.2.0
 License: GPL-2.0-or-later
@@ -18,7 +18,7 @@ SiteFact Diagnostics inspects a WordPress installation and reports what it can d
 
 **Current capabilities:**
 
-- 28 static, read-only, deterministic diagnostics across core, configuration, security, performance, database, plugins, and themes.
+- 32 static, read-only, deterministic diagnostics across core, configuration, security, performance, database, plugins, and themes.
 - A factual diagnostic summary (total, severity, and category counts) with no scoring or interpretation.
 - Aggregate evidence only — no raw option dumps, credentials, or paths.
 - One reversible fix (`fix.site_urls_align`) with preview, confirmation, verification, and rollback.
@@ -49,7 +49,7 @@ See docs/SECURITY.md for details.
 
 == Changelog ==
 
-= 1.2.0 (development) =
+= 1.2.0 =
 * Rollback outcome correctness: an unchanged write is no longer misreported as a rollback failure.
 * Value-bound fix confirmation: approval is now bound to the exact previewed before-state and direction.
 * Shared LogFileReader across the debug-log diagnostics, so the bounded log tail is read once per scan.
@@ -59,7 +59,7 @@ See docs/SECURITY.md for details.
 * Environment-aware suppression for approved environment-sensitive diagnostics; unknown environments never suppress and security-posture/ERROR results are never suppressed.
 * Admin UX: "All Diagnostics" is a collapsed native disclosure and the fix confirmation shows trusted Before -> After values.
 * Tooling: committed PHPUnit configuration, GitHub Actions CI, and reproducible forward-slash packaging scripts.
-* Added the sitefact-diagnostics translation template and text-domain loading.
+* Added the sitefact-diagnostics translation template (POT) for translations.
 
 = 1.1.4 =
 * Prepared the WordPress.org release package and finalized release metadata.
