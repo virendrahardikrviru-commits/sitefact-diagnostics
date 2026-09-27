@@ -88,7 +88,7 @@ class WpCronDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'WP-Cron', 'sitefact-diagnostics' );
+		return __( 'WP-Cron', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class WpCronDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether WP-Cron is disabled and summarizes the scheduled event queue.', 'sitefact-diagnostics' );
+		return __( 'Reports whether WP-Cron is disabled and summarizes the scheduled event queue.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class WpCronDiagnostic implements DiagnosticInterface {
 				Severity::INFO,
 				null,
 				$facts,
-				__( 'The WP-Cron configuration could not be determined.', 'sitefact-diagnostics' )
+				__( 'The WP-Cron configuration could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -138,15 +138,15 @@ class WpCronDiagnostic implements DiagnosticInterface {
 				Severity::WARNING,
 				true,
 				$facts,
-				__( 'WP-Cron is disabled, so scheduled events depend on an external system cron.', 'sitefact-diagnostics' )
+				__( 'WP-Cron is disabled, so scheduled events depend on an external system cron.', 'listingcore-diagnostics' )
 			);
 		}
 
 		$summary = ( null === $facts )
-			? __( 'WP-Cron is enabled, but the scheduled event queue could not be read.', 'sitefact-diagnostics' )
+			? __( 'WP-Cron is enabled, but the scheduled event queue could not be read.', 'listingcore-diagnostics' )
 			: sprintf(
 				/* translators: %d: number of scheduled cron events. */
-				__( 'WP-Cron is enabled with %d scheduled event(s).', 'sitefact-diagnostics' ),
+				__( 'WP-Cron is enabled with %d scheduled event(s).', 'listingcore-diagnostics' ),
 				$facts['count']
 			);
 
@@ -311,13 +311,13 @@ class WpCronDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $disabled ) {
 		if ( true === $disabled ) {
-			return __( 'WP-Cron is disabled; ensure a system cron job regularly requests wp-cron.php so scheduled events still run. Due events are reported as facts only and are normal on low-traffic sites.', 'sitefact-diagnostics' );
+			return __( 'WP-Cron is disabled; ensure a system cron job regularly requests wp-cron.php so scheduled events still run. Due events are reported as facts only and are normal on low-traffic sites.', 'listingcore-diagnostics' );
 		}
 
 		if ( null === $disabled ) {
-			return __( 'Verify the WP-Cron configuration.', 'sitefact-diagnostics' );
+			return __( 'Verify the WP-Cron configuration.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'WP-Cron is enabled. On low-traffic sites, a system cron may trigger scheduled events more reliably; due events are normal and are not reported as failures.', 'sitefact-diagnostics' );
+		return __( 'WP-Cron is enabled. On low-traffic sites, a system cron may trigger scheduled events more reliably; due events are normal and are not reported as failures.', 'listingcore-diagnostics' );
 	}
 }

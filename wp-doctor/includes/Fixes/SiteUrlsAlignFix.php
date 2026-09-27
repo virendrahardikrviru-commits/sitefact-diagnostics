@@ -55,7 +55,7 @@ class SiteUrlsAlignFix implements FixInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Align Site & Home URLs', 'sitefact-diagnostics' );
+		return __( 'Align Site & Home URLs', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class SiteUrlsAlignFix implements FixInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Aligns the WordPress site URL and home URL to a single value that you choose.', 'sitefact-diagnostics' );
+		return __( 'Aligns the WordPress site URL and home URL to a single value that you choose.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -145,7 +145,7 @@ class SiteUrlsAlignFix implements FixInterface {
 					$base,
 					array(
 						'applicable' => false,
-						'note'       => __( 'This fix is not available on multisite networks.', 'sitefact-diagnostics' ),
+						'note'       => __( 'This fix is not available on multisite networks.', 'listingcore-diagnostics' ),
 					)
 				)
 			);
@@ -157,7 +157,7 @@ class SiteUrlsAlignFix implements FixInterface {
 					$base,
 					array(
 						'applicable' => false,
-						'note'       => __( 'The site or home URL could not be read.', 'sitefact-diagnostics' ),
+						'note'       => __( 'The site or home URL could not be read.', 'listingcore-diagnostics' ),
 					)
 				)
 			);
@@ -169,7 +169,7 @@ class SiteUrlsAlignFix implements FixInterface {
 					$base,
 					array(
 						'applicable' => false,
-						'note'       => __( 'The site and home URLs are already aligned.', 'sitefact-diagnostics' ),
+						'note'       => __( 'The site and home URLs are already aligned.', 'listingcore-diagnostics' ),
 					)
 				)
 			);
@@ -185,7 +185,7 @@ class SiteUrlsAlignFix implements FixInterface {
 							'token'  => self::DIRECTION_USE_SITEURL,
 							'label'  => sprintf(
 								/* translators: %s: the current site URL value. */
-								__( 'Set Home URL to %s', 'sitefact-diagnostics' ),
+								__( 'Set Home URL to %s', 'listingcore-diagnostics' ),
 								$siteurl
 							),
 							'before' => $home,
@@ -195,7 +195,7 @@ class SiteUrlsAlignFix implements FixInterface {
 							'token'  => self::DIRECTION_USE_HOME,
 							'label'  => sprintf(
 								/* translators: %s: the current home URL value. */
-								__( 'Set Site URL to %s', 'sitefact-diagnostics' ),
+								__( 'Set Site URL to %s', 'listingcore-diagnostics' ),
 								$home
 							),
 							'before' => $siteurl,

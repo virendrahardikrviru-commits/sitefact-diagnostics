@@ -77,7 +77,7 @@ class PluginsUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Plugin Updates', 'sitefact-diagnostics' );
+		return __( 'Plugin Updates', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class PluginsUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports how many installed plugins have a pending update, based on cached update information.', 'sitefact-diagnostics' );
+		return __( 'Reports how many installed plugins have a pending update, based on cached update information.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class PluginsUpdateAvailableDiagnostic implements DiagnosticInterface {
 				null,
 				$active,
 				array(),
-				__( 'Cached plugin update information is not available, so update status could not be determined.', 'sitefact-diagnostics' )
+				__( 'Cached plugin update information is not available, so update status could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -132,7 +132,7 @@ class PluginsUpdateAvailableDiagnostic implements DiagnosticInterface {
 				0,
 				$active,
 				$capped,
-				__( 'All installed plugins are up to date.', 'sitefact-diagnostics' )
+				__( 'All installed plugins are up to date.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -143,7 +143,7 @@ class PluginsUpdateAvailableDiagnostic implements DiagnosticInterface {
 			$capped,
 			sprintf(
 				/* translators: %d: number of plugins with updates. */
-				__( '%d plugin(s) have a pending update.', 'sitefact-diagnostics' ),
+				__( '%d plugin(s) have a pending update.', 'listingcore-diagnostics' ),
 				$count
 			)
 		);
@@ -282,13 +282,13 @@ class PluginsUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Update the plugins with pending updates to receive security and bug fixes.', 'sitefact-diagnostics' );
+			return __( 'Update the plugins with pending updates to receive security and bug fixes.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep plugins up to date.', 'sitefact-diagnostics' );
+			return __( 'Keep plugins up to date.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Check for plugin updates in the WordPress dashboard.', 'sitefact-diagnostics' );
+		return __( 'Check for plugin updates in the WordPress dashboard.', 'listingcore-diagnostics' );
 	}
 }

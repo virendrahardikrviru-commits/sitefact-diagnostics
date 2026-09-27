@@ -1,8 +1,8 @@
-# SiteFact Diagnostics — Security Document
+# ListingCore Diagnostics — Security Document
 
 ## Overview
 
-Security is a first-class architectural requirement for SiteFact Diagnostics. This document outlines the security model, threat model, and security practices that guide development.
+Security is a first-class architectural requirement for ListingCore Diagnostics. This document outlines the security model, threat model, and security practices that guide development.
 
 ## Core Security Principles
 
@@ -15,10 +15,10 @@ Security is a first-class architectural requirement for SiteFact Diagnostics. Th
 
 ## Authentication Model
 
-SiteFact Diagnostics relies on **WordPress authentication only**. Do NOT implement custom authentication.
+ListingCore Diagnostics relies on **WordPress authentication only**. Do NOT implement custom authentication.
 
 - The plugin is only accessible to users logged into WordPress
-- Capability checks determine what users can do within SiteFact Diagnostics
+- Capability checks determine what users can do within ListingCore Diagnostics
 - All admin actions require `manage_options` by default
 - Future features may introduce granular capabilities
 
@@ -26,13 +26,13 @@ SiteFact Diagnostics relies on **WordPress authentication only**. Do NOT impleme
 
 ## Authorization Model
 
-SiteFact Diagnostics uses **WordPress capabilities** for authorization.
+ListingCore Diagnostics uses **WordPress capabilities** for authorization.
 
 ### Core Capability Model
 
 | Capability | Description | Default Role |
 |------------|-------------|---------------|
-| `manage_options` | Full access to SiteFact Diagnostics | Administrator |
+| `manage_options` | Full access to ListingCore Diagnostics | Administrator |
 
 ### Future Capabilities
 
@@ -50,7 +50,7 @@ All admin pages and AJAX handlers must verify capabilities:
 
 ```php
 if ( ! current_user_can( 'manage_options' ) ) {
-    wp_die( __( 'You do not have permission.', 'wp-doctor' ) );
+    wp_die( __( 'You do not have permission.', 'listingcore-diagnostics' ) );
 }
 ```
 
@@ -84,7 +84,7 @@ data: {
 ```php
 if ( ! isset( $_POST['wp_doctor_nonce'] ) || 
      ! wp_verify_nonce( $_POST['wp_doctor_nonce'], 'wp-doctor-action' ) ) {
-    wp_die( __( 'Security check failed.', 'wp-doctor' ) );
+    wp_die( __( 'Security check failed.', 'listingcore-diagnostics' ) );
 }
 ```
 
@@ -111,7 +111,7 @@ $email = sanitize_email( $_POST['email'] ?? '' );
 
 // Validate format
 if ( ! is_email( $email ) ) {
-    wp_die( __( 'Invalid email address.', 'wp-doctor' ) );
+    wp_die( __( 'Invalid email address.', 'listingcore-diagnostics' ) );
 }
 
 // Use validated input
@@ -217,7 +217,7 @@ public function get_diagnostic( WP_REST_Request $request ) {
     if ( ! is_numeric( $id ) ) {
         return new WP_Error( 
             'invalid_id',
-            __( 'Invalid diagnostic ID.', 'wp-doctor' ),
+            __( 'Invalid diagnostic ID.', 'listingcore-diagnostics' ),
             array( 'status' => 400 )
         );
     }
@@ -267,7 +267,7 @@ public function handle_ajax_action() {
 
 ## File Handling
 
-SiteFact Diagnostics should NEVER:
+ListingCore Diagnostics should NEVER:
 
 - Accept file uploads (unless required by future features)
 - Execute uploaded files
@@ -285,7 +285,7 @@ If files must be handled:
 
 ## External API Requests
 
-SiteFact Diagnostics communicates with external APIs only when explicitly required (e.g., future AI providers).
+ListingCore Diagnostics communicates with external APIs only when explicitly required (e.g., future AI providers).
 
 ### Safe External Request Pattern
 
@@ -347,7 +347,7 @@ wp_safe_remote_post( $url, array(
 
 ## Password & Secret Handling
 
-SiteFact Diagnostics should:
+ListingCore Diagnostics should:
 
 - **Never display passwords** to users (even partially)
 - **Never require password confirmation** for admin actions
@@ -521,7 +521,7 @@ Environment-aware suppression never hides a security-posture finding:
 
 ## Data Privacy
 
-SiteFact Diagnostics respects WordPress privacy standards:
+ListingCore Diagnostics respects WordPress privacy standards:
 
 1. **User Data** — Diagnostic data about users should be minimal
 2. **No Tracking** — Do not track user behavior

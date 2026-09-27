@@ -58,7 +58,7 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'PHP Version', 'sitefact-diagnostics' );
+		return __( 'PHP Version', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the PHP version and whether it meets the minimum and recommended versions.', 'sitefact-diagnostics' );
+		return __( 'Reports the PHP version and whether it meets the minimum and recommended versions.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -97,7 +97,7 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::WARNING,
 				Environment::UNKNOWN,
-				__( 'The PHP version could not be determined.', 'sitefact-diagnostics' )
+				__( 'The PHP version could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -107,7 +107,7 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 				$observed,
 				sprintf(
 					/* translators: 1: observed version, 2: minimum supported version. */
-					__( 'PHP %1$s is below the minimum supported version %2$s.', 'sitefact-diagnostics' ),
+					__( 'PHP %1$s is below the minimum supported version %2$s.', 'listingcore-diagnostics' ),
 					$observed,
 					VersionPolicy::MIN_PHP_VERSION
 				)
@@ -120,7 +120,7 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 				$observed,
 				sprintf(
 					/* translators: 1: observed version, 2: recommended version. */
-					__( 'PHP %1$s works but is below the recommended version %2$s.', 'sitefact-diagnostics' ),
+					__( 'PHP %1$s works but is below the recommended version %2$s.', 'listingcore-diagnostics' ),
 					$observed,
 					VersionPolicy::RECOMMENDED_PHP_VERSION
 				)
@@ -132,7 +132,7 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 			$observed,
 			sprintf(
 				/* translators: %s: observed version. */
-				__( 'PHP %s meets the recommended version.', 'sitefact-diagnostics' ),
+				__( 'PHP %s meets the recommended version.', 'listingcore-diagnostics' ),
 				$observed
 			)
 		);
@@ -193,13 +193,13 @@ class PhpVersionDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::ERROR === $severity ) {
-			return __( 'Upgrade PHP to a supported version.', 'sitefact-diagnostics' );
+			return __( 'Upgrade PHP to a supported version.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Consider upgrading PHP to a currently supported version.', 'sitefact-diagnostics' );
+			return __( 'Consider upgrading PHP to a currently supported version.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Keep PHP up to date with the latest security releases.', 'sitefact-diagnostics' );
+		return __( 'Keep PHP up to date with the latest security releases.', 'listingcore-diagnostics' );
 	}
 }

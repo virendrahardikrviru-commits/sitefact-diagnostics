@@ -1,8 +1,8 @@
-# SiteFact Diagnostics — Testing Document
+# ListingCore Diagnostics — Testing Document
 
 ## Overview
 
-This document defines the testing strategy for SiteFact Diagnostics. Testing is a first-class concern and all future functionality must include appropriate tests.
+This document defines the testing strategy for ListingCore Diagnostics. Testing is a first-class concern and all future functionality must include appropriate tests.
 
 ## Phase 1 Test Setup
 
@@ -422,7 +422,7 @@ class AdminTest extends WP_UnitTestCase {
     public function test_admin_menu_is_registered() {
         do_action( 'admin_menu' );
         
-        $admin_page = get_admin_page_parent( 'wp-doctor' );
+        $admin_page = get_admin_page_parent( 'listingcore-diagnostics' );
         $this->assertIsString( $admin_page );
     }
     
@@ -698,20 +698,20 @@ The canonical build script is `tools/build-package.php`; `tools/build-package.ps
 is a convenience wrapper. Run either from the repository root.
 
 ```bash
-# Build the default artifact: release/sitefact-diagnostics-<version>.zip
+# Build the default artifact: release/listingcore-diagnostics-<version>.zip
 php tools/build-package.php
 
 # Print the production file manifest without building
 php tools/build-package.php --list
 
 # Write to a specific path (or overwrite a non-frozen artifact with --force)
-php tools/build-package.php --output=release/sitefact-diagnostics-1.2.0.zip
+php tools/build-package.php --output=release/listingcore-diagnostics-1.2.0.zip
 ```
 
 ```powershell
 pwsh tools/build-package.ps1
 pwsh tools/build-package.ps1 -List
-pwsh tools/build-package.ps1 -Output .\release\sitefact-diagnostics-1.2.0.zip
+pwsh tools/build-package.ps1 -Output .\release\listingcore-diagnostics-1.2.0.zip
 ```
 
 The script builds from an explicit production allowlist (never the whole

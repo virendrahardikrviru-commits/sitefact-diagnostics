@@ -1,8 +1,8 @@
-# SiteFact Diagnostics — Agent Instructions
+# ListingCore Diagnostics — Agent Instructions
 
 ## Overview
 
-This document defines rules and guidelines for AI agents working on the SiteFact Diagnostics codebase.
+This document defines rules and guidelines for AI agents working on the ListingCore Diagnostics codebase.
 
 ## Pre-Implementation Rules
 

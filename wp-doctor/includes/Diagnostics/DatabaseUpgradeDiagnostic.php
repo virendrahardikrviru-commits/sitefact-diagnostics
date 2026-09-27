@@ -77,7 +77,7 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Database Upgrade Status', 'sitefact-diagnostics' );
+		return __( 'Database Upgrade Status', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether the stored database schema version is behind the running WordPress core version.', 'sitefact-diagnostics' );
+		return __( 'Reports whether the stored database schema version is behind the running WordPress core version.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 				$stored,
 				$expected,
 				null,
-				__( 'The database upgrade status could not be determined.', 'sitefact-diagnostics' )
+				__( 'The database upgrade status could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -131,7 +131,7 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 				false,
 				sprintf(
 					/* translators: %d: database schema version. */
-					__( 'The database schema is up to date (version %d).', 'sitefact-diagnostics' ),
+					__( 'The database schema is up to date (version %d).', 'listingcore-diagnostics' ),
 					$stored
 				)
 			);
@@ -145,7 +145,7 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 				true,
 				sprintf(
 					/* translators: 1: stored schema version, 2: expected schema version. */
-					__( 'A database upgrade is pending (stored version %1$d, expected %2$d).', 'sitefact-diagnostics' ),
+					__( 'A database upgrade is pending (stored version %1$d, expected %2$d).', 'listingcore-diagnostics' ),
 					$stored,
 					$expected
 				)
@@ -159,7 +159,7 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 			false,
 			sprintf(
 				/* translators: 1: stored schema version, 2: expected schema version. */
-				__( 'The stored database schema version (%1$d) is newer than the running core expects (%2$d).', 'sitefact-diagnostics' ),
+				__( 'The stored database schema version (%1$d) is newer than the running core expects (%2$d).', 'listingcore-diagnostics' ),
 				$stored,
 				$expected
 			)
@@ -275,17 +275,17 @@ class DatabaseUpgradeDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $stored, $expected, $pending ) {
 		if ( true === $pending ) {
-			return __( 'Complete the pending database upgrade from the WordPress dashboard.', 'sitefact-diagnostics' );
+			return __( 'Complete the pending database upgrade from the WordPress dashboard.', 'listingcore-diagnostics' );
 		}
 
 		if ( null === $stored || null === $expected ) {
-			return __( 'Verify the WordPress database version information.', 'sitefact-diagnostics' );
+			return __( 'Verify the WordPress database version information.', 'listingcore-diagnostics' );
 		}
 
 		if ( $stored > $expected ) {
-			return __( 'The stored database schema is newer than the running core expects; verify the WordPress core files and version.', 'sitefact-diagnostics' );
+			return __( 'The stored database schema is newer than the running core expects; verify the WordPress core files and version.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Keep WordPress core and its database schema up to date.', 'sitefact-diagnostics' );
+		return __( 'Keep WordPress core and its database schema up to date.', 'listingcore-diagnostics' );
 	}
 }

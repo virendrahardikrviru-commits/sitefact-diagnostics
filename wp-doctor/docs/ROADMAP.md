@@ -1,8 +1,8 @@
-# SiteFact Diagnostics — Development Roadmap
+# ListingCore Diagnostics — Development Roadmap
 
 ## Overview
 
-This document outlines the development roadmap for SiteFact Diagnostics across 16 phases, from foundation to launch.
+This document outlines the development roadmap for ListingCore Diagnostics across 16 phases, from foundation to launch.
 
 ## Release Schedule
 

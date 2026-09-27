@@ -68,7 +68,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'OPcache', 'sitefact-diagnostics' );
+		return __( 'OPcache', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the aggregate status of PHP OPcache.', 'sitefact-diagnostics' );
+		return __( 'Reports the aggregate status of PHP OPcache.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				null,
 				null,
 				null,
-				__( 'OPcache status could not be determined.', 'sitefact-diagnostics' )
+				__( 'OPcache status could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -128,7 +128,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				$cache_full,
 				$used,
 				$free,
-				__( 'OPcache status could not be determined from the available data.', 'sitefact-diagnostics' )
+				__( 'OPcache status could not be determined from the available data.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -140,7 +140,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				$cache_full,
 				$used,
 				$free,
-				__( 'OPcache is disabled.', 'sitefact-diagnostics' )
+				__( 'OPcache is disabled.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -152,7 +152,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 				true,
 				$used,
 				$free,
-				__( 'OPcache is enabled but its cache is full.', 'sitefact-diagnostics' )
+				__( 'OPcache is enabled but its cache is full.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -163,7 +163,7 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 			$cache_full,
 			$used,
 			$free,
-			__( 'OPcache is enabled and operating normally.', 'sitefact-diagnostics' )
+			__( 'OPcache is enabled and operating normally.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -321,17 +321,17 @@ class OpCacheDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity, $enabled, $cache_full ) {
 		if ( null === $enabled ) {
-			return __( 'Verify the server OPcache configuration.', 'sitefact-diagnostics' );
+			return __( 'Verify the server OPcache configuration.', 'listingcore-diagnostics' );
 		}
 
 		if ( ! $enabled ) {
-			return __( 'OPcache is disabled; enabling it can significantly improve PHP performance.', 'sitefact-diagnostics' );
+			return __( 'OPcache is disabled; enabling it can significantly improve PHP performance.', 'listingcore-diagnostics' );
 		}
 
 		if ( true === $cache_full ) {
-			return __( 'OPcache memory is full; consider reviewing and increasing the OPcache memory configuration.', 'sitefact-diagnostics' );
+			return __( 'OPcache memory is full; consider reviewing and increasing the OPcache memory configuration.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'OPcache is enabled and operating normally.', 'sitefact-diagnostics' );
+		return __( 'OPcache is enabled and operating normally.', 'listingcore-diagnostics' );
 	}
 }

@@ -58,7 +58,7 @@ class PageCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Page Cache', 'sitefact-diagnostics' );
+		return __( 'Page Cache', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class PageCacheDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether a full-page-cache drop-in is present.', 'sitefact-diagnostics' );
+		return __( 'Reports whether a full-page-cache drop-in is present.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -97,7 +97,7 @@ class PageCacheDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				$dropin,
-				__( 'The full-page-cache drop-in presence could not be determined.', 'sitefact-diagnostics' )
+				__( 'The full-page-cache drop-in presence could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -105,14 +105,14 @@ class PageCacheDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::SUCCESS,
 				$dropin,
-				__( 'The advanced-cache.php drop-in is present.', 'sitefact-diagnostics' )
+				__( 'The advanced-cache.php drop-in is present.', 'listingcore-diagnostics' )
 			);
 		}
 
 		return $this->build_result(
 			Severity::INFO,
 			$dropin,
-			__( 'The advanced-cache.php drop-in is not present.', 'sitefact-diagnostics' )
+			__( 'The advanced-cache.php drop-in is not present.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -173,9 +173,9 @@ class PageCacheDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'A full-page-cache drop-in is present.', 'sitefact-diagnostics' );
+			return __( 'A full-page-cache drop-in is present.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'No advanced-cache.php drop-in is present. Server-level, reverse-proxy, or CDN caching may still be active outside WordPress.', 'sitefact-diagnostics' );
+		return __( 'No advanced-cache.php drop-in is present. Server-level, reverse-proxy, or CDN caching may still be active outside WordPress.', 'listingcore-diagnostics' );
 	}
 }

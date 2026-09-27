@@ -31,7 +31,7 @@ class PluginTextdomainTest extends TestCase {
 	/**
 	 * The plugin does not call load_plugin_textdomain() explicitly.
 	 *
-	 * WordPress core loads the `sitefact-diagnostics` domain on demand from the
+	 * WordPress core loads the `listingcore-diagnostics` domain on demand from the
 	 * plugin's declared `Text Domain`/`Domain Path` headers.
 	 */
 	public function test_plugin_does_not_call_load_plugin_textdomain() {
@@ -53,8 +53,8 @@ class PluginTextdomainTest extends TestCase {
 
 		$this->assertSame(
 			1,
-			preg_match( '/^\s*\*\s*Text Domain:\s+sitefact-diagnostics\s*$/m', $header ),
-			'wp-doctor.php must declare "Text Domain: sitefact-diagnostics".'
+			preg_match( '/^\s*\*\s*Text Domain:\s+listingcore-diagnostics\s*$/m', $header ),
+			'wp-doctor.php must declare "Text Domain: listingcore-diagnostics".'
 		);
 		$this->assertSame(
 			1,
@@ -67,6 +67,6 @@ class PluginTextdomainTest extends TestCase {
 	 * The translation template is shipped in the production languages directory.
 	 */
 	public function test_translation_template_is_shipped() {
-		$this->assertFileExists( WP_DOCTOR_DIR . 'languages/sitefact-diagnostics.pot' );
+		$this->assertFileExists( WP_DOCTOR_DIR . 'languages/listingcore-diagnostics.pot' );
 	}
 }

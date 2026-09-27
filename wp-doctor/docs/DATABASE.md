@@ -1,12 +1,12 @@
-# SiteFact Diagnostics — Database Document
+# ListingCore Diagnostics — Database Document
 
 ## Overview
 
-The SiteFact Diagnostics database philosophy prioritizes simplicity and safety. This document outlines the database architecture, schema design principles, and future custom table requirements.
+The ListingCore Diagnostics database philosophy prioritizes simplicity and safety. This document outlines the database architecture, schema design principles, and future custom table requirements.
 
 ## Core Philosophy
 
-**SiteFact Diagnostics should avoid creating custom database tables unless there is a clear technical requirement.**
+**ListingCore Diagnostics should avoid creating custom database tables unless there is a clear technical requirement.**
 
 Rationale:
 
@@ -56,7 +56,7 @@ delete_option( 'wp_doctor_scan_frequency' );
 
 ### Option Naming Convention
 
-All SiteFact Diagnostics options should be prefixed with `wp_doctor_`:
+All ListingCore Diagnostics options should be prefixed with `wp_doctor_`:
 
 ```
 wp_doctor_enabled
@@ -101,7 +101,7 @@ delete_transient( 'wp_doctor_scan_results' );
 
 ### Transient Naming Convention
 
-All SiteFact Diagnostics transients should be prefixed with `wp_doctor_`:
+All ListingCore Diagnostics transients should be prefixed with `wp_doctor_`:
 
 ```
 wp_doctor_scan_results_v1
@@ -230,7 +230,7 @@ class Schema {
 
 ## Data Retention & Cleanup
 
-SiteFact Diagnostics should NOT accumulate data indefinitely.
+ListingCore Diagnostics should NOT accumulate data indefinitely.
 
 ### Retention Policy
 
@@ -268,7 +268,7 @@ public function cleanup_old_data() {
 
 ## WordPress Multisite Considerations
 
-SiteFact Diagnostics should support WordPress Multisite properly.
+ListingCore Diagnostics should support WordPress Multisite properly.
 
 ### Options in Multisite
 
@@ -346,7 +346,7 @@ if ( false === $results ) {
 
 ### Backup Compatibility
 
-All SiteFact Diagnostics data must be included in standard WordPress backups:
+All ListingCore Diagnostics data must be included in standard WordPress backups:
 
 - ✅ Options table — automatically backed up
 - ✅ Custom post types — automatically backed up

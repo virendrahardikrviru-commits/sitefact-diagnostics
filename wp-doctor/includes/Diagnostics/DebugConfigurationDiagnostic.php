@@ -67,7 +67,7 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Debug Configuration', 'sitefact-diagnostics' );
+		return __( 'Debug Configuration', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the WordPress debugging configuration so it can be understood in context.', 'sitefact-diagnostics' );
+		return __( 'Reports the WordPress debugging configuration so it can be understood in context.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -130,7 +130,7 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 					'original_severity'  => Severity::INFO,
 					'suppression_reason' => null,
 				),
-				'recommendation' => __( 'Debug mode is useful during development. On a production site, keep debug display off so error details are not shown to visitors, and prefer writing errors to a log file.', 'sitefact-diagnostics' ),
+				'recommendation' => __( 'Debug mode is useful during development. On a production site, keep debug display off so error details are not shown to visitors, and prefer writing errors to a log file.', 'listingcore-diagnostics' ),
 			)
 		);
 	}
@@ -195,17 +195,17 @@ class DebugConfigurationDiagnostic implements DiagnosticInterface {
 	 */
 	private function build_summary( $wp_debug, $wp_debug_display ) {
 		if ( null === $wp_debug ) {
-			return __( 'Debug mode is not defined.', 'sitefact-diagnostics' );
+			return __( 'Debug mode is not defined.', 'listingcore-diagnostics' );
 		}
 
 		if ( $wp_debug && $wp_debug_display ) {
-			return __( 'Debug mode is enabled with on-screen error display.', 'sitefact-diagnostics' );
+			return __( 'Debug mode is enabled with on-screen error display.', 'listingcore-diagnostics' );
 		}
 
 		if ( $wp_debug ) {
-			return __( 'Debug mode is enabled.', 'sitefact-diagnostics' );
+			return __( 'Debug mode is enabled.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Debug mode is disabled.', 'sitefact-diagnostics' );
+		return __( 'Debug mode is disabled.', 'listingcore-diagnostics' );
 	}
 }

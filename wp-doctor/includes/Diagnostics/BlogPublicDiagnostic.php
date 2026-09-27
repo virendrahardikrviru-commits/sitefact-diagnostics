@@ -75,7 +75,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Search Visibility', 'sitefact-diagnostics' );
+		return __( 'Search Visibility', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -97,7 +97,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether WordPress discourages search engines from indexing the site.', 'sitefact-diagnostics' );
+		return __( 'Reports whether WordPress discourages search engines from indexing the site.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				null,
-				__( 'The search-engine visibility setting could not be determined.', 'sitefact-diagnostics' )
+				__( 'The search-engine visibility setting could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -122,14 +122,14 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::SUCCESS,
 				true,
-				__( 'The site is visible to search engines.', 'sitefact-diagnostics' )
+				__( 'The site is visible to search engines.', 'listingcore-diagnostics' )
 			);
 		}
 
 		return $this->build_result(
 			Severity::WARNING,
 			false,
-			__( 'The site is configured to discourage search engines.', 'sitefact-diagnostics' )
+			__( 'The site is configured to discourage search engines.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -198,7 +198,7 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 			$suppressed         = true;
 			$suppression_reason = sprintf(
 				/* translators: %s: environment type. */
-				__( 'Search-engine visibility is expected to be discouraged in a %s environment.', 'sitefact-diagnostics' ),
+				__( 'Search-engine visibility is expected to be discouraged in a %s environment.', 'listingcore-diagnostics' ),
 				$environment->get_type()
 			);
 		}
@@ -245,13 +245,13 @@ class BlogPublicDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $public ) {
 		if ( null === $public ) {
-			return __( 'Verify the search-engine visibility setting.', 'sitefact-diagnostics' );
+			return __( 'Verify the search-engine visibility setting.', 'listingcore-diagnostics' );
 		}
 
 		if ( $public ) {
-			return __( 'The site is visible to search engines.', 'sitefact-diagnostics' );
+			return __( 'The site is visible to search engines.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'If this site should be publicly indexable, enable search-engine visibility in Reading settings. Discouraging search engines may be intentional.', 'sitefact-diagnostics' );
+		return __( 'If this site should be publicly indexable, enable search-engine visibility in Reading settings. Discouraging search engines may be intentional.', 'listingcore-diagnostics' );
 	}
 }

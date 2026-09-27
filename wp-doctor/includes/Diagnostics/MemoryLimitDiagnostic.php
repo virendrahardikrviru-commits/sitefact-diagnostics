@@ -61,7 +61,7 @@ class MemoryLimitDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Memory Limit', 'sitefact-diagnostics' );
+		return __( 'Memory Limit', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class MemoryLimitDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the WordPress and PHP memory limits and whether they are healthy.', 'sitefact-diagnostics' );
+		return __( 'Reports the WordPress and PHP memory limits and whether they are healthy.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -222,26 +222,26 @@ class MemoryLimitDiagnostic implements DiagnosticInterface {
 	 */
 	private function build_summary( $severity, $wp_raw, $wp_bytes, $php_bytes ) {
 		if ( null === $wp_bytes ) {
-			return __( 'The WordPress memory limit is not defined or could not be read.', 'sitefact-diagnostics' );
+			return __( 'The WordPress memory limit is not defined or could not be read.', 'listingcore-diagnostics' );
 		}
 
 		if ( ByteSize::is_unlimited( $wp_bytes ) ) {
-			return __( 'The WordPress memory limit is unlimited.', 'sitefact-diagnostics' );
+			return __( 'The WordPress memory limit is unlimited.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity && null !== $php_bytes && ! ByteSize::is_unlimited( $php_bytes ) && $php_bytes < $wp_bytes ) {
-			return __( 'The PHP memory limit is lower than the WordPress memory limit.', 'sitefact-diagnostics' );
+			return __( 'The PHP memory limit is lower than the WordPress memory limit.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::ERROR === $severity ) {
-			return __( 'The WordPress memory limit is very low, which can cause fatal out-of-memory errors.', 'sitefact-diagnostics' );
+			return __( 'The WordPress memory limit is very low, which can cause fatal out-of-memory errors.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity ) {
-			return __( 'The WordPress memory limit is below the recommended size.', 'sitefact-diagnostics' );
+			return __( 'The WordPress memory limit is below the recommended size.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'The WordPress memory limit is healthy.', 'sitefact-diagnostics' );
+		return __( 'The WordPress memory limit is healthy.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -254,17 +254,17 @@ class MemoryLimitDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::ERROR === $severity ) {
-			return __( 'Raise the WordPress and PHP memory limits.', 'sitefact-diagnostics' );
+			return __( 'Raise the WordPress and PHP memory limits.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Consider raising the memory limit to at least 64M.', 'sitefact-diagnostics' );
+			return __( 'Consider raising the memory limit to at least 64M.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep the memory limit at its current healthy level.', 'sitefact-diagnostics' );
+			return __( 'Keep the memory limit at its current healthy level.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Verify the memory limit configuration.', 'sitefact-diagnostics' );
+		return __( 'Verify the memory limit configuration.', 'listingcore-diagnostics' );
 	}
 }

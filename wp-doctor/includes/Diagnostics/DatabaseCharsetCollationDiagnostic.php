@@ -85,7 +85,7 @@ class DatabaseCharsetCollationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Database Charset & Collation', 'sitefact-diagnostics' );
+		return __( 'Database Charset & Collation', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -107,7 +107,7 @@ class DatabaseCharsetCollationDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the database character set and collation and flags legacy utf8 setups.', 'sitefact-diagnostics' );
+		return __( 'Reports the database character set and collation and flags legacy utf8 setups.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -130,7 +130,7 @@ class DatabaseCharsetCollationDiagnostic implements DiagnosticInterface {
 				$charset,
 				$collation,
 				$utf8mb4_supported,
-				__( 'The database uses utf8mb4, which fully supports four-byte characters.', 'sitefact-diagnostics' )
+				__( 'The database uses utf8mb4, which fully supports four-byte characters.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -140,7 +140,7 @@ class DatabaseCharsetCollationDiagnostic implements DiagnosticInterface {
 				$charset,
 				$collation,
 				$utf8mb4_supported,
-				__( 'The database uses legacy utf8 (three-byte), which cannot store emoji and some other characters.', 'sitefact-diagnostics' )
+				__( 'The database uses legacy utf8 (three-byte), which cannot store emoji and some other characters.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -149,7 +149,7 @@ class DatabaseCharsetCollationDiagnostic implements DiagnosticInterface {
 			$charset,
 			$collation,
 			$utf8mb4_supported,
-			__( 'The database charset could not be determined.', 'sitefact-diagnostics' )
+			__( 'The database charset could not be determined.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -277,13 +277,13 @@ class DatabaseCharsetCollationDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Consider converting the database to utf8mb4 to support the full range of characters.', 'sitefact-diagnostics' );
+			return __( 'Consider converting the database to utf8mb4 to support the full range of characters.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep the utf8mb4 charset.', 'sitefact-diagnostics' );
+			return __( 'Keep the utf8mb4 charset.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Verify the database charset and collation.', 'sitefact-diagnostics' );
+		return __( 'Verify the database charset and collation.', 'listingcore-diagnostics' );
 	}
 }

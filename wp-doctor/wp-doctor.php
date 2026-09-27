@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       SiteFact Diagnostics
+ * Plugin Name:       ListingCore Diagnostics
  * Description:       A read-only diagnostic plugin for WordPress that reports concrete, observable site facts and provides one safe, reversible site URL alignment fix.
  * Version:           1.2.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
- * Author:            SiteFact Diagnostics
+ * Author:            Virendra Singh
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       sitefact-diagnostics
+ * Text Domain:       listingcore-diagnostics
  * Domain Path:       /languages
  *
  * @package WPDoctor

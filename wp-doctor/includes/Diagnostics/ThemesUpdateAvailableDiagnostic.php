@@ -67,7 +67,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Theme Updates', 'sitefact-diagnostics' );
+		return __( 'Theme Updates', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports how many installed themes have a pending update, based on cached update information.', 'sitefact-diagnostics' );
+		return __( 'Reports how many installed themes have a pending update, based on cached update information.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -107,7 +107,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 				Severity::INFO,
 				null,
 				array(),
-				__( 'Cached theme update information is not available, so update status could not be determined.', 'sitefact-diagnostics' )
+				__( 'Cached theme update information is not available, so update status could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -119,7 +119,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 				Severity::SUCCESS,
 				0,
 				$capped,
-				__( 'All installed themes are up to date.', 'sitefact-diagnostics' )
+				__( 'All installed themes are up to date.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -129,7 +129,7 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 			$capped,
 			sprintf(
 				/* translators: %d: number of themes with updates. */
-				__( '%d theme(s) have a pending update.', 'sitefact-diagnostics' ),
+				__( '%d theme(s) have a pending update.', 'listingcore-diagnostics' ),
 				$count
 			)
 		);
@@ -245,13 +245,13 @@ class ThemesUpdateAvailableDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Update themes with pending updates.', 'sitefact-diagnostics' );
+			return __( 'Update themes with pending updates.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep themes up to date.', 'sitefact-diagnostics' );
+			return __( 'Keep themes up to date.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Check for theme updates in the WordPress dashboard.', 'sitefact-diagnostics' );
+		return __( 'Check for theme updates in the WordPress dashboard.', 'listingcore-diagnostics' );
 	}
 }

@@ -59,7 +59,7 @@ class DebugLogDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Debug Log', 'sitefact-diagnostics' );
+		return __( 'Debug Log', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class DebugLogDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports factual information about the WordPress debug log.', 'sitefact-diagnostics' );
+		return __( 'Reports factual information about the WordPress debug log.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -102,14 +102,14 @@ class DebugLogDiagnostic implements DiagnosticInterface {
 		$size_human = null !== $size_bytes ? ByteSize::format( $size_bytes ) : null;
 
 		if ( ! $enabled ) {
-			$summary = __( 'Debug logging is disabled.', 'sitefact-diagnostics' );
+			$summary = __( 'Debug logging is disabled.', 'listingcore-diagnostics' );
 		} elseif ( ! $exists ) {
-			$summary = __( 'Debug logging is enabled, but no debug log file exists yet.', 'sitefact-diagnostics' );
+			$summary = __( 'Debug logging is enabled, but no debug log file exists yet.', 'listingcore-diagnostics' );
 		} else {
 			$summary = sprintf(
 				/* translators: %s: human-readable size. */
-				__( 'A debug log file exists with a size of %s.', 'sitefact-diagnostics' ),
-				null !== $size_human ? $size_human : __( 'unknown', 'sitefact-diagnostics' )
+				__( 'A debug log file exists with a size of %s.', 'listingcore-diagnostics' ),
+				null !== $size_human ? $size_human : __( 'unknown', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -129,7 +129,7 @@ class DebugLogDiagnostic implements DiagnosticInterface {
 					'size_human'    => $size_human,
 					'last_modified' => $last_modified,
 				),
-				'recommendation' => __( 'Review the debug log when appropriate. It records PHP errors, warnings, and notices for troubleshooting.', 'sitefact-diagnostics' ),
+				'recommendation' => __( 'Review the debug log when appropriate. It records PHP errors, warnings, and notices for troubleshooting.', 'listingcore-diagnostics' ),
 			)
 		);
 	}

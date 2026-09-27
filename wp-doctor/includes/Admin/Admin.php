@@ -96,10 +96,10 @@ class Admin {
 		}
 
 		add_menu_page(
-			__( 'SiteFact Diagnostics', 'sitefact-diagnostics' ),
-			__( 'SiteFact Diagnostics', 'sitefact-diagnostics' ),
+			__( 'ListingCore Diagnostics', 'listingcore-diagnostics' ),
+			__( 'ListingCore Diagnostics', 'listingcore-diagnostics' ),
 			'manage_options',
-			'wp-doctor',
+			'listingcore-diagnostics',
 			array( $this, 'render_page' ),
 			'dashicons-stethoscope',
 			25
@@ -116,67 +116,67 @@ class Admin {
 	 */
 	public function render_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'sitefact-diagnostics' ) );
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'listingcore-diagnostics' ) );
 		}
 
 		$version   = defined( 'WP_DOCTOR_VERSION' ) ? WP_DOCTOR_VERSION : '0.0.0';
 		$env       = $this->environment->get_all();
-		$multisite = $env['multisite'] ? __( 'Yes', 'sitefact-diagnostics' ) : __( 'No', 'sitefact-diagnostics' );
-		$debug     = $env['debug'] ? __( 'Enabled', 'sitefact-diagnostics' ) : __( 'Disabled', 'sitefact-diagnostics' );
+		$multisite = $env['multisite'] ? __( 'Yes', 'listingcore-diagnostics' ) : __( 'No', 'listingcore-diagnostics' );
+		$debug     = $env['debug'] ? __( 'Enabled', 'listingcore-diagnostics' ) : __( 'Disabled', 'listingcore-diagnostics' );
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'SiteFact Diagnostics', 'sitefact-diagnostics' ); ?></h1>
+			<h1><?php esc_html_e( 'ListingCore Diagnostics', 'listingcore-diagnostics' ); ?></h1>
 
 			<?php $this->render_fix_notice(); ?>
 
 			<p>
-				<strong><?php esc_html_e( 'Version:', 'sitefact-diagnostics' ); ?></strong>
+				<strong><?php esc_html_e( 'Version:', 'listingcore-diagnostics' ); ?></strong>
 				<?php echo esc_html( $version ); ?>
 			</p>
 
 			<p>
-				<strong><?php esc_html_e( 'Status:', 'sitefact-diagnostics' ); ?></strong>
-				<?php esc_html_e( 'Core infrastructure initialized.', 'sitefact-diagnostics' ); ?>
+				<strong><?php esc_html_e( 'Status:', 'listingcore-diagnostics' ); ?></strong>
+				<?php esc_html_e( 'Core infrastructure initialized.', 'listingcore-diagnostics' ); ?>
 			</p>
 
-			<h2><?php esc_html_e( 'Environment', 'sitefact-diagnostics' ); ?></h2>
+			<h2><?php esc_html_e( 'Environment', 'listingcore-diagnostics' ); ?></h2>
 
 			<table class="widefat striped">
 				<tbody>
 					<tr>
-						<td><?php esc_html_e( 'WordPress Version', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'WordPress Version', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['wordpress']['version'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'PHP Version', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'PHP Version', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['php']['version'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Multisite', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'Multisite', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $multisite ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Active Theme', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'Active Theme', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['theme']['name'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Site Locale', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'Site Locale', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['locale'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Database Version', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'Database Version', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['database']['version'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'WordPress Memory Limit', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'WordPress Memory Limit', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['memory']['wordpress'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'PHP Memory Limit', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'PHP Memory Limit', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $env['memory']['php'] ); ?></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Debug Mode', 'sitefact-diagnostics' ); ?></td>
+						<td><?php esc_html_e( 'Debug Mode', 'listingcore-diagnostics' ); ?></td>
 						<td><?php echo esc_html( $debug ); ?></td>
 					</tr>
 				</tbody>
@@ -230,9 +230,9 @@ class Admin {
 			<?php $this->render_summary( $summary ); ?>
 
 			<section class="wp-doctor-attention" aria-labelledby="wp-doctor-attention-heading">
-				<h2 id="wp-doctor-attention-heading"><?php esc_html_e( 'What Needs Attention', 'sitefact-diagnostics' ); ?></h2>
+				<h2 id="wp-doctor-attention-heading"><?php esc_html_e( 'What Needs Attention', 'listingcore-diagnostics' ); ?></h2>
 				<?php if ( empty( $attention ) ) : ?>
-					<p><?php esc_html_e( 'None of the checks reported Critical or Attention results.', 'sitefact-diagnostics' ); ?></p>
+					<p><?php esc_html_e( 'None of the checks reported Critical or Attention results.', 'listingcore-diagnostics' ); ?></p>
 				<?php else : ?>
 					<?php foreach ( $attention as $result ) : ?>
 						<?php
@@ -253,9 +253,9 @@ class Admin {
 			</section>
 
 			<section class="wp-doctor-healthy" aria-labelledby="wp-doctor-healthy-heading">
-				<h2 id="wp-doctor-healthy-heading"><?php esc_html_e( 'Healthy Checks', 'sitefact-diagnostics' ); ?></h2>
+				<h2 id="wp-doctor-healthy-heading"><?php esc_html_e( 'Healthy Checks', 'listingcore-diagnostics' ); ?></h2>
 				<?php if ( empty( $healthy ) ) : ?>
-					<p><?php esc_html_e( 'No checks reported a Healthy result.', 'sitefact-diagnostics' ); ?></p>
+					<p><?php esc_html_e( 'No checks reported a Healthy result.', 'listingcore-diagnostics' ); ?></p>
 				<?php else : ?>
 					<ul class="wp-doctor-healthy-list">
 						<?php foreach ( $healthy as $result ) : ?>
@@ -280,12 +280,12 @@ class Admin {
 			</section>
 
 			<section class="wp-doctor-informational" aria-labelledby="wp-doctor-info-heading">
-				<h2 id="wp-doctor-info-heading"><?php esc_html_e( 'Informational', 'sitefact-diagnostics' ); ?></h2>
+				<h2 id="wp-doctor-info-heading"><?php esc_html_e( 'Informational', 'listingcore-diagnostics' ); ?></h2>
 				<p class="wp-doctor-informational-note">
-					<?php esc_html_e( 'Informational results are not failures. They report facts, or they could not determine a problem from the available data.', 'sitefact-diagnostics' ); ?>
+					<?php esc_html_e( 'Informational results are not failures. They report facts, or they could not determine a problem from the available data.', 'listingcore-diagnostics' ); ?>
 				</p>
 				<?php if ( empty( $info ) ) : ?>
-					<p><?php esc_html_e( 'No informational results were reported.', 'sitefact-diagnostics' ); ?></p>
+					<p><?php esc_html_e( 'No informational results were reported.', 'listingcore-diagnostics' ); ?></p>
 				<?php else : ?>
 					<?php foreach ( $info as $result ) : ?>
 						<?php
@@ -306,8 +306,8 @@ class Admin {
 			</section>
 
 			<details class="wp-doctor-diagnostics wp-doctor-diagnostics--grouped">
-				<summary id="wp-doctor-all-heading" class="wp-doctor-disclosure-summary"><?php esc_html_e( 'All Diagnostics', 'sitefact-diagnostics' ); ?></summary>
-				<p><?php esc_html_e( 'Complete results grouped by category, including evidence.', 'sitefact-diagnostics' ); ?></p>
+				<summary id="wp-doctor-all-heading" class="wp-doctor-disclosure-summary"><?php esc_html_e( 'All Diagnostics', 'listingcore-diagnostics' ); ?></summary>
+				<p><?php esc_html_e( 'Complete results grouped by category, including evidence.', 'listingcore-diagnostics' ); ?></p>
 				<?php foreach ( Category::all() as $category ) : ?>
 					<?php if ( empty( $grouped[ $category ] ) ) { continue; } ?>
 					<h3 class="wp-doctor-category"><?php echo esc_html( ucfirst( $category ) ); ?></h3>
@@ -373,20 +373,20 @@ class Admin {
 		foreach ( Category::all() as $category ) {
 			$category_parts[] = sprintf(
 				/* translators: 1: category label, 2: count. */
-				__( '%1$s: %2$d', 'sitefact-diagnostics' ),
+				__( '%1$s: %2$d', 'listingcore-diagnostics' ),
 				ucfirst( $category ),
 				$summary->get_category_count( $category )
 			);
 		}
 		?>
 		<section class="wp-doctor-summary" aria-labelledby="wp-doctor-summary-heading">
-			<h2 id="wp-doctor-summary-heading"><?php esc_html_e( 'Website Health Check', 'sitefact-diagnostics' ); ?></h2>
+			<h2 id="wp-doctor-summary-heading"><?php esc_html_e( 'Website Health Check', 'listingcore-diagnostics' ); ?></h2>
 			<p class="wp-doctor-summary-total">
 				<?php
 				echo esc_html(
 					sprintf(
 						/* translators: %d: number of diagnostics checked. */
-						__( '%d diagnostics checked', 'sitefact-diagnostics' ),
+						__( '%d diagnostics checked', 'listingcore-diagnostics' ),
 						$summary->get_total()
 					)
 				);
@@ -451,14 +451,14 @@ class Admin {
 					<h4 class="wp-doctor-diagnostic-title"><?php echo esc_html( $result->get_title() ); ?></h4>
 				<?php endif; ?>
 				<p class="wp-doctor-status wp-doctor-status--<?php echo esc_attr( $severity ); ?>">
-					<span class="screen-reader-text"><?php esc_html_e( 'Status:', 'sitefact-diagnostics' ); ?></span>
+					<span class="screen-reader-text"><?php esc_html_e( 'Status:', 'listingcore-diagnostics' ); ?></span>
 					<?php echo esc_html( $owner_label ); ?>
 				</p>
 			</div>
 
 			<?php if ( $args['show_category'] ) : ?>
 				<p>
-					<strong><?php esc_html_e( 'Category:', 'sitefact-diagnostics' ); ?></strong>
+					<strong><?php esc_html_e( 'Category:', 'listingcore-diagnostics' ); ?></strong>
 					<?php echo esc_html( $result->get_category() ); ?>
 				</p>
 			<?php endif; ?>
@@ -469,7 +469,7 @@ class Admin {
 				<?php endif; ?>
 				<?php if ( $has_details ) : ?>
 					<details>
-						<summary><?php esc_html_e( 'View details', 'sitefact-diagnostics' ); ?></summary>
+						<summary><?php esc_html_e( 'View details', 'listingcore-diagnostics' ); ?></summary>
 						<div class="wp-doctor-diagnostic-details" id="<?php echo esc_attr( $details_id ); ?>">
 							<?php $this->render_diagnostic_body( $result, $description, $args['show_evidence'], false ); ?>
 						</div>
@@ -515,7 +515,7 @@ class Admin {
 		if ( null !== $result->get_observed() ) {
 			?>
 			<p>
-				<strong><?php esc_html_e( 'Observed:', 'sitefact-diagnostics' ); ?></strong>
+				<strong><?php esc_html_e( 'Observed:', 'listingcore-diagnostics' ); ?></strong>
 				<?php echo esc_html( $result->get_observed() ); ?>
 			</p>
 			<?php
@@ -524,7 +524,7 @@ class Admin {
 		if ( null !== $result->get_expected() ) {
 			?>
 			<p>
-				<strong><?php esc_html_e( 'Expected:', 'sitefact-diagnostics' ); ?></strong>
+				<strong><?php esc_html_e( 'Expected:', 'listingcore-diagnostics' ); ?></strong>
 				<?php echo esc_html( $result->get_expected() ); ?>
 			</p>
 			<?php
@@ -537,7 +537,7 @@ class Admin {
 		if ( null !== $result->get_recommendation() ) {
 			?>
 			<p>
-				<strong><?php esc_html_e( 'Recommendation:', 'sitefact-diagnostics' ); ?></strong>
+				<strong><?php esc_html_e( 'Recommendation:', 'listingcore-diagnostics' ); ?></strong>
 				<?php echo esc_html( $result->get_recommendation() ); ?>
 			</p>
 			<?php
@@ -555,13 +555,13 @@ class Admin {
 	private function owner_severity_label( $severity ) {
 		switch ( $severity ) {
 			case Severity::ERROR:
-				return __( 'Critical', 'sitefact-diagnostics' );
+				return __( 'Critical', 'listingcore-diagnostics' );
 			case Severity::WARNING:
-				return __( 'Attention', 'sitefact-diagnostics' );
+				return __( 'Attention', 'listingcore-diagnostics' );
 			case Severity::SUCCESS:
-				return __( 'Healthy', 'sitefact-diagnostics' );
+				return __( 'Healthy', 'listingcore-diagnostics' );
 			case Severity::INFO:
-				return __( 'Informational', 'sitefact-diagnostics' );
+				return __( 'Informational', 'listingcore-diagnostics' );
 			default:
 				return Severity::label( $severity );
 		}
@@ -687,12 +687,12 @@ class Admin {
 			<h5><?php echo esc_html( $fix->get_title() ); ?></h5>
 
 			<p>
-				<strong><?php esc_html_e( 'Risk:', 'sitefact-diagnostics' ); ?></strong>
+				<strong><?php esc_html_e( 'Risk:', 'listingcore-diagnostics' ); ?></strong>
 				<?php echo esc_html( RiskLevel::label( $preview->get_risk() ) ); ?>
 			</p>
 
 			<p>
-				<strong><?php esc_html_e( 'Reversible:', 'sitefact-diagnostics' ); ?></strong>
+				<strong><?php esc_html_e( 'Reversible:', 'listingcore-diagnostics' ); ?></strong>
 				<?php echo esc_html( $preview->is_reversible() ? 'true' : 'false' ); ?>
 			</p>
 
@@ -714,16 +714,16 @@ class Admin {
 						<input type="hidden" name="confirmation_token[<?php echo esc_attr( $option['token'] ); ?>]" value="<?php echo esc_attr( (string) $bound_token ); ?>" />
 						<?php if ( array_key_exists( 'before', $option ) && array_key_exists( 'after', $option ) ) : ?>
 							<p class="wp-doctor-fix-change">
-								<strong><?php esc_html_e( 'Before:', 'sitefact-diagnostics' ); ?></strong>
+								<strong><?php esc_html_e( 'Before:', 'listingcore-diagnostics' ); ?></strong>
 								<?php echo esc_html( (string) $option['before'] ); ?>
 								<span class="wp-doctor-fix-change-arrow" aria-hidden="true">&rarr;</span>
-								<strong><?php esc_html_e( 'After:', 'sitefact-diagnostics' ); ?></strong>
+								<strong><?php esc_html_e( 'After:', 'listingcore-diagnostics' ); ?></strong>
 								<?php echo esc_html( (string) $option['after'] ); ?>
 							</p>
 						<?php endif; ?>
 						<br />
 					<?php endforeach; ?>
-					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'sitefact-diagnostics' ); ?></button></p>
+					<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Apply fix', 'listingcore-diagnostics' ); ?></button></p>
 				</form>
 			<?php endif; ?>
 		</div>
@@ -743,15 +743,15 @@ class Admin {
 	 */
 	public function handle_fix_post() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'sitefact-diagnostics' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'listingcore-diagnostics' ) );
 		}
 
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'wp_doctor_fix' ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'sitefact-diagnostics' ) );
+			wp_die( esc_html__( 'Security check failed.', 'listingcore-diagnostics' ) );
 		}
 
 		if ( null === $this->fix_registry || null === $this->fix_runner ) {
-			wp_die( esc_html__( 'Fixes are not available.', 'sitefact-diagnostics' ) );
+			wp_die( esc_html__( 'Fixes are not available.', 'listingcore-diagnostics' ) );
 		}
 
 		$fix_id    = isset( $_POST['fix_id'] ) ? sanitize_text_field( wp_unslash( $_POST['fix_id'] ) ) : '';
@@ -771,14 +771,14 @@ class Admin {
 		$fix = $this->fix_registry->get( $fix_id );
 
 		if ( null === $fix ) {
-			wp_die( esc_html__( 'Unknown fix.', 'sitefact-diagnostics' ) );
+			wp_die( esc_html__( 'Unknown fix.', 'listingcore-diagnostics' ) );
 		}
 
 		$result = $this->fix_runner->run_one( $fix, $direction, true, $confirmation_token );
 
 		$this->set_fix_notice( $result );
 
-		$this->redirect_after_fix( admin_url( 'admin.php?page=wp-doctor' ) );
+		$this->redirect_after_fix( admin_url( 'admin.php?page=listingcore-diagnostics' ) );
 	}
 
 	/**
@@ -875,14 +875,14 @@ class Admin {
 	 * Enqueue admin assets.
 	 *
 	 * This hook is called on 'admin_enqueue_scripts' and loads CSS only on the
-	 * SiteFact Diagnostics admin page.
+	 * ListingCore Diagnostics admin page.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param string $hook_suffix The current admin page hook suffix.
 	 */
 	public function enqueue_assets( $hook_suffix ) {
-		if ( 'toplevel_page_wp-doctor' !== $hook_suffix ) {
+		if ( 'toplevel_page_listingcore-diagnostics' !== $hook_suffix ) {
 			return;
 		}
 
@@ -890,7 +890,7 @@ class Admin {
 			return;
 		}
 
-		$relative = 'assets/css/sitefact-admin.css';
+		$relative = 'assets/css/listingcore-admin.css';
 		$path     = WP_DOCTOR_DIR . $relative;
 
 		if ( ! is_readable( $path ) ) {
@@ -900,7 +900,7 @@ class Admin {
 		$version = defined( 'WP_DOCTOR_VERSION' ) ? WP_DOCTOR_VERSION : '0.0.0';
 
 		wp_enqueue_style(
-			'sitefact-admin',
+			'listingcore-admin',
 			WP_DOCTOR_URL . $relative,
 			array(),
 			$version

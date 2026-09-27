@@ -98,7 +98,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'HTTPS', 'sitefact-diagnostics' );
+		return __( 'HTTPS', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -120,7 +120,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether the site is served over HTTPS.', 'sitefact-diagnostics' );
+		return __( 'Reports whether the site is served over HTTPS.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -143,14 +143,14 @@ class HttpsDiagnostic implements DiagnosticInterface {
 				$home_scheme,
 				$site_scheme,
 				$force_ssl_admin,
-				__( 'The site is served over HTTPS.', 'sitefact-diagnostics' )
+				__( 'The site is served over HTTPS.', 'listingcore-diagnostics' )
 			);
 		}
 
 		if ( 'http' === $home_scheme || 'http' === $site_scheme ) {
 			$summary = $ssl
-				? __( 'The site URL uses HTTP, although SSL appears active at the server level (possibly behind a reverse proxy).', 'sitefact-diagnostics' )
-				: __( 'The site is served over HTTP rather than HTTPS.', 'sitefact-diagnostics' );
+				? __( 'The site URL uses HTTP, although SSL appears active at the server level (possibly behind a reverse proxy).', 'listingcore-diagnostics' )
+				: __( 'The site is served over HTTP rather than HTTPS.', 'listingcore-diagnostics' );
 
 			return $this->build_result(
 				Severity::WARNING,
@@ -168,7 +168,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 			$home_scheme,
 			$site_scheme,
 			$force_ssl_admin,
-			__( 'The HTTPS status could not be determined from the available URL information.', 'sitefact-diagnostics' )
+			__( 'The HTTPS status could not be determined from the available URL information.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -295,7 +295,7 @@ class HttpsDiagnostic implements DiagnosticInterface {
 			$suppressed         = true;
 			$suppression_reason = sprintf(
 				/* translators: %s: environment type. */
-				__( 'HTTP is expected in a %s environment.', 'sitefact-diagnostics' ),
+				__( 'HTTP is expected in a %s environment.', 'listingcore-diagnostics' ),
 				$environment->get_type()
 			);
 		}
@@ -345,13 +345,13 @@ class HttpsDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'On a production site, obtain an SSL certificate and force HTTPS so login credentials and session data are encrypted.', 'sitefact-diagnostics' );
+			return __( 'On a production site, obtain an SSL certificate and force HTTPS so login credentials and session data are encrypted.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep HTTPS enabled for all site traffic.', 'sitefact-diagnostics' );
+			return __( 'Keep HTTPS enabled for all site traffic.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Verify the site and home URL schemes.', 'sitefact-diagnostics' );
+		return __( 'Verify the site and home URL schemes.', 'listingcore-diagnostics' );
 	}
 }

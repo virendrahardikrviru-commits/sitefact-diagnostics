@@ -166,7 +166,7 @@ final class DiagnosticRunner {
 				'title'             => $this->safe_title( $diagnostic ),
 				'category'          => $this->safe_category( $diagnostic ),
 				'severity'          => Severity::ERROR,
-				'summary'           => __( 'Diagnostic could not be completed.', 'sitefact-diagnostics' ),
+				'summary'           => __( 'Diagnostic could not be completed.', 'listingcore-diagnostics' ),
 				'execution_time_ms' => (float) $milliseconds,
 			)
 		);
@@ -249,7 +249,7 @@ final class DiagnosticRunner {
 			}
 		}
 
-		return __( 'Unknown diagnostic', 'sitefact-diagnostics' );
+		return __( 'Unknown diagnostic', 'listingcore-diagnostics' );
 	}
 
 	/**

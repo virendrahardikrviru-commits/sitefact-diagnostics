@@ -90,7 +90,7 @@ class UploadLimitsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Upload & POST Limits', 'sitefact-diagnostics' );
+		return __( 'Upload & POST Limits', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -112,7 +112,7 @@ class UploadLimitsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the WordPress upload limit and the PHP upload and POST size limits.', 'sitefact-diagnostics' );
+		return __( 'Reports the WordPress upload limit and the PHP upload and POST size limits.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -145,7 +145,7 @@ class UploadLimitsDiagnostic implements DiagnosticInterface {
 				$evidence,
 				sprintf(
 					/* translators: 1: post_max_size value, 2: upload_max_filesize value. */
-					__( 'post_max_size (%1$s) is smaller than upload_max_filesize (%2$s); large uploads may fail.', 'sitefact-diagnostics' ),
+					__( 'post_max_size (%1$s) is smaller than upload_max_filesize (%2$s); large uploads may fail.', 'listingcore-diagnostics' ),
 					(string) $post['raw'],
 					(string) $upload['raw']
 				)
@@ -156,10 +156,10 @@ class UploadLimitsDiagnostic implements DiagnosticInterface {
 			$summary = ( null !== $wp_max )
 				? sprintf(
 					/* translators: %s: human-readable maximum upload size. */
-					__( 'The maximum upload size is %s.', 'sitefact-diagnostics' ),
+					__( 'The maximum upload size is %s.', 'listingcore-diagnostics' ),
 					ByteSize::format( $wp_max )
 				)
-				: __( 'The upload and POST size limits were determined.', 'sitefact-diagnostics' );
+				: __( 'The upload and POST size limits were determined.', 'listingcore-diagnostics' );
 
 			return $this->build_result( Severity::SUCCESS, $evidence, $summary );
 		}
@@ -167,7 +167,7 @@ class UploadLimitsDiagnostic implements DiagnosticInterface {
 		return $this->build_result(
 			Severity::INFO,
 			$evidence,
-			__( 'The upload and POST size limits could not be determined.', 'sitefact-diagnostics' )
+			__( 'The upload and POST size limits could not be determined.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -325,13 +325,13 @@ class UploadLimitsDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Increase post_max_size or reduce upload_max_filesize so the request body limit is at least the upload limit.', 'sitefact-diagnostics' );
+			return __( 'Increase post_max_size or reduce upload_max_filesize so the request body limit is at least the upload limit.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'These limits depend on your host and site requirements; raise them if large uploads are rejected.', 'sitefact-diagnostics' );
+			return __( 'These limits depend on your host and site requirements; raise them if large uploads are rejected.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Verify the PHP upload and POST size configuration.', 'sitefact-diagnostics' );
+		return __( 'Verify the PHP upload and POST size configuration.', 'listingcore-diagnostics' );
 	}
 }

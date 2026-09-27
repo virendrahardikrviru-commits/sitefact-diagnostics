@@ -1,7 +1,7 @@
-=== SiteFact Diagnostics ===
+=== ListingCore Diagnostics ===
 Contributors: virendrasingh06
 Requires at least: 6.0
-Tested up to: 7.1.2
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.2.0
 License: GPL-2.0-or-later
@@ -11,10 +11,10 @@ A read-only diagnostic plugin for WordPress that reports concrete, observable si
 
 == Description ==
 
-SiteFact Diagnostics inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
+ListingCore Diagnostics inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
 
 **Project Philosophy:**
-> SiteFact Diagnostics should report what it can prove, not what it merely suspects.
+> ListingCore Diagnostics should report what it can prove, not what it merely suspects.
 
 **Current capabilities:**
 
@@ -24,13 +24,13 @@ SiteFact Diagnostics inspects a WordPress installation and reports what it can d
 - One reversible fix (`fix.site_urls_align`) with preview, confirmation, verification, and rollback.
 - A capability-gated admin page with fully escaped output.
 
-SiteFact Diagnostics deliberately avoids speculative diagnosis, plugin blame, root-cause claims, health scoring, AI/ML, arbitrary filesystem scanning, arbitrary SQL, external HTTP, and telemetry. Diagnostics are read-only; the only mutation path is a single, explicitly confirmed, nonce-protected fix.
+ListingCore Diagnostics deliberately avoids speculative diagnosis, plugin blame, root-cause claims, health scoring, AI/ML, arbitrary filesystem scanning, arbitrary SQL, external HTTP, and telemetry. Diagnostics are read-only; the only mutation path is a single, explicitly confirmed, nonce-protected fix.
 
 == Installation ==
 
-1. Upload the `sitefact-diagnostics` plugin to `/wp-content/plugins/`
+1. Upload the `listingcore-diagnostics` plugin to `/wp-content/plugins/`
 2. Activate the plugin through WordPress admin
-3. Open **SiteFact Diagnostics** in the admin menu
+3. Open **ListingCore Diagnostics** in the admin menu
 
 == Requirements ==
 

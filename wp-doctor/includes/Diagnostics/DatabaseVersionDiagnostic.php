@@ -69,7 +69,7 @@ class DatabaseVersionDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Database Version', 'sitefact-diagnostics' );
+		return __( 'Database Version', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class DatabaseVersionDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the database engine and version and checks it against the minimum supported versions.', 'sitefact-diagnostics' );
+		return __( 'Reports the database engine and version and checks it against the minimum supported versions.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class DatabaseVersionDiagnostic implements DiagnosticInterface {
 				$type,
 				$version,
 				$minimum,
-				__( 'The database type or version could not be determined.', 'sitefact-diagnostics' )
+				__( 'The database type or version could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -126,7 +126,7 @@ class DatabaseVersionDiagnostic implements DiagnosticInterface {
 				$minimum,
 				sprintf(
 					/* translators: 1: engine, 2: observed version, 3: minimum version. */
-					__( '%1$s %2$s is below the recommended minimum %3$s.', 'sitefact-diagnostics' ),
+					__( '%1$s %2$s is below the recommended minimum %3$s.', 'listingcore-diagnostics' ),
 					strtoupper( $type ),
 					$version,
 					$minimum
@@ -141,7 +141,7 @@ class DatabaseVersionDiagnostic implements DiagnosticInterface {
 			$minimum,
 			sprintf(
 				/* translators: 1: engine, 2: observed version. */
-				__( '%1$s %2$s meets the recommended minimum.', 'sitefact-diagnostics' ),
+				__( '%1$s %2$s meets the recommended minimum.', 'listingcore-diagnostics' ),
 				strtoupper( $type ),
 				$version
 			)
@@ -313,13 +313,13 @@ class DatabaseVersionDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Upgrade the database server to a supported version.', 'sitefact-diagnostics' );
+			return __( 'Upgrade the database server to a supported version.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep the database server up to date.', 'sitefact-diagnostics' );
+			return __( 'Keep the database server up to date.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Verify the database server version.', 'sitefact-diagnostics' );
+		return __( 'Verify the database server version.', 'listingcore-diagnostics' );
 	}
 }

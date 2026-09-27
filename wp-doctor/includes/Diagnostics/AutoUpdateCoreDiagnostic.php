@@ -67,7 +67,7 @@ class AutoUpdateCoreDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Core Auto-Updates', 'sitefact-diagnostics' );
+		return __( 'Core Auto-Updates', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class AutoUpdateCoreDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the configured WordPress core auto-update behavior.', 'sitefact-diagnostics' );
+		return __( 'Reports the configured WordPress core auto-update behavior.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -106,7 +106,7 @@ class AutoUpdateCoreDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::WARNING,
 				$state,
-				__( 'Core auto-updates are disabled.', 'sitefact-diagnostics' )
+				__( 'Core auto-updates are disabled.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -114,14 +114,14 @@ class AutoUpdateCoreDiagnostic implements DiagnosticInterface {
 			return $this->build_result(
 				Severity::INFO,
 				$state,
-				__( 'Core auto-updates use the WordPress default policy.', 'sitefact-diagnostics' )
+				__( 'Core auto-updates use the WordPress default policy.', 'listingcore-diagnostics' )
 			);
 		}
 
 		return $this->build_result(
 			Severity::SUCCESS,
 			$state,
-			__( 'Core auto-updates are enabled.', 'sitefact-diagnostics' )
+			__( 'Core auto-updates are enabled.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -222,9 +222,9 @@ class AutoUpdateCoreDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $state ) {
 		if ( 'disabled' === $state ) {
-			return __( 'Consider enabling a core auto-update policy. Plugin and theme auto-updates are configured separately and are not covered by this diagnostic.', 'sitefact-diagnostics' );
+			return __( 'Consider enabling a core auto-update policy. Plugin and theme auto-updates are configured separately and are not covered by this diagnostic.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Plugin and theme auto-updates are configured separately and are not covered by this diagnostic.', 'sitefact-diagnostics' );
+		return __( 'Plugin and theme auto-updates are configured separately and are not covered by this diagnostic.', 'listingcore-diagnostics' );
 	}
 }

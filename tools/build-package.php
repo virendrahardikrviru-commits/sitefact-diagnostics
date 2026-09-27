@@ -1,6 +1,6 @@
 <?php
 /**
- * SiteFact Diagnostics — canonical production packaging script.
+ * ListingCore Diagnostics — canonical production packaging script.
  *
  * Builds the distributable WordPress plugin ZIP from an explicit production
  * allowlist. It never packages the whole repository: only the plugin's runtime
@@ -21,7 +21,7 @@
  * Usage:
  *   php tools/build-package.php [--output=PATH] [--force] [--list]
  *
- * @package SiteFactDiagnostics
+ * @package ListingCoreDiagnostics
  */
 
 declare(strict_types=1);
@@ -34,7 +34,7 @@ if ('cli' !== PHP_SAPI) {
 /**
  * The plugin slug / top-level directory inside the ZIP.
  */
-const PLUGIN_SLUG = 'sitefact-diagnostics';
+const PLUGIN_SLUG = 'listingcore-diagnostics';
 
 /**
  * Root-level production files (relative to the plugin directory).
@@ -408,7 +408,7 @@ if (false === $sizeBytes || false === $sha256) {
 // ---------------------------------------------------------------------------
 // Report.
 // ---------------------------------------------------------------------------
-echo "SiteFact Diagnostics production package built.\n";
+echo "ListingCore Diagnostics production package built.\n";
 echo '  Version:      ' . $version . "\n";
 echo '  File count:   ' . $fileCount . "\n";
 echo '  Artifact:     ' . $outputPath . "\n";

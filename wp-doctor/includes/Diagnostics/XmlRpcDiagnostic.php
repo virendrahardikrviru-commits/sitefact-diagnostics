@@ -70,7 +70,7 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'XML-RPC', 'sitefact-diagnostics' );
+		return __( 'XML-RPC', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports whether XML-RPC is effectively enabled.', 'sitefact-diagnostics' );
+		return __( 'Reports whether XML-RPC is effectively enabled.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 				null,
 				$source,
 				'unknown',
-				__( 'The XML-RPC state could not be determined.', 'sitefact-diagnostics' )
+				__( 'The XML-RPC state could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -123,7 +123,7 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 				true,
 				$source,
 				'enabled',
-				__( 'XML-RPC is enabled.', 'sitefact-diagnostics' )
+				__( 'XML-RPC is enabled.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -132,7 +132,7 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 			false,
 			$source,
 			'disabled',
-			__( 'XML-RPC is disabled.', 'sitefact-diagnostics' )
+			__( 'XML-RPC is disabled.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -227,13 +227,13 @@ class XmlRpcDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $enabled ) {
 		if ( true === $enabled ) {
-			return __( 'XML-RPC is enabled. If it is not required by your site, it can be disabled with the xmlrpc_enabled filter or a security plugin.', 'sitefact-diagnostics' );
+			return __( 'XML-RPC is enabled. If it is not required by your site, it can be disabled with the xmlrpc_enabled filter or a security plugin.', 'listingcore-diagnostics' );
 		}
 
 		if ( false === $enabled ) {
-			return __( 'XML-RPC is disabled. Keep it disabled unless a feature or integration requires it.', 'sitefact-diagnostics' );
+			return __( 'XML-RPC is disabled. Keep it disabled unless a feature or integration requires it.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Verify the XML-RPC configuration.', 'sitefact-diagnostics' );
+		return __( 'Verify the XML-RPC configuration.', 'listingcore-diagnostics' );
 	}
 }

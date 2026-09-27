@@ -62,7 +62,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Database Storage Engine', 'sitefact-diagnostics' );
+		return __( 'Database Storage Engine', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Reports the storage engines used by the database tables.', 'sitefact-diagnostics' );
+		return __( 'Reports the storage engines used by the database tables.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 				0,
 				0,
 				0,
-				__( 'The database storage engines could not be determined.', 'sitefact-diagnostics' )
+				__( 'The database storage engines could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -117,7 +117,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 				$innodb,
 				$myisam,
 				$other,
-				__( 'No MyISAM tables were detected.', 'sitefact-diagnostics' )
+				__( 'No MyISAM tables were detected.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -128,7 +128,7 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 			$other,
 			sprintf(
 				/* translators: %d: number of MyISAM tables. */
-				__( '%d MyISAM table(s) were detected.', 'sitefact-diagnostics' ),
+				__( '%d MyISAM table(s) were detected.', 'listingcore-diagnostics' ),
 				$myisam
 			)
 		);
@@ -188,9 +188,9 @@ class DatabaseStorageEngineDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Consider converting MyISAM tables to InnoDB.', 'sitefact-diagnostics' );
+			return __( 'Consider converting MyISAM tables to InnoDB.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'All database tables use transactional storage engines.', 'sitefact-diagnostics' );
+		return __( 'All database tables use transactional storage engines.', 'listingcore-diagnostics' );
 	}
 }

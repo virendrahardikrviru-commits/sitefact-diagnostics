@@ -143,7 +143,7 @@ class AdminFixTest extends TestCase {
 		$notice = get_transient( 'wp_doctor_fix_notice' );
 		$this->assertSame( 'success', $notice['status'] );
 
-		$this->assertContains( 'http://example.com/wp-admin/admin.php?page=wp-doctor', $GLOBALS['_wp_doctor_redirects'] );
+		$this->assertContains( 'http://example.com/wp-admin/admin.php?page=listingcore-diagnostics', $GLOBALS['_wp_doctor_redirects'] );
 	}
 
 	/**

@@ -1,14 +1,14 @@
-# SiteFact Diagnostics
+# ListingCore Diagnostics
 
 A read-only diagnostic plugin for WordPress that reports concrete, observable site facts.
 
 ## Overview
 
-SiteFact Diagnostics inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
+ListingCore Diagnostics inspects a WordPress installation and reports what it can directly observe — versions, update state, security and performance configuration, database metadata, error-log activity, and more — without guessing.
 
 **Governing principle:**
 
-> SiteFact Diagnostics should report what it can prove, not what it merely suspects.
+> ListingCore Diagnostics should report what it can prove, not what it merely suspects.
 
 ## Current Capabilities
 
@@ -22,7 +22,7 @@ SiteFact Diagnostics inspects a WordPress installation and reports what it can d
 
 ## Security Philosophy
 
-SiteFact Diagnostics deliberately avoids:
+ListingCore Diagnostics deliberately avoids:
 
 - speculative diagnosis
 - plugin blame and root-cause claims
@@ -41,9 +41,9 @@ The static diagnostic engine currently ships 32 read-only diagnostics plus a fac
 
 ## Installation
 
-1. Upload the plugin to `/wp-content/plugins/sitefact-diagnostics/`
+1. Upload the plugin to `/wp-content/plugins/listingcore-diagnostics/`
 2. Activate the plugin through WordPress admin
-3. Open **SiteFact Diagnostics** in the admin menu
+3. Open **ListingCore Diagnostics** in the admin menu
 
 ## Requirements
 
@@ -81,7 +81,7 @@ The committed PHPUnit configuration (`phpunit.xml`) bootstraps `tests/bootstrap.
 ### Packaging
 
 ```bash
-php tools/build-package.php          # build release/sitefact-diagnostics-<version>.zip
+php tools/build-package.php          # build release/listingcore-diagnostics-<version>.zip
 php tools/build-package.php --list   # print the production file manifest
 pwsh tools/build-package.ps1         # PowerShell convenience wrapper
 ```
@@ -90,4 +90,4 @@ See [TESTING.md](docs/TESTING.md) for details.
 
 ## License
 
-SiteFact Diagnostics is licensed under the [GPL v2 or later](https://www.gnu.org/licenses/gpl-2.0.html).
+ListingCore Diagnostics is licensed under the [GPL v2 or later](https://www.gnu.org/licenses/gpl-2.0.html).

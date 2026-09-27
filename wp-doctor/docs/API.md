@@ -1,8 +1,8 @@
-# SiteFact Diagnostics — API Document
+# ListingCore Diagnostics — API Document
 
 ## Overview
 
-This document describes the **actual** internal API of SiteFact Diagnostics as
+This document describes the **actual** internal API of ListingCore Diagnostics as
 implemented in the current codebase (1.2.0 development). These are internal
 interfaces, not supported public APIs.
 
@@ -317,9 +317,9 @@ direction tokens `use_siteurl` / `use_home`, not offered on multisite).
 
 ## Internationalization
 
-All user-facing strings use the `sitefact-diagnostics` text domain, loaded on
+All user-facing strings use the `listingcore-diagnostics` text domain, loaded on
 `init` via `Plugin::load_textdomain()`. The translation template is
-`languages/sitefact-diagnostics.pot`.
+`languages/listingcore-diagnostics.pot`.
 
 ## Versioning
 

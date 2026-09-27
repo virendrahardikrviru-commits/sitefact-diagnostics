@@ -28,7 +28,7 @@ if ( ! defined( 'WP_DOCTOR_DIR' ) ) {
 }
 
 if ( ! defined( 'WP_DOCTOR_BASENAME' ) ) {
-	define( 'WP_DOCTOR_BASENAME', 'sitefact-diagnostics/wp-doctor.php' );
+	define( 'WP_DOCTOR_BASENAME', 'listingcore-diagnostics/wp-doctor.php' );
 }
 
 // Minimal WordPress translation-loading stand-in so text-domain wiring can be

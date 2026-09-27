@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Convenience wrapper for the canonical SiteFact Diagnostics packaging script.
+    Convenience wrapper for the canonical ListingCore Diagnostics packaging script.
 
 .DESCRIPTION
     Invokes php tools/build-package.php from the repository root and surfaces a
@@ -10,7 +10,7 @@
 
 .EXAMPLE
     pwsh tools/build-package.ps1
-    pwsh tools/build-package.ps1 -Output .\release\sitefact-diagnostics-1.2.0.zip
+    pwsh tools/build-package.ps1 -Output .\release\listingcore-diagnostics-1.2.0.zip
     pwsh tools/build-package.ps1 -Force
 
 .NOTES

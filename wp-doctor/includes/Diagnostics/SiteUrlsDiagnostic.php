@@ -81,7 +81,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Site & Home URLs', 'sitefact-diagnostics' );
+		return __( 'Site & Home URLs', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( 'Compares the WordPress site and home URLs to detect a mismatch.', 'sitefact-diagnostics' );
+		return __( 'Compares the WordPress site and home URLs to detect a mismatch.', 'listingcore-diagnostics' );
 	}
 
 	/**
@@ -126,7 +126,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 				$site_host,
 				$home_host,
 				null,
-				__( 'The site or home URL could not be read, so consistency could not be determined.', 'sitefact-diagnostics' )
+				__( 'The site or home URL could not be read, so consistency could not be determined.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -140,7 +140,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 				$site_host,
 				$home_host,
 				true,
-				__( 'The site and home URLs match.', 'sitefact-diagnostics' )
+				__( 'The site and home URLs match.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -150,7 +150,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 				$site_host,
 				$home_host,
 				false,
-				__( 'The site and home URLs differ, which is expected on a multisite network.', 'sitefact-diagnostics' )
+				__( 'The site and home URLs differ, which is expected on a multisite network.', 'listingcore-diagnostics' )
 			);
 		}
 
@@ -159,7 +159,7 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 			$site_host,
 			$home_host,
 			false,
-			__( 'The site and home URLs do not match, which can cause redirect loops or mixed-content issues.', 'sitefact-diagnostics' )
+			__( 'The site and home URLs do not match, which can cause redirect loops or mixed-content issues.', 'listingcore-diagnostics' )
 		);
 	}
 
@@ -241,13 +241,13 @@ class SiteUrlsDiagnostic implements DiagnosticInterface {
 	 */
 	private function recommendation( $severity ) {
 		if ( Severity::WARNING === $severity ) {
-			return __( 'Align the site and home URLs in the WordPress settings to match.', 'sitefact-diagnostics' );
+			return __( 'Align the site and home URLs in the WordPress settings to match.', 'listingcore-diagnostics' );
 		}
 
 		if ( Severity::SUCCESS === $severity ) {
-			return __( 'Keep the site and home URLs consistent.', 'sitefact-diagnostics' );
+			return __( 'Keep the site and home URLs consistent.', 'listingcore-diagnostics' );
 		}
 
-		return __( 'Review the site and home URL settings.', 'sitefact-diagnostics' );
+		return __( 'Review the site and home URL settings.', 'listingcore-diagnostics' );
 	}
 }
